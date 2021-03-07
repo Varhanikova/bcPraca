@@ -5,7 +5,7 @@ body {
 .white{
     color: black;
 }
-img.zasady1 {
+img.zasady {
     width: 267px;
     height: 153px;
 }
@@ -18,11 +18,6 @@ img.zasady1 {
     height: 30px;
     width: 40px;
 }
-input[type="button"] {
-    position: relative;
-    left: 22vw;
-    /* neviem či to tu má byť*/
-}
 .logo {
     height: 50px;
     width: 70px;
@@ -30,161 +25,16 @@ input[type="button"] {
 .bg-dark {
     background-color: #000000!important;
 }
-h2.napis {
-    top: 10vw;
-    position: relative;
-    left: 5vw;
-    font-size: 4vh;
-width: 90vw;
-}
-img#white {
-    position: relative;
-    height: 20vh;
-    width: 100%;
-    top: 18vh;
-}
-img#zasady {
-    position: relative;
-    left: 3vh;
-    height: 16vh;
-    top: 0vh;
-    width: 30vh;
-}
-#popis_zasad {
-    width: 35vw;
-    position: relative;
-    top: -16vh;
-    left: 30vh;
-    color: black;
-    /*width: 23vh;*/
 
-}
-#popis_zasad h1 {
-    font-size: 3vh;
-    top: 1vh;
-    left: 30vh;
-    color: black;
-}
-#popis_zasad ul{
-    font-size: 1.3vh;
- }
-div#možnosti\ col-sm-10 {
-    position: relative;
-    top: 14vw;
-}
-img#inf {
-    position: relative;
-    height: 17vh;
-    width: 24vh;
-    left: 2vh;
-}
-img#graph {
-    position: relative;
-    height: 18vh;
-    width: 25vh;
-    right: -4vh;
-    top: 0.5vh;
-}
 @media screen and (min-width: 479px) {
 
-#popis_zasad{
-    left: 51vw;
-    top:-14vh;
-    width: 40vw;
 
-}
-    img#graph{
-        height: 22vh;
-        width: 29vh;
-        left: 5vw;
-        top: 4.5vw;
-    }
-    img#inf {
-        position: relative;
-        height: 20vh;
-        width: 27vh;
-    }
-    #zasady{
-        height: 20vh;
-        top: 28vh;
-        width: 35vh;
-    }
-    #white{
-        height: 25vh;
-    }
-    #popis_zasad ul{
-        font-size: 2vw;
-    }
-
-    #popis_zasad h1 {
-        font-size: 2.2vw;
-    }
-    img#inf {
-        height: 21vh;
-        width: 28vh;
-        left: 5vw;
-        top: 4vw;
-    }
-    img#zasady{top:1vh;
-        width: 30vh;
-    }
-    img#white{top:20vh;}
 }
 @media only screen and (min-width: 768px) {
-    img.zasady1 {
+    .row.posun{margin-left: 20%;}
+    img.zasady {
         width: 378px;
         height: 213px;
     }
-    img#graph{height: 19vw;
-        width: 26vw;
-        margin-left: 1vw;
-        top: -16.3vh;}
-    img#inf {
-        height: 18vw;
-        width: 25vw;
-        margin-left: 33vw;
-        top: -17vh;
-    }
-    div#možnosti\ col-sm-10 {
-        position: relative;
-        top: 10vw;
-        left: 5vw;
-        font-size: 2.5vh;
-    }
-    h2.napis {
-        top: 5vw;
-        position: relative;
-        left: 5vw;
-        font-size: 4vh;
-        width: 95vw;
-    }
-    img#white {
-        position: relative;
-        height: 30vh;
-        width: 100%;
-        top: 40vh;
-    }
-    img#zasady {
-        position: relative;
-        left: 4vw;
-        height: 28vh;
-        top: 10vh;
-        width: 50vh;
-    }
-    #popis_zasad {
-        width: 41vw;
-        position: relative;
-        top: -13vh;
-        left: 53vw;
-        color: black;
-    }
-    #popis_zasad h1{
-
-        font-size: 4vh;
-    }#popis_zasad ul{
-         font-size: 2.3vh;
-     }
-
-
 
 }

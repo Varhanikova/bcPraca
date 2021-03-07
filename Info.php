@@ -13,11 +13,8 @@ require "header.php";
         <h3 class="pb-4 mb-4 fst-italic border-bottom">
             Informácie o ochorení COVID-19
         </h3>
-
         <article >
             <h2 >Čo je COVID-19?</h2>
-
-
             <p>COVID-19 je infekčné ochorenie, vyvolané koronavírusom SARS-CoV-2.
                 Prvýkrát bol identifikovaný u pacientov so závažným respiračným ochorením v decembri roku 2019 v čínskom meste Wu-chan.
                 COVID-19 postihuje najmä dýchací systém, v ťažkých prípadoch vyvoláva ťažký zápal pľúc a môže viesť až k úmrtiu pacienta.
@@ -25,10 +22,8 @@ require "header.php";
                 Ohrozuje osoby, ktoré sú v blízkom alebo dlhšie trvajúcom kontakte s nakazeným.
                 Infekcia sa prenáša aj cez kontaminované predmety.</p>
         </article>
-
         <article >
             <h2 >Aké sú príznaky?</h2>
-
             <ul>
                 <li>horúčka nad 38°C</li>
                 <li>kašeľ</li>
@@ -39,8 +34,7 @@ require "header.php";
                 <li>strata čuchu a chuti</li>
             </ul>
         </article>
-
-        <article >
+       <article >
             <h2 >Inkubačný čas a spôsob prenosu</h2>
             <ul>
                 <li>Inkubačný čas ochorenia COVID-19 je 2 až 14 dní, môže byť aj dlhší. Medián inkubačného času je 5 až 6 dní.</li>
@@ -49,9 +43,7 @@ require "header.php";
                 <li>Na základe dostupných informácií sa predpokladá nozokomiálne (nemocničné) šírenie ochorenia na COVID-19 v zdravotníckych zariadeniach, kde je potrebné dodržiavať ďalšie protiepidemické opatrenia pre zdravotníckych pracovníkov.</li>
             </ul>
         </article>
-
-
-        <article >
+        <article>
             <h2 >Prevencia</h2>
             <p>V rámci prevencie vydal Úrad verejného zdravotníctva SR opatrenie, v rámci ktorého sa zakazuje vychádzať a pohybovať sa na verejnosti bez prekrytia horných dýchacích ciest. Všetci občania teda majú povinnosť nosiť rúško všade mimo svojho bydliska.</p>
             <br>
