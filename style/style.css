@@ -26,7 +26,31 @@ img.zasady {
 .bg-dark {
     background-color: #000000!important;
 }
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
+td, th {
+    border: 5px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+
+}
+
+tr:nth-child(even) {
+    background-color: #eee;
+    color: black;
+}
+tr:nth-child(odd) {
+    background-color: #fff;
+    color: black;
+}
+th {
+    background-color: darkslategray;
+    color: white;
+}
 @media screen and (min-width: 479px) {
 
 

@@ -1,5 +1,34 @@
 <?php
+require_once "DB_storage.php";
+$storage = new DB_storage();
+session_start();
+if (isset($_POST['Send'])) {
 
+    $chyba=0;
+    $username = str_replace(" ","",$_POST['username']);
+    $psw = str_replace(" ","",$_POST['psw']);
+    if ($_POST['username'] == '' || $_POST['psw'] == '' ||$username=='' || $psw == '') {
+        $chyba=1; ?>
+        <script>
+            window.alert("Empty!");
+        </script>
+    <?php } if ($storage->control($_POST['username'],$_POST['psw'])==1) {  $chyba=1;?>
+        <script>
+            window.alert("Wrong username!");
+        </script>
+    <?php }if ($storage->control($_POST['username'],$_POST['psw'])==2) {  $chyba=1;?>
+        <script>
+            window.alert("Wrong password!");
+        </script>
+    <?php }
+    if($chyba ==0){
+        $_SESSION["name"] = $_POST['username'];
+    }
+}
+if(isset($_POST['logout'])) {
+    unset($_SESSION["name"]);
+    session_destroy();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,6 +86,17 @@
                     </div>
                 </li>
             </ul>
+            <?php
+            if (isset($_SESSION["name"])) {
+                ?>
+                <div class="topnav">
+                    <div class="login-container">
+                        <form method="post">
+                            <button type="submit" name="logout">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            <?php   } else { ?>
                 <div class="topnav">
                     <div class="login-container">
                         <form method="post">
@@ -66,13 +106,7 @@
                         </form>
                     </div>
                 </div>
-            <div class="topnav">
-                <div class="login-container">
-                    <form method="post">
-                        <button type="submit" name="logout">Logout</button>
-                    </form>
-                </div>
-            </div>
+            <?php } ?>
         </div>
     </nav>
 </div>

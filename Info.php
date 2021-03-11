@@ -13,7 +13,7 @@ require "header.php";
         <h3 class="pb-4 mb-4 fst-italic border-bottom">
             Informácie o ochorení COVID-19
         </h3>
-        <article >
+        <article>
             <h2 >Čo je COVID-19?</h2>
             <p>COVID-19 je infekčné ochorenie, vyvolané koronavírusom SARS-CoV-2.
                 Prvýkrát bol identifikovaný u pacientov so závažným respiračným ochorením v decembri roku 2019 v čínskom meste Wu-chan.
