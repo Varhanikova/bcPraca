@@ -2,7 +2,7 @@
 require "header.php";
 require_once "DB_storage.php";
 $storage = new DB_storage();
-
+$array = $storage->getAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,8 +51,11 @@ $storage = new DB_storage();
 
     </div>
 </div>
+<p> <?php $array[0]?></p>
 <?php
+
 require "footer.php";
+
 ?>
 </body>
 </html>

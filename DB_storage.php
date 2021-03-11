@@ -1,29 +1,29 @@
 <?php
-
+require "Datum.php";
 class DB_storage
 {
- private  $username= 'root';
- private  $password = 'pass123';
- private  $dbName = 'statistics';
-private  $host = "35.198.148.237";
 
-    protected function  connect()
-    {
-        try {
-            $dsn = sprintf('mysql:unix_socket=/cloudsql/hello-php:bcpraca;charset=utf8');
-            $conn = new PDO($dsn,$this->username,$this->password);
+private  $conn;
 
-        } catch (PDOException $E) {
-            ECHO "connection failed: " . $E->getMessage();
-        }
-        return $conn;
+public function __construct(){
+    try {
+      $this->conn = new PDO("sqlsrv:server = tcp:bcpraca.database.windows.net,1433; Database = statistics", "bcpraca", "Bfmv1458");
+        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
-    public function getAll()
+    catch (PDOException $e) {
+        print("Error connecting to SQL Server.");
+        printf("%s",$e->getMessage());
+        //die(print_r($e));
+    }
+}
+
+    public function getDatumy()
     {
-        $stmt = $this->connect()->query("SELECT * FROM datumy");
-        $datumy = [];
+        $stmt = $this->conn->query("SELECT * FROM datum");
+        $datumy= [];
         while ($row = $stmt->fetch()) {
-            $datumy[] = $row['id_datum'] .  $row['rok'] . $row['mesiac'] . $row['den'];
+            $datum = new Datum($row['id_datum'],$row['rok'],$row['mesiac'],$row['den']);
+            $datumy[] =$datum ;
 
         }
         return $datumy;
