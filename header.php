@@ -89,10 +89,13 @@ if(isset($_POST['logout'])) {
             <?php
             if (isset($_SESSION["name"])) {
                 ?>
-                <div class="topnav">
+
+                <a class="px-3"> Si prihlásený ako <?= $_SESSION["name"]?>! </a>
+
+                <div class="topnav ">
                     <div class="login-container">
                         <form method="post">
-                            <button type="submit" name="logout">Logout</button>
+                            <button type="submit" name="logout"> Logout</button>
                         </form>
                     </div>
                 </div>

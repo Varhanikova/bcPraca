@@ -19,10 +19,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="tabulka pre deaths">
+    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="tabulka pre kraje_stat">
+      <change afterPath="$PROJECT_DIR$/stats/hospitals_stat.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/stats/kazdodenne_stat.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DB_storage.php" beforeDir="false" afterPath="$PROJECT_DIR$/DB_storage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DenneTestovanie.php" beforeDir="false" afterPath="$PROJECT_DIR$/DenneTestovanie.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Kraje.php" beforeDir="false" afterPath="$PROJECT_DIR$/Kraje.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Nemocnice.php" beforeDir="false" afterPath="$PROJECT_DIR$/Nemocnice.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Umrtia.php" beforeDir="false" afterPath="$PROJECT_DIR$/Umrtia.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/header.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +100,8 @@
       <workItem from="1615399712425" duration="392000" />
       <workItem from="1615459392850" duration="5193000" />
       <workItem from="1615465930834" duration="19457000" />
-      <workItem from="1615547691987" duration="2265000" />
+      <workItem from="1615547691987" duration="2510000" />
+      <workItem from="1615560463523" duration="20974000" />
     </task>
     <task id="LOCAL-00001" summary="uprava css">
       <created>1615110530990</created>
@@ -117,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615492870596</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="tabulka pre kraje_stat">
+      <created>1615550524834</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1615550524834</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,7 +153,8 @@
     <MESSAGE value="uprava css" />
     <MESSAGE value="connect to db" />
     <MESSAGE value="tabulka pre deaths" />
-    <option name="LAST_COMMIT_MESSAGE" value="tabulka pre deaths" />
+    <MESSAGE value="tabulka pre kraje_stat" />
+    <option name="LAST_COMMIT_MESSAGE" value="tabulka pre kraje_stat" />
   </component>
   <component name="WindowStateProjectService">
     <state x="348" y="67" key="#CLI_Interpreters" timestamp="1615466970298">
@@ -186,10 +201,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="189" height="457" key="HiddenNamespacesPopup/0.0.1536.824@0.0.1536.824" timestamp="1614955679539" />
-    <state x="597" y="135" key="NewPhpClassDialog" timestamp="1615491930947">
+    <state x="597" y="135" key="NewPhpClassDialog" timestamp="1615562614266">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="597" y="135" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1615491930947" />
+    <state x="597" y="135" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1615562614266" />
     <state x="604" y="335" key="NewPhpFileDialog" timestamp="1614972278685">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -198,10 +213,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1615466974202" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1615492876141">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1615550553896">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1615492876141" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1615550553896" />
     <state x="641" y="254" key="com.intellij.database.actions.DdlActions$CreateObject$1" timestamp="1615313882737">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
