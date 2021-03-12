@@ -82,10 +82,11 @@ public function __construct(){
     }
     public function getAllKrajeStat()
     {
-        $stmt = $this->conn->query("SELECT * FROM kraje_stat order by id_datum,id_kraj");
+        $stmt = $this->conn->query("SELECT kraj,id_datum,ag_vykonanych,ag_poz,pcr_poz,newcases,poz_celk from kraje right join kraje_stat on(kraje.id_kraj=kraje_stat.id_kraj)");
         $stat= [];
         while ($row = $stmt->fetch()) {
-            $kraj = new kraje_stat($row['id_kraj'],$row['id_datum'],$row['ag_vykonanych'],$row['ag_poz'],$row['pcr_poz'],$row['newcases'],$row['poz_celk']);
+
+            $kraj = new kraje_stat($row['kraj'],$row['id_datum'],$row['ag_vykonanych'],$row['ag_poz'],$row['pcr_poz'],$row['newcases'],$row['poz_celk']);
             $stat[] =$kraj;
         }
         return $stat;

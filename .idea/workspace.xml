@@ -19,18 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="connect to db">
-      <change afterPath="$PROJECT_DIR$/login/Login.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stats/Umrtia_stat.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stats/kraje_stat.php" afterDir="false" />
+    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="tabulka pre deaths">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DB_storage.php" beforeDir="false" afterPath="$PROJECT_DIR$/DB_storage.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Info.php" beforeDir="false" afterPath="$PROJECT_DIR$/Info.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Kraje.php" beforeDir="false" afterPath="$PROJECT_DIR$/Kraje.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Umrtia.php" beforeDir="false" afterPath="$PROJECT_DIR$/Umrtia.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/header.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/style/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +93,8 @@
       <workItem from="1615313516687" duration="2452000" />
       <workItem from="1615399712425" duration="392000" />
       <workItem from="1615459392850" duration="5193000" />
-      <workItem from="1615465930834" duration="19424000" />
+      <workItem from="1615465930834" duration="19457000" />
+      <workItem from="1615547691987" duration="2265000" />
     </task>
     <task id="LOCAL-00001" summary="uprava css">
       <created>1615110530990</created>
@@ -117,7 +110,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615474896203</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="tabulka pre deaths">
+      <created>1615492870596</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1615492870596</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,7 +138,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="uprava css" />
     <MESSAGE value="connect to db" />
-    <option name="LAST_COMMIT_MESSAGE" value="connect to db" />
+    <MESSAGE value="tabulka pre deaths" />
+    <option name="LAST_COMMIT_MESSAGE" value="tabulka pre deaths" />
   </component>
   <component name="WindowStateProjectService">
     <state x="348" y="67" key="#CLI_Interpreters" timestamp="1615466970298">
@@ -197,10 +198,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1615466974202" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1615474902582">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1615492876141">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1615474902582" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1615492876141" />
     <state x="641" y="254" key="com.intellij.database.actions.DdlActions$CreateObject$1" timestamp="1615313882737">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

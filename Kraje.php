@@ -7,12 +7,12 @@ $array = $storage->getAllKrajeStat();
 ?>
 <body>
 <main class="container">
-    <div class="col-md-10">
+    <div class="col-md-12">
         <h3 class="pb-2 mb-2 fst-italic ">
-            Štatistika :
+            Štatistika testovania po krajoch:
         </h3>
-        <p class="pb-4 mb-2 ">Začína a posledný záznam je z </p>
-        <table>
+        <p class="pb-4 mb-2 ">Začína 3.9.2020 a posledný záznam je z 13.2.2021 </p>
+        <table >
             <tr>
                 <th>Kraj</th>
                 <th>Dátum</th>
@@ -24,8 +24,8 @@ $array = $storage->getAllKrajeStat();
             </tr>
             <?php for($i=0;$i<500;$i++) {?>
                 <tr>
-                    <td> <?= $array[$i]->getIdKraj() ?></td>
-                    <td><?=$array[$i]->getIdDatum() ?></td>
+                    <td> <?=$array[$i]->getIdKraj()?></td>
+                    <td ><?=$array[$i]->getIdDatum() ?></td>
                     <td><?=$array[$i]->getAgVyk() ?></td>
                     <td><?=$array[$i]->getAgPoz() ?></td>
                     <td><?=$array[$i]->getPcrPoz() ?></td>
