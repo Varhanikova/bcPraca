@@ -8,11 +8,11 @@ class okresy
     private $okres;
     private $id_kraj;
 
-    public function __construct($id,$id_kraj,$okres)
+    public function __construct($id,$okres, $id_kraj)
     {
         $this->id = $id;
-        $this->okres=$okres;
-        $this->id_kraj=$id_kraj;
+        $this->okres = $okres;
+        $this->id_kraj = $id_kraj;
     }
 
     /**

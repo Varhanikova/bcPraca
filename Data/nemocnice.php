@@ -8,11 +8,11 @@ class nemocnice
     private $id_okres;
     private $nazov;
 
-    public function __construct($id,$id_okres,$nazov)
+    public function __construct($id, $id_okres, $nazov)
     {
-        $this->id=$id;
-        $this->id_okres=$id_okres;
-        $this->nazov=$nazov;
+        $this->id = $id;
+        $this->id_okres = $id_okres;
+        $this->nazov = $nazov;
     }
 
     /**

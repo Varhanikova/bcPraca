@@ -8,14 +8,17 @@ class kazdodenne_stat
     private $pcr_poz;
     private $ag_poc;
     private $ag_poz;
-public function __construct($datum,$pcr_poz,$ag_poz,$ag_poc,$pcr_potv)
-{
-    $this->datum=$datum;
-    $this->pcr_potv=$pcr_potv;
-    $this->pcr_poz=$pcr_poz;
-    $this->ag_poc=$ag_poc;
-    $this->ag_poz=$ag_poz;
-}
+    private $pcr_poc;
+
+    public function __construct($datum,$pcr_potv,$pcr_poc, $pcr_poz, $ag_poz, $ag_poc )
+    {
+        $this->datum = $datum;
+        $this->pcr_potv = $pcr_potv;
+        $this->pcr_poz = $pcr_poz;
+        $this->ag_poc = $ag_poc;
+        $this->ag_poz = $ag_poz;
+        $this->pcr_poc=$pcr_poc;
+    }
 
     /**
      * @return mixed
@@ -57,4 +60,11 @@ public function __construct($datum,$pcr_poz,$ag_poz,$ag_poc,$pcr_potv)
         return $this->pcr_potv;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPcrPoc()
+    {
+        return $this->pcr_poc;
+    }
 }

@@ -7,11 +7,13 @@ class Umrtia_stat
     private $poc_s_kov;
     private $poc_na_kov;
     private $celk;
-    public function __construct($datum,$poc_na_kov,$poc_s_kov,$celk){
-        $this->datum=$datum;
-        $this->poc_na_kov=$poc_na_kov;
-        $this->poc_s_kov=$poc_s_kov;
-        $this->celk=$celk;
+
+    public function __construct($datum, $poc_na_kov, $poc_s_kov, $celk)
+    {
+        $this->datum = $datum;
+        $this->poc_na_kov = $poc_na_kov;
+        $this->poc_s_kov = $poc_s_kov;
+        $this->celk = $celk;
     }
 
     /**

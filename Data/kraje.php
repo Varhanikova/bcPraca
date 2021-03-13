@@ -6,12 +6,13 @@ class kraje
 {
     private $id;
     private $kraj;
-     public function __construct($id,$kraj)
-     {
-         $this->id = $id;
-         $this->kraj = $kraj;
 
-     }
+    public function __construct($id, $kraj)
+    {
+        $this->id = $id;
+        $this->kraj = $kraj;
+
+    }
 
     /**
      * @return mixed

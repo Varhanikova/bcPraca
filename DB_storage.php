@@ -5,6 +5,9 @@ require "stats/kraje_stat.php";
 require "stats/Umrtia_stat.php";
 require "stats/hospitals_stat.php";
 require "Data/nemocnice.php";
+require "data/kraje.php";
+require "data/okresy.php";
+require "stats/kazdodenne_stat.php";
 class DB_storage
 {
 
@@ -98,7 +101,7 @@ public function __construct(){
     }
 
 //----------------kraje--------------------
-    public function getAllKrajeStat($dat1,$dat2,$chcem)
+    public function getKrajeStat($dat1, $dat2, $chcem)
     {
         $stmt = $this->conn->query("SELECT kraj,kraje_stat.id_datum,den,mesiac,rok,ag_vykonanych,ag_poz,pcr_poz,newcases,poz_celk from kraje
      join kraje_stat on(kraje.id_kraj=kraje_stat.id_kraj) 
@@ -111,12 +114,24 @@ public function __construct(){
             $stat[] =$kraj;
         }
         return $stat;
-    }//------------hospitals---------
-    public function getAllHospitalStat($datum,$dat2,$chcem) {
+    }
+    public function getKraje(){
+        $stmt=$this->conn->query("Select id_kraj,kraj from kraje ");
+        $stat=[];
+        while($row = $stmt->fetch()) {
+            $kraj = new kraje($row['id_kraj'],$row['kraj']);
+            $stat [] = $kraj;
+        }
+        return $stat;
+    }
+    //------------hospitals---------
+    public function getHospitalStat($datum, $dat2, $chcem) {
 
         $stmt = $this->conn->query("SELECT nazov,obsadene_lozka,pluc_ventilacia,hospitalizovani,
        dat.id_datum,den,mesiac, rok FROM hospitals_stat  join dat on(dat.id_datum=hospitals_stat.id_datum ) 
     join nemocnice n on hospitals_stat.id_nemocnica = n.id_nemocnica 
+           join okresy o on n.id_okres = o.id_okres
+
     where hospitals_stat.id_datum between '$datum' and '$dat2' $chcem order by dat.id_datum");
         $stat= [];
         while ($row = $stmt->fetch()) {
@@ -126,18 +141,39 @@ public function __construct(){
         }
         return $stat;
     }
-    public function getAllKazdodenneStat() {
+    public function getAllHospitals() {
+        $stmt = $this->conn->query("SELECT *  FROM nemocnice");
+        $nemoc= [];
+        while ($row = $stmt->fetch()) {
+            $nem = new nemocnice( $row['id_nemocnica'] , $row['id_okres'], $row['nazov']);
+            $nemoc[] =$nem ;
+        }
+        return $nemoc;
+    }
 
+    public function getOkresy() {
+        $stmt = $this->conn->query("SELECT * from okresy ");
+        $okresy= [];
+        while ($row = $stmt->fetch()) {
+            $okr = new okresy( $row['id_okres'] , $row['okres'], $row['id_kraj']);
+            $okresy[] =$okr ;
+        }
+        return $okresy;
+    }
+    
+    
+    public function getAllKazdodenneStat($datum, $dat2) {
+        $stmt = $this->conn->query("SELECT * from kazdodenne_stat join dat d on kazdodenne_stat.id_datum = d.id_datum
+where kazdodenne_stat.id_datum between '$datum' and '$dat2'");
+        $stat= [];
+        while ($row = $stmt->fetch()) {
+            $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
+            $test = new kazdodenne_stat( $dat , $row['pcr_potvrdene'], $row['pcr_poc'],$row['pcr_poz'],$row['ag_poc'],$row['ag_poz']);
+            $stat[] =$test ;
+        }
+        return $stat;
 
     }
-public function getHospitals() {
-    $stmt = $this->conn->query("SELECT *  FROM nemocnice");
-    $nemoc= [];
-    while ($row = $stmt->fetch()) {
-        $nem = new nemocnice( $row['id_nemocnica'] , $row['id_okres'], $row['nazov']);
-        $nemoc[] =$nem ;
-    }
-    return $nemoc;
-}
+
 
 }

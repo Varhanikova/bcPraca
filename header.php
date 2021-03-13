@@ -4,28 +4,32 @@ $storage = new DB_storage();
 session_start();
 if (isset($_POST['Send'])) {
 
-    $chyba=0;
-    $username = str_replace(" ","",$_POST['username']);
-    $psw = str_replace(" ","",$_POST['psw']);
-    if ($_POST['username'] == '' || $_POST['psw'] == '' ||$username=='' || $psw == '') {
-        $chyba=1; ?>
+    $chyba = 0;
+    $username = str_replace(" ", "", $_POST['username']);
+    $psw = str_replace(" ", "", $_POST['psw']);
+    if ($_POST['username'] == '' || $_POST['psw'] == '' || $username == '' || $psw == '') {
+        $chyba = 1; ?>
         <script>
             window.alert("Empty!");
         </script>
-    <?php } if ($storage->control($_POST['username'],$_POST['psw'])==1) {  $chyba=1;?>
+    <?php }
+    if ($storage->control($_POST['username'], $_POST['psw']) == 1) {
+        $chyba = 1; ?>
         <script>
             window.alert("Wrong username!");
         </script>
-    <?php }if ($storage->control($_POST['username'],$_POST['psw'])==2) {  $chyba=1;?>
+    <?php }
+    if ($storage->control($_POST['username'], $_POST['psw']) == 2) {
+        $chyba = 1; ?>
         <script>
             window.alert("Wrong password!");
         </script>
     <?php }
-    if($chyba ==0){
+    if ($chyba == 0) {
         $_SESSION["name"] = $_POST['username'];
     }
 }
-if(isset($_POST['logout'])) {
+if (isset($_POST['logout'])) {
     unset($_SESSION["name"]);
     session_destroy();
 }
@@ -51,6 +55,7 @@ if(isset($_POST['logout'])) {
         function openForm() {
             document.getElementById("myForm").style.display = "block";
         }
+
         function closeForm() {
             document.getElementById("myForm").style.display = "none";
         }
@@ -68,15 +73,15 @@ if(isset($_POST['logout'])) {
         <div class="collapse navbar-collapse" id="navbarsExample06">
             <ul class="navbar-nav mr-auto" id="idecko" onload="active()">
                 <li class="nav-item">
-                    <a class="nav-link"  id="index" href="index.php">Home</a>
+                    <a class="nav-link" id="index" href="index.php">Home</a>
                 </li>
-                <li class="nav-item" >
-                    <a class="nav-link"  id="info" href="Info.php">Info</a>
+                <li class="nav-item">
+                    <a class="nav-link" id="info" href="Info.php">Info</a>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="Stats.php" id="dropdown06" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false" >Štatistiky</a>
+                       aria-haspopup="true" aria-expanded="false">Štatistiky</a>
                     <div id="stats" class="dropdown-menu" aria-labelledby="dropdown06">
                         <a class="dropdown-item" href="DenneTestovanie.php">Denné testovanie</a>
                         <a class="dropdown-item" href="Kraje.php">Kraje</a>
@@ -90,7 +95,7 @@ if(isset($_POST['logout'])) {
             if (isset($_SESSION["name"])) {
                 ?>
 
-                <a class="px-3"> Si prihlásený ako <?= $_SESSION["name"]?>! </a>
+                <a class="px-3"> Si prihlásený ako <?= $_SESSION["name"] ?>! </a>
 
                 <div class="topnav ">
                     <div class="login-container">
@@ -99,13 +104,13 @@ if(isset($_POST['logout'])) {
                         </form>
                     </div>
                 </div>
-            <?php   } else { ?>
+            <?php } else { ?>
                 <div class="topnav">
                     <div class="login-container">
                         <form method="post">
                             <input type="text" placeholder="Username" name="username">
                             <input type="password" placeholder="Password" name="psw">
-                            <button type="submit" name="Send" class="fas fa-sign-in-alt" id="login" ></button>
+                            <button type="submit" name="Send" class="fas fa-sign-in-alt" id="login"></button>
                         </form>
                     </div>
                 </div>

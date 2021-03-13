@@ -1,19 +1,20 @@
 <?php
 
 declare(strict_types=1);
+
 class Datum
 {
-    private  $id_datum;
-    private  $rok;
-    private  $mesiac;
-    private  $den;
+    private $id_datum;
+    private $rok;
+    private $mesiac;
+    private $den;
 
-    public function __construct($id,$rok, $mesiac, $den)
+    public function __construct($id, $rok, $mesiac, $den)
     {
         $this->id_datum = $id;
-        $this->rok= $rok;
+        $this->rok = $rok;
         $this->mesiac = $mesiac;
-        $this->den  = $den;
+        $this->den = $den;
     }
 
     /**
