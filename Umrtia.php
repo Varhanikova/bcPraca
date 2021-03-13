@@ -14,7 +14,7 @@ if (isset($_POST['Send1'])) {
         <?php
     }
 
-    if (!empty($_POST['date']) && $storage->isThere($_POST['date']) == '') {
+    if (!empty($_POST['date']) && $storage->isThere($_POST['date'],"deaths_stat") == '') {
         $chyba1 = 1;
         ?>
         <script>
@@ -23,7 +23,7 @@ if (isset($_POST['Send1'])) {
     <?php } else if (empty($_POST['date'])) {
         $_POST['date'] = "2020-09-24";
     }
-    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2']) == '') {
+    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'],"deaths_stat") == '') {
         ?>
         <script>
             window.alert("Neplatný dátum");
@@ -41,7 +41,7 @@ if (isset($_POST['Send1'])) {
 
 ?>
 <script>
-    var i = 0;
+    var i = 1;
 
     function oznac_vsetky() {
         if (i == 0) {
@@ -62,7 +62,6 @@ if (isset($_POST['Send1'])) {
             i = 0;
         }
     }
-
 </script>
 <body>
 <main class="container">
@@ -82,18 +81,18 @@ if (isset($_POST['Send1'])) {
         <div class="row">
             <div class="col-lg-6">
                 &emsp;<label> Od: </label>
-                <input type="date" name="date" id="date">
+                <input type="date" name="date" id="date" value="2020-09-24" max="2021-02-14" min="2020-09-24">
                 <label> Do: </label>
-                <input type="date" name="date2" id="date" value="date"><br>
+                <input type="date" name="date2" id="date" value="2021-02-14" max="2021-02-14" min="2020-09-24"><br>
             </div>
             <div class="col-lg-6">
-                &emsp; <input type="checkbox" id="umrtia_na_kov" name="umrtia_na_kov" value="na">
+                &emsp; <input type="checkbox" id="umrtia_na_kov" name="umrtia_na_kov" value="na" checked="checked">
                 <label> počet úmrtí na kovid</label><br>
-                &emsp; <input type="checkbox" id="umrtia_s_kov" name="umrtia_s_kov" value="s">
+                &emsp; <input type="checkbox" id="umrtia_s_kov" name="umrtia_s_kov" value="s" checked="checked">
                 <label> počet úmrtí s kovid</label><br>
-                &emsp; <input type="checkbox" id="celk" name="celk" value="celk">
+                &emsp; <input type="checkbox" id="celk" name="celk" value="celk" checked="checked">
                 <label> celkový počet úmrtí </label><br>
-                <input onclick="oznac_vsetky()" type="checkbox" id="v" name="v" value="v">
+                <input onclick="oznac_vsetky()" type="checkbox" id="v" name="v" value="v" checked="checked">
                 <label> všetky </label><br>
             </div>
         </div>
@@ -134,12 +133,8 @@ if (isset($_POST['Send1'])) {
             <?php }
         } ?>
     </table>
-
-
 </main>
 </body>
-
-
 <?php
 require "footer.php";
 ?>

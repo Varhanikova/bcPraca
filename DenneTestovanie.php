@@ -6,14 +6,14 @@ $testy = "";
 if (isset($_POST['Send1'])) {
     $chyba1 = 0;
 
-    if (!isset($_POST['pcr_pot']) && !isset($_POST['pcr_poc']) && !isset($_POST['pcr_poz']) && !isset($_POST['ag_poz']) && !isset($_POST['ag_poc']) && !isset($_POST['v'])){
-        $chyba1=1; ?>
+    if (!isset($_POST['pcr_pot']) && !isset($_POST['pcr_poc']) && !isset($_POST['pcr_poz']) && !isset($_POST['ag_poz']) && !isset($_POST['ag_poc']) && !isset($_POST['v'])) {
+        $chyba1 = 1; ?>
         <script>
             window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
         </script>
         <?php
     }
-    if (!empty($_POST['date']) && $storage->isThere($_POST['date']) == '') {
+    if (!empty($_POST['date']) && $storage->isThere($_POST['date'],"kazdodenne_stat") == '') {
         $chyba1 = 1;
         ?>
         <script>
@@ -22,7 +22,7 @@ if (isset($_POST['Send1'])) {
     <?php } else if (empty($_POST['date'])) {
         $_POST['date'] = "2020-03-06";
     }
-    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2']) == '') {
+    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'],"kazdodenne_stat") == '') {
         ?>
         <script>
             window.alert("Neplatný dátum");
@@ -39,21 +39,22 @@ if (isset($_POST['Send1'])) {
 }
 ?>
 <script>
-    var i = 0;
+    var i = 1;
+
     function oznac_vsetky() {
 
-        if (i==0) {
+        if (i == 0) {
             checkboxes = document.getElementById('pcr_pot');
             checkboxes.checked = true;
             checkboxes1 = document.getElementById('pcr_poc');
             checkboxes1.checked = true;
             checkboxes2 = document.getElementById('pcr_poz');
             checkboxes2.checked = true;
-            checkboxes3= document.getElementById('ag_poc');
+            checkboxes3 = document.getElementById('ag_poc');
             checkboxes3.checked = true;
             checkboxes4 = document.getElementById('ag_poz');
             checkboxes4.checked = true;
-            i=1;
+            i = 1;
         } else {
             checkboxes = document.getElementById('pcr_pot');
             checkboxes.checked = false;
@@ -61,12 +62,11 @@ if (isset($_POST['Send1'])) {
             checkboxes1.checked = false;
             checkboxes2 = document.getElementById('pcr_poz');
             checkboxes2.checked = false;
-            checkboxes3= document.getElementById('ag_poc');
+            checkboxes3 = document.getElementById('ag_poc');
             checkboxes3.checked = false;
             checkboxes4 = document.getElementById('ag_poz');
             checkboxes4.checked = false;
-            i=0;
-
+            i = 0;
         }
     }
 
@@ -83,28 +83,28 @@ if (isset($_POST['Send1'])) {
                 <label> Zvoľte si dátumy(voliteľné): </label> <br>
             </div>
             <div class="col-lg-6">
-                <label for="umrtia_na_kov"> Začiarknite položky, ktoré sa majú zobraziť: </label>
+                <label > Začiarknite položky, ktoré sa majú zobraziť: </label>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-6">
                 &emsp;<label> Od: </label>
-                <input type="date" name="date" id="date">
+                <input type="date" name="date" id="date" max="2021-02-18" min="2020-03-06" value="2020-03-06">
                 <label> Do: </label>
-                <input type="date" name="date2" id="date" value="date"><br>
+                <input type="date" name="date2" id="date" value="2021-02-18" max="2021-02-18" min="2020-03-06"><br>
             </div>
             <div class="col-lg-6">
-                &emsp; <input type="checkbox" id="pcr_pot" name="pcr_pot" value="pcr_pot">
+                &emsp; <input type="checkbox" id="pcr_pot" name="pcr_pot" value="pcr_pot" checked="checked">
                 <label> Počet PCR potvrdených prípadov</label><br>
-                &emsp; <input type="checkbox" id="pcr_poc" name="pcr_poc" value="pcr_poc">
+                &emsp; <input type="checkbox" id="pcr_poc" name="pcr_poc" value="pcr_poc" checked="checked">
                 <label> Počet vykonaných PCR testov</label><br>
-                &emsp; <input type="checkbox" id="pcr_poz" name="pcr_poz" value="pcr_poz">
+                &emsp; <input type="checkbox" id="pcr_poz" name="pcr_poz" value="pcr_poz" checked="checked">
                 <label> Počet pozitívnych z PCR testov</label><br>
-                &emsp;  <input type="checkbox" id="ag_poc" name="ag_poc" value="ag_poc">
+                &emsp; <input type="checkbox" id="ag_poc" name="ag_poc" value="ag_poc" checked="checked">
                 <label> Počet vykonaných AG testov</label><br>
-                &emsp; <input type="checkbox" id="ag_poz" name="ag_poz" value="ag_poz">
+                &emsp; <input type="checkbox" id="ag_poz" name="ag_poz" value="ag_poz" checked="checked">
                 <label> Počet pozitívnych z AG testov</label><br>
-                <input onclick="oznac_vsetky()" type="checkbox" id="v" name="v" value="v">
+                <input onclick="oznac_vsetky()" type="checkbox" id="v" name="v" value="v" checked="checked">
                 <label> všetky </label><br>
             </div>
         </div>
@@ -127,11 +127,11 @@ if (isset($_POST['Send1'])) {
                 <th>Počet pozitívnych z PCR testov</th>
             <?php }
             if (isset($_POST['ag_poc']) || isset($_POST['v'])) { ?>
-            <th>Počet vykonaných AG testov</th>
-                <?php }
-                if (isset($_POST['ag_poz']) || isset($_POST['v'])) { ?>
-            <th>Počet pozitívnych z AG testov</th>
-                <?php }
+                <th>Počet vykonaných AG testov</th>
+            <?php }
+            if (isset($_POST['ag_poz']) || isset($_POST['v'])) { ?>
+                <th>Počet pozitívnych z AG testov</th>
+            <?php }
             ?>
         </tr>
         <?php if ($testy != '') {
@@ -160,8 +160,6 @@ if (isset($_POST['Send1'])) {
             <?php }
         } ?>
     </table>
-
-
 </main>
 </body>
 <?php

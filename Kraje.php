@@ -4,24 +4,24 @@ require_once "DB_storage.php";
 $storage = new DB_storage();
 $array = "";
 $chcem = "";
-$od="";
-$do="";
+$od = "";
+$do = "";
 $kraje = $storage->getKraje();
 if (isset($_POST['Send1'])) {
     $chyba1 = 0;
-    if (!isset($_POST['poz_celk']) && !isset($_POST['pcr_poz']) && !isset($_POST['ag_poz']) && !isset($_POST['ag_vyk']) && !isset($_POST['newcases'])&& !isset($_POST['v'])){
-        $chyba1=1; ?>
+    if (!isset($_POST['poz_celk']) && !isset($_POST['pcr_poz']) && !isset($_POST['ag_poz']) && !isset($_POST['ag_vyk']) && !isset($_POST['newcases']) && !isset($_POST['v'])) {
+        $chyba1 = 1; ?>
         <script>
             window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
         </script>
         <?php
     }
 
-    if ( !empty($_POST['krajelist'])) {
+    if (!empty($_POST['krajelist'])) {
         $chcem = "and kraj = '" . $_POST['krajelist'] . "' ";
     }
 
-    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2']) == '') {
+    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'],"kraje_stat") == '') {
         ?>
         <script>
             window.alert("Neplatný dátum");
@@ -30,7 +30,7 @@ if (isset($_POST['Send1'])) {
         $_POST['date2'] = "2021-02-17";
     }
 
-    if (!empty($_POST['date']) && $storage->isThere($_POST['date']) == '') {
+    if (!empty($_POST['date']) && $storage->isThere($_POST['date'],"kraje_stat") == '') {
         $chyba1 = 1;
         ?>
         <script>
@@ -39,9 +39,9 @@ if (isset($_POST['Send1'])) {
     <?php } else if (empty($_POST['date'])) {
         $_POST['date'] = "2020-09-03";
     }
-    if($chyba1==1) {
-        $od =  $_POST['date'];
-        $do =  $_POST['date2'];
+    if ($chyba1 == 1) {
+        $od = $_POST['date'];
+        $do = $_POST['date2'];
 
     } else {
         $array = $storage->getKrajeStat($_POST['date'], $_POST['date2'], $chcem);
@@ -52,9 +52,10 @@ if (isset($_POST['Send1'])) {
 ?>
 <script>
 
-    var i = 0;
+    var i = 1;
+
     function oznac_vsetky() {
-        if (i==0) {
+        if (i == 0) {
             checkboxes = document.getElementById('ag_vyk');
             checkboxes.checked = true;
             checkboxes1 = document.getElementById('ag_poz');
@@ -65,7 +66,7 @@ if (isset($_POST['Send1'])) {
             checkboxes3.checked = true;
             checkboxes4 = document.getElementById('newcases');
             checkboxes4.checked = true;
-            i=1;
+            i = 1;
         } else {
             checkboxes = document.getElementById('ag_vyk');
             checkboxes.checked = false;
@@ -77,7 +78,7 @@ if (isset($_POST['Send1'])) {
             checkboxes3.checked = false;
             checkboxes4 = document.getElementById('newcases');
             checkboxes4.checked = false;
-            i=0;
+            i = 0;
         }
     }
 
@@ -89,7 +90,7 @@ if (isset($_POST['Send1'])) {
         Štatistika testovania po krajoch:
     </h3>
 
-    <form method="post" autocomplete="off" >
+    <form method="post" autocomplete="off">
         <div class="row">
             <div class="col-lg-4">
                 <label> Zvoľte si dátumy(voliteľné): </label>
@@ -104,32 +105,33 @@ if (isset($_POST['Send1'])) {
         <div class="row">
             <div class="col-lg-4">
                 <label> Od: </label>
-                <input type="date" name="date" id="date" value="<?=$od ?>"> <br>
+                <input type="date" name="date" id="date" value="2020-09-03" min="2020-09-03" max="2021-02-17"> <br>
                 <label> Do: </label>
-                <input type="date" name="date2" id="date2" value="<?=$do ?>>"> <br><br>
+                <input type="date" name="date2" id="date2" value="2021-02-17" min="2020-09-03" max="2021-02-17">
+                <br><br>
             </div>
             <div class="col-lg-4">
-                <select id="krajelist" name="krajelist" >
-                    <?php for($i=0;$i<sizeof($kraje);$i++) { ?>
-                        <option value="<?=$kraje[$i]->getKraj()?>"><?=$kraje[$i]->getKraj()?> </option>
-                    <?php }?>
+                <select id="krajelist" name="krajelist">
+                    <?php for ($i = 0; $i < sizeof($kraje); $i++) { ?>
+                        <option value="<?= $kraje[$i]->getKraj() ?>"><?= $kraje[$i]->getKraj() ?> </option>
+                    <?php } ?>
                     <option value="všetky">všetky</option>
                 </select>
             </div>
             <div class="col-lg-4">
 
 
-                &emsp; <input type="checkbox" id="ag_vyk" name="ag_vyk" value="av">
+                &emsp; <input type="checkbox" id="ag_vyk" name="ag_vyk" value="av" checked="checked">
                 <label> Počet vykonaných Ag testov</label><br>
-                &emsp; <input type="checkbox" id="ag_poz" name="ag_poz" value="ap">
+                &emsp; <input type="checkbox" id="ag_poz" name="ag_poz" value="ap" checked="checked">
                 <label> Počet pozitívnych Ag testov</label><br>
-                &emsp; <input type="checkbox" id="pcr_poz" name="pcr_poz" value="pp">
+                &emsp; <input type="checkbox" id="pcr_poz" name="pcr_poz" value="pp" checked="checked">
                 <label> Počet pozitívnych PCR testov </label><br>
-                &emsp; <input type="checkbox" id="newcases" name="newcases" value="nc">
+                &emsp; <input type="checkbox" id="newcases" name="newcases" value="nc" checked="checked">
                 <label> Počet nových prípadov</label><br>
-                &emsp; <input type="checkbox" id="poz_celk" name="poz_celk" value="pc">
+                &emsp; <input type="checkbox" id="poz_celk" name="poz_celk" value="pc" checked="checked">
                 <label> Počet pozitívnych celkom</label><br>
-                <input onclick="oznac_vsetky()" type="checkbox" id="v" name="v">
+                <input onclick="oznac_vsetky()" type="checkbox" id="v" name="v" checked="checked">
                 <label> všetky </label><br>
             </div>
 
