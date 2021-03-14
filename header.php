@@ -51,6 +51,7 @@ if (isset($_POST['logout'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://kit.fontawesome.com/e7858c52b6.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/e060c06e60.js" crossorigin="anonymous"></script>
+
     <script>
         function openForm() {
             document.getElementById("myForm").style.display = "block";

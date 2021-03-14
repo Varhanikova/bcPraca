@@ -33,7 +33,7 @@ class kraje_stat
     /**
      * @return mixed
      */
-    public function getIdDatum()
+    public function getDatum()
     {
         return $this->id_datum;
     }

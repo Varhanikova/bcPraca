@@ -41,26 +41,26 @@ if (isset($_POST['Send1'])) {
 
 ?>
 <script>
-    var i = 1;
+    function odznac() {
+        var a = "<?= isset($_POST['umrtia_na_kov']) ?>";
+        var b = "<?= isset($_POST['umrtia_s_kov']) ?>";
+        var c = "<?= isset($_POST['celk']) ?>";
+        checkboxes = document.getElementById('v');
 
-    function oznac_vsetky() {
-        if (i == 0) {
-            checkboxes = document.getElementById('umrtia_na_kov');
-            checkboxes.checked = true;
-            checkboxes1 = document.getElementById('umrtia_s_kov');
-            checkboxes1.checked = true;
-            checkboxes2 = document.getElementById('celk');
-            checkboxes2.checked = true;
-            i = 1;
-        } else {
-            checkboxes = document.getElementById('umrtia_na_kov');
+        if (a === "" || b === "" || c === "") {
             checkboxes.checked = false;
-            checkboxes1 = document.getElementById('umrtia_s_kov');
-            checkboxes1.checked = false;
-            checkboxes2 = document.getElementById('celk');
-            checkboxes2.checked = false;
-            i = 0;
         }
+    }
+    function oznac_vsetky(source) {
+
+            checkboxes = document.getElementById('umrtia_na_kov');
+            checkboxes.checked = source.checked;
+            checkboxes1 = document.getElementById('umrtia_s_kov');
+            checkboxes1.checked = source.checked;
+            checkboxes2 = document.getElementById('celk');
+            checkboxes2.checked = source.checked;
+
+
     }
 </script>
 <body>
@@ -72,7 +72,7 @@ if (isset($_POST['Send1'])) {
     <form method="post">
         <div class="row">
             <div class="col-lg-6">
-                <label> Zvoľte si dátumy(voliteľné): </label> <br>
+                <label> Zvoľte si dátumy: </label> <br>
             </div>
             <div class="col-lg-6">
                 <label for="umrtia_na_kov"> Začiarknite položky, ktoré sa majú zobraziť: </label>
@@ -80,59 +80,92 @@ if (isset($_POST['Send1'])) {
         </div>
         <div class="row">
             <div class="col-lg-6">
-                &emsp;<label> Od: </label>
+                &emsp;<label for="date"> Od: </label>
                 <input type="date" name="date" id="date" value="2020-09-24" max="2021-02-14" min="2020-09-24">
-                <label> Do: </label>
-                <input type="date" name="date2" id="date" value="2021-02-14" max="2021-02-14" min="2020-09-24"><br>
+                <label for="date2"> Do: </label>
+                <input type="date" name="date2" id="date2" value="2021-02-14" max="2021-02-14" min="2020-09-24"><br>
             </div>
             <div class="col-lg-6">
-                &emsp; <input type="checkbox" id="umrtia_na_kov" name="umrtia_na_kov" value="na" checked="checked">
+                &emsp; <input onclick="odznac()" type="checkbox" id="umrtia_na_kov" name="umrtia_na_kov" value="počet úmrtí na kovid" checked="checked">
                 <label> počet úmrtí na kovid</label><br>
-                &emsp; <input type="checkbox" id="umrtia_s_kov" name="umrtia_s_kov" value="s" checked="checked">
+                &emsp; <input  onclick="odznac()" type="checkbox" id="umrtia_s_kov" name="umrtia_s_kov" value="počet úmrtí s kovid" checked="checked">
                 <label> počet úmrtí s kovid</label><br>
-                &emsp; <input type="checkbox" id="celk" name="celk" value="celk" checked="checked">
+                &emsp; <input onclick="odznac()" type="checkbox" id="celk" name="celk" value="celkový počet úmrtí " checked="checked">
                 <label> celkový počet úmrtí </label><br>
-                <input onclick="oznac_vsetky()" type="checkbox" id="v" name="v" value="v" checked="checked">
+                <input onclick="oznac_vsetky(this)" type="checkbox" id="v" name="v" value="všetky" checked="checked">
                 <label> všetky </label><br>
             </div>
         </div>
         <input type="submit" name="Send1" value="Zobraz">
     </form>
+    <p class='pb-4 mb-2 '></p>
+    <table id="tu">
 
-    <p class="pb-4 mb-2 "></p>
-    <table>
-        <tr>
-            <?php if ($umrtia != '') { ?>
-                <th>Dátum</th>
-            <?php } ?>
-            <?php if (isset($_POST['umrtia_na_kov']) || isset($_POST['v'])) { ?>
-                <th>Počet úmrtí na kovid</th>
-            <?php }
-            if (isset($_POST['umrtia_s_kov']) || isset($_POST['v'])) { ?>
-                <th>Počet úmrtí s kovid</th>
-            <?php }
-            if (isset($_POST['celk']) || isset($_POST['v'])) { ?>
-                <th>Celkový počet úmrtí</th>
-            <?php } ?>
-        </tr>
-        <?php if ($umrtia != '') {
-            for ($i = 0; $i < sizeof($umrtia); $i++) { ?>
-                <tr>
-                    <td> <?= $umrtia[$i]->getDatum() ?></td>
-                    <?php if (isset($_POST['umrtia_na_kov']) || isset($_POST['v'])) { ?>
-                        <td><?= $umrtia[$i]->getPocNaKov() ?></td>
-                    <?php }
-                    if (isset($_POST['umrtia_s_kov']) || isset($_POST['v'])) { ?>
-
-                        <td><?= $umrtia[$i]->getPocSKov() ?></td>
-                    <?php }
-                    if (isset($_POST['celk']) || isset($_POST['v'])) { ?>
-                        <td><?= $umrtia[$i]->getCelk() ?></td>
-                    <?php } ?>
-                </tr>
-            <?php }
-        } ?>
     </table>
+    <p class='pb-4 mb-2 '></p>
+    <?php if(isset($_POST['Send1'])) { ?>
+
+    <div class="col-lg-11 text-center">
+    <input  id="prev" onclick="previous()" type="button" value="< späť" />
+    <input id="next" onclick="next()" type="button" value="ďalej >" />
+    </div>
+    <?php } ?>
+    <script>
+        var j = 1;
+        var size = parseInt('<?= sizeof($umrtia) ?>');
+        displayResults(j);
+        function displayResults(j) {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("tu").innerHTML = this.responseText;
+                }        };
+            var c = j.toString();
+            var m = "<?= isset($_POST['umrtia_na_kov']) ?>";
+
+            if(  m!=="") {
+                m = "počet úmrtí na kovid" ;
+            }
+
+            var n ="<?= isset($_POST['umrtia_s_kov']) ?>";
+
+            if( n!=="") {
+                n = "počet úmrtí s kovid" ;
+            }
+
+            var o ="<?= isset($_POST['celk']) ?>";
+
+            if(o!=="") {
+                o = "celkový počet úmrtí " ;
+            }
+
+            var s ="<?= isset($_POST['v']) ?>";
+
+            if(  s!=="") {
+                s = "všetko" ;
+            }
+
+            var a = "<?=$_POST['date'] ?>";
+            var b = '<?=$_POST['date2'] ?>';
+
+            var ktore="umrtia";
+
+            xhttp.open("GET", "stats/tabulky.php?c="+ c + " &a=" +a  +"&b=" + b + "&m=" + m + "&n=" +n + "&o=" + o + "&s=" + s + "&ktore="+ktore, true);
+            xhttp.send();
+        }
+        function next() {
+            if (j < size-14 ){
+                j+=15;
+                displayResults(j);
+            }
+        }
+        function previous() {
+            if (j > 1) {
+                j-=15;
+                displayResults(j);
+            }}
+    </script>
 </main>
 </body>
 <?php
