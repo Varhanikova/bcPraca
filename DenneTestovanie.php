@@ -39,37 +39,6 @@ if (isset($_POST['Send1'])) {
 }
 ?>
 <script>
-    function odznac() {
-        var a = "<?= isset($_POST['pcr_pot']) ?>";
-        var b = "<?= isset($_POST['pcr_poc']) ?>";
-        var c = "<?= isset($_POST['pcr_poz']) ?>";
-        var d = "<?= isset($_POST['ag_poc']) ?>";
-        var e = "<?= isset($_POST['ag_poz']) ?>";
-        checkboxes = document.getElementById('v');
-
-        if (a === "" || b === "" || c === "" || d === "" || e === "") {
-            checkboxes.checked = false;
-        }
-    }
-
-    function oznac_vsetky(source) {
-
-             let checkboxes = document.getElementById('pcr_pot');
-            checkboxes.checked = source.checked;
-           let checkboxes1 = document.getElementById('pcr_poc');
-            checkboxes1.checked = source.checked;
-           let checkboxes2 = document.getElementById('pcr_poz');
-            checkboxes2.checked = source.checked;
-            let  checkboxes3 = document.getElementById('ag_poc');
-            checkboxes3.checked = source.checked;
-            let  checkboxes4 = document.getElementById('ag_poz');
-            checkboxes4.checked = source.checked;
-
-
-    }
-
-</script>
-<script>
     var j = 1;
     var size = parseInt('<?= sizeof($testy) ?>');
     displayResults(j);
@@ -123,73 +92,16 @@ if (isset($_POST['Send1'])) {
         xhttp.open("GET", "stats/tabulky.php?c="+ c + " &a=" +a  +"&b=" + b + "&m=" + m + "&n=" +n + "&o=" + o + "&p=" + p + "&r="+r+"&s="+s+ "&ktore="+ktore, true);
         xhttp.send();
     }
-    function next() {
-        if (j < size-14 ){
-            j+=15;
-            displayResults(j);
-        }
-    }
-    function previous() {
-        if (j > 1) {
-            j-=15;
-            displayResults(j);
-        }}
 </script>
-
-
 <body>
 <main class="container">
-
     <h3 class="pb-4 mb-4 fst-italic border-bottom ">
         Štatistika každodenného testovania:
     </h3>
-    <form method="post">
-        <div class="row">
-            <div class="col-lg-6">
-                <label> Zvoľte si dátumy: </label> <br>
-            </div>
-            <div class="col-lg-6">
-                <label > Začiarknite položky, ktoré sa majú zobraziť: </label>
-            </div>
-        </div>
-        <div class="row ">
-            <div class="col-lg-6">
-                &emsp;<label for="date"> Od: </label>
-                <input type="date" name="date" id="date" max="2021-02-18" min="2020-03-06" value="2020-03-06">
-                <label for="date2"> Do: </label>
-                <input type="date" name="date2" id="date2" value="2021-02-18" max="2021-02-18" min="2020-03-06"><br>
-            </div>
-            <div class="col-lg-6">
-                &emsp; <input onclick="odznac()" type="checkbox" id="pcr_pot" name="pcr_pot" value="Počet PCR potvrdených prípadov" checked="checked">
-                <label for="pcr_pot"> Počet PCR potvrdených prípadov</label><br>
-                &emsp; <input onclick="odznac()" type="checkbox" id="pcr_poc" name="pcr_poc" value="Počet vykonaných PCR testov" checked="checked">
-                <label for="pcr_poc"> Počet vykonaných PCR testov</label><br>
-                &emsp; <input onclick="odznac()" type="checkbox" id="pcr_poz" name="pcr_poz" value="Počet pozitívnych z PCR testov" checked="checked">
-                <label for="pcr_poz"> Počet pozitívnych z PCR testov</label><br>
-                &emsp; <input onclick="odznac()" type="checkbox" id="ag_poc" name="ag_poc" value="Počet vykonaných AG testov" checked="checked">
-                <label for="ag_poc"> Počet vykonaných AG testov</label><br>
-                &emsp; <input onclick="odznac()" type="checkbox" id="ag_poz" name="ag_poz" value="Počet pozitívnych z AG testov" checked="checked">
-                <label for="ag_poz"> Počet pozitívnych z AG testov</label><br>
-                <input onclick="oznac_vsetky(this)" type="checkbox" id="v" name="v" value="všetky" checked="checked">
-                <label for="v"> všetky </label><br>
-            </div>
-        </div>
-        <input type="submit" name="Send1" value="Zobraz">
-    </form>
-
-    <p class="pb-4 mb-2 "></p>
-    <table id="tu">
-
-    </table>
-    <p class='pb-4 mb-2 '></p>
-    <?php if(isset($_POST['Send1'])) { ?>
-    <div class="col-lg-11 text-center">
-        <input  id="prev" onclick="previous()" type="button" value="< späť" />
-        <input id="next" onclick="next()" type="button" value="ďalej >" />
-    </div>
-    <?php } ?>
 </main>
+    <?php require "parts/body.php" ?>
+
 </body>
 <?php
-require "footer.php";
+require "parts/footer.php";
 ?>

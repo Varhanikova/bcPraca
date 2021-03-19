@@ -2,7 +2,9 @@ body {
     background-color: black;
     color: white;
 }
-
+.admin_part{
+    color: black;
+}
 
 #nabielo {
     color: white;

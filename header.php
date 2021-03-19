@@ -3,7 +3,6 @@ require_once "DB_storage.php";
 $storage = new DB_storage();
 session_start();
 if (isset($_POST['Send'])) {
-
     $chyba = 0;
     $username = str_replace(" ", "", $_POST['username']);
     $psw = str_replace(" ", "", $_POST['psw']);
@@ -52,6 +51,11 @@ if (isset($_POST['logout'])) {
     <script src="https://kit.fontawesome.com/e7858c52b6.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/e060c06e60.js" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <script>
         function openForm() {
             document.getElementById("myForm").style.display = "block";
@@ -59,6 +63,35 @@ if (isset($_POST['logout'])) {
 
         function closeForm() {
             document.getElementById("myForm").style.display = "none";
+        }
+
+        function next() {
+            if (j < size - 14) {
+                j += 15;
+                displayResults(j);
+            }
+        }
+
+        function previous() {
+            if (j > 1) {
+                j -= 15;
+                displayResults(j);
+            }
+        }
+
+        function odznac(source) {
+            checkboxes = document.getElementById('v');
+            if (source.checked === false) {
+                checkboxes.checked = source.checked;
+            }
+        }
+
+        function oznac_vsetky(source, pocet, pam1, pam2, pam3, pam4, pam5) {
+            var pole = [pam1, pam2, pam3, pam4, pam5];
+            for (let i = 0; i < pocet; i++) {
+                checkboxes = document.getElementById(pole[i]);
+                checkboxes.checked = source.checked;
+            }
         }
     </script>
     <link rel="stylesheet" href="style/style.css">

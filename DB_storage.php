@@ -104,7 +104,21 @@ class DB_storage
         }
         return $date;
     }
+    public function exportDeaths() {
+        $stmt = $this->conn->query("SELECT * from deaths_stat");
+        $fp = fopen('deaths_stat.csv', 'w');
+        while ($row = $stmt->fetch()) {
 
+            fputcsv($fp, $row);
+        }
+        fclose($fp);
+
+    }
+public function importDeaths($id_dat,$pockov,$pocskov,$celk){
+    $death = new Umrtia_stat($id_dat,$pockov,$pocskov,$celk);
+    $stmt = $this->pdo->prepare("INSERT INTO deaths_stat(id_datum, poc_umrti_kov, poc_s_kov, celk_poc_umrti) VALUES(?,?,?,?)");
+    $stmt->execute([$death->getDatum(), $death->getPocNaKov(),$death->getPocSKov(),$death->getCelk()]);
+}
 //----------------kraje--------------------
     public function getKrajeStat($dat1, $dat2, $chcem)
     {
@@ -131,7 +145,16 @@ class DB_storage
         }
         return $stat;
     }
+    public function exportKraje() {
+        $stmt = $this->conn->query("SELECT * from kraje_stat");
+        $fp = fopen('kraje_stat.csv', 'w');
+        while ($row = $stmt->fetch()) {
 
+            fputcsv($fp, $row);
+        }
+        fclose($fp);
+
+    }
     //------------hospitals---------
     public function getHospitalStat($datum, $dat2, $chcem)
     {
@@ -171,8 +194,22 @@ class DB_storage
         }
         return $okresy;
     }
+    public function exportHosp() {
+        $stmt = $this->conn->query("SELECT * from hospitals_stat");
 
+        $fp = fopen('hospitals_stat.csv', 'w');
+        while ($row = $stmt->fetch()) {
 
+            fputcsv($fp, $row);
+        }
+        fclose($fp);
+
+    }
+    public function exportPdfHosp() {
+
+    }
+
+    //------------kazdodenne testovanie---------
     public function getAllKazdodenneStat($datum, $dat2)
     {
         $stmt = $this->conn->query("SELECT * from kazdodenne_stat join dat d on kazdodenne_stat.id_datum = d.id_datum
@@ -186,6 +223,15 @@ class DB_storage
         return $stat;
 
     }
+    public function exportDenne() {
+        $stmt = $this->conn->query("SELECT * from kazdodenne_stat");
+        $fp = fopen('kazdodenne_stat.csv', 'w');
+        while ($row = $stmt->fetch()) {
 
+            fputcsv($fp, $row);
+        }
+        fclose($fp);
+
+    }
 
 }

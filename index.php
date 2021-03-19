@@ -52,7 +52,7 @@ require "header.php";
 
 <?php
 
-require "footer.php";
+require "parts/footer.php";
 
 ?>
 </body>
