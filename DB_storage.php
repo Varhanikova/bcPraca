@@ -73,6 +73,18 @@ class DB_storage
     }
 
     // ---------------------Deaths---------
+    public function getDeaths() {
+        $stmt = $this->conn->query("select * from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum");
+        $stat = [];
+        while ($row = $stmt->fetch()) {
+            $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
+            $umrtie = new Umrtia_stat($dat, $row['poc_umrti_kov'], $row['poc_s_kov'], $row['celk_poc_umrti']);
+
+            $stat[] = $umrtie;
+        }
+        return $stat;
+    }
+
     public function getDeathsAtDate($datum, $datum2)
     {
         $stmt = $this->conn->query("SELECT  dat.id_datum,den,mesiac,rok,poc_umrti_kov,poc_s_kov,celk_poc_umrti FROM deaths_stat  
@@ -114,10 +126,16 @@ class DB_storage
         fclose($fp);
 
     }
-public function importDeaths($id_dat,$pockov,$pocskov,$celk){
+    public function importDeaths($id_dat,$rok,$mesiac,$den,$pockov,$pocskov,$celk){
     $death = new Umrtia_stat($id_dat,$pockov,$pocskov,$celk);
-    $stmt = $this->pdo->prepare("INSERT INTO deaths_stat(id_datum, poc_umrti_kov, poc_s_kov, celk_poc_umrti) VALUES(?,?,?,?)");
-    $stmt->execute([$death->getDatum(), $death->getPocNaKov(),$death->getPocSKov(),$death->getCelk()]);
+   $this->checkDat($id_dat,$rok,$mesiac,$den);
+    if($row = ($this->conn->query("Select id_datum from deaths_stat where id_datum = '$id_dat'"))->fetch()) {
+        return -1;
+    } else {
+        $stmt = $this->conn->prepare("INSERT INTO deaths_stat(id_datum, poc_umrti_kov, poc_s_kov, celk_poc_umrti) VALUES(?,?,?,?)");
+        $stmt->execute([$death->getDatum(), $death->getPocNaKov(), $death->getPocSKov(), $death->getCelk()]);
+        return 0;
+    }
 }
 //----------------kraje--------------------
     public function getKrajeStat($dat1, $dat2, $chcem)
@@ -155,6 +173,23 @@ public function importDeaths($id_dat,$pockov,$pocskov,$celk){
         fclose($fp);
 
     }
+    public function checkDat($id_dat,$rok,$mes,$den) {
+        if( ($this->conn->query("select id_datum from dat where id_datum = '$id_dat'"))->fetch()==false){
+            $this->conn->query("insert into dat values('$id_dat','$rok','$mes','$den')");
+        }
+    }
+    public function importKraje($idkraj,$id_dat,$rok,$mes,$den,$agvyk,$agpoz,$pcrpoz,$new,$celk){
+        $kraje = new kraje_stat($idkraj,$id_dat,$agvyk,$agpoz,$pcrpoz,$new,$celk);
+       $this->checkDat($id_dat,$rok,$mes,$den);
+        if($row = ($this->conn->query("Select id_datum from kraje_stat where id_datum = '$id_dat'"))->fetch()) {
+            return -1;
+        } else {
+            $stmt = $this->conn->prepare("INSERT INTO kraje_stat(id_kraj,id_datum,ag_vykonanych,ag_poz,pcr_poz,newcases,poz_celk) VALUES(?,?,?,?,?,?,?)");
+            $stmt->execute([$kraje->getIdKraj(),$kraje->getDatum(), $kraje->getAgVyk(), $kraje->getAgPoz(), $kraje->getPcrPoz(),$kraje->getNewcases(),$kraje->getPozCelk()]);
+            return 0;
+        }
+    }
+
     //------------hospitals---------
     public function getHospitalStat($datum, $dat2, $chcem)
     {
@@ -205,6 +240,17 @@ public function importDeaths($id_dat,$pockov,$pocskov,$celk){
         fclose($fp);
 
     }
+    public function importHosp($id_dat,$rok,$mes,$den,$idnem,$obs,$pluc,$hosp){
+        $hospitals = new hospitals_stat($id_dat,$idnem,  $obs,$pluc,$hosp);
+        $this->checkDat($id_dat,$rok,$mes,$den);
+        if($row = ($this->conn->query("Select id_datum from hospitals_stat where id_datum = '$id_dat'"))->fetch()) {
+            return -1;
+        } else {
+            $stmt = $this->conn->prepare("INSERT INTO hospitals_stat(id_datum, id_nemocnica, obsadene_lozka, pluc_ventilacia, hospitalizovani) VALUES(?,?,?,?,?)");
+            $stmt->execute([$hospitals->getDatum(), $hospitals->getNemocnica(), $hospitals->getObsadeneLozka(), $hospitals->getPlucVent(),$hospitals->getHospitalizovani()]);
+            return 0;
+        }
+    }
     public function exportPdfHosp() {
 
     }
@@ -233,5 +279,42 @@ public function importDeaths($id_dat,$pockov,$pocskov,$celk){
         fclose($fp);
 
     }
-
+    public function importDenne($id_dat,$rok,$mes,$den,$pcrpot,$pcrpoc,$pcrpoz,$agpoc,$agpoz){
+        $denne = new kazdodenne_stat($id_dat,$pcrpot,$pcrpoc,$pcrpoz,$agpoc,$agpoz);
+        $this->checkDat($id_dat,$rok,$mes,$den);
+        if($row = ($this->conn->query("Select id_datum from kazdodenne_stat where id_datum = '$id_dat'"))->fetch()) {
+            return -1;
+        } else {
+            $stmt = $this->conn->prepare("INSERT INTO kazdodenne_stat(id_datum, pcr_potvrdene, pcr_poc, pcr_poz, ag_poc, ag_poz) VALUES(?,?,?,?,?,?)");
+            $stmt->execute([$denne->getDatum(), $denne->getPcrPotv(), $denne->getPcrPoc(), $denne->getPcrPoz(),$denne->getAgPoc(),$denne->getAgPoz()]);
+            return 0;
+        }
+    }
+    public function getDate($ktory, $db) {
+        if($ktory == "min") {
+            if ($db == "deaths_stat") {
+                $stmt = $this->conn->query("SELECT min(id_datum) as dat FROM deaths_stat ");
+            } else if ($db == "hospitals_stat") {
+                $stmt = $this->conn->query("SELECT min(id_datum) as dat FROM hospitals_stat  ");
+            } else if ($db == "kazdodenne_stat") {
+                $stmt = $this->conn->query("SELECT MIN(id_datum) as dat FROM kazdodenne_stat ");
+            } else {
+                $stmt = $this->conn->query("SELECT min(id_datum) as dat FROM kraje_stat ");
+            }
+        } else if($ktory=="max") {
+            if ($db == "deaths_stat") {
+                $stmt = $this->conn->query("SELECT max(id_datum) as dat FROM deaths_stat ");
+            } else if ($db == "hospitals_stat") {
+                $stmt = $this->conn->query("SELECT max(id_datum) as dat FROM hospitals_stat  ");
+            } else if ($db == "kazdodenne_stat") {
+                $stmt = $this->conn->query("SELECT max(id_datum) as dat FROM kazdodenne_stat ");
+            } else {
+                $stmt = $this->conn->query("SELECT max(id_datum) as dat FROM kraje_stat ");
+            }
+        }
+        while ($row = $stmt->fetch()) {
+         $dat = $row['dat'];
+        }
+        return $dat;
+    }
 }

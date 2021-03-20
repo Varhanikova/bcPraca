@@ -1,5 +1,6 @@
 <?php
 require_once "DB_storage.php";
+
 $storage = new DB_storage();
 session_start();
 if (isset($_POST['Send'])) {
@@ -32,6 +33,8 @@ if (isset($_POST['logout'])) {
     unset($_SESSION["name"]);
     session_destroy();
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -99,7 +99,7 @@ if (isset($_POST['Send1'])) {
         Štatistika každodenného testovania:
     </h3>
 </main>
-    <?php require "parts/body.php" ?>
+    <?php require "body.php" ?>
 
 </body>
 <?php

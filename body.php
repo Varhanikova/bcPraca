@@ -1,39 +1,71 @@
 <?php
-require_once "DB_storage.php";
+//require "action.php";
 $storage = new DB_storage();
 $kraje = $storage->getKraje();
 
+
 if (isset($_POST['import'])) {
+    if ($_FILES["myFile"]["error"] > 0) {
+        echo "Return Code: " . $_FILES["myFile"]["error"] . "<br />";
+
+    }
     $fileName = $_FILES['myFile']['tmp_name'];
     if ($_FILES['myFile']['size'] > 0) {
         $file = fopen($fileName, "r");
+        $vyslo = 0;
         while (($column = fgetcsv($file, 10000, ";")) !== FALSE) {
-            $iddat = "";
-            if (isset($column[0])) {
-                $iddat = $column[0];
+            $par = [];
+            $pocet = 0;
+            if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) {
+                $pocet = 10; //$idkraj,$id_dat,$rok,$mes,$den,$agvyk,$agpoz,$pcrpoz,$new,$celk
+            } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) {
+                $pocet = 8;//$id_dat,$rok,$mes,$den,$idnem,$obs,$pluc,$hosp
+            } else if (strpos($_SERVER['REQUEST_URI'], "Denne") !== false) {
+                $pocet = 9;//$id_dat,$rok,$mes,$den,$pcrpot,$pcrpoc,$pcrpoz,$agpoc,$agpoz
+            } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) {
+                $pocet = 7;//$id_dat,$rok,$mesiac,$den,$pockov,$pocskov,$celk
             }
-            $pockov = "";
-            if (isset($column[1])) {
-                $pockov = $column[1];
+            for ($i = 0; $i < $pocet; $i++) {
+                if (isset($column[$i])) {
+                    $par[$i] = $column[$i];
+                }
             }
-            $pocskov = "";
-            if (isset($column[2])) {
-                $pocskov = $column[2];
+            if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) {
+                //$idkraj,$id_dat,$rok,$mes,$den,$agvyk,$agpoz,$pcrpoz,$new,$celk
+                $vyslo += $storage->importKraje($par[0], $par[1], $par[2], $par[3], $par[4], $par[5], $par[6], $par[7], $par[8], $par[9]);
+            } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) {
+                //$id_dat,$rok,$mes,$den,$idnem,$obs,$pluc,$hosp
+                $vyslo += $storage->importHosp($par[0], $par[1], $par[2], $par[3], $par[4], $par[5], $par[6], $par[7]);
+            } else if (strpos($_SERVER['REQUEST_URI'], "Denne") !== false) {
+                //$id_dat,$rok,$mes,$den,$pcrpot,$pcrpoc,$pcrpoz,$agpoc,$agpoz
+                $vyslo += $storage->importDenne($par[0], $par[1], $par[2], $par[3], $par[4], $par[5], $par[6], $par[7], $par[8]);
+            } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) {
+                //$id_dat,$rok,$mesiac,$den,$pockov,$pocskov,$celk
+                $vyslo += $storage->importDeaths($par[0], $par[1], $par[2], $par[3], $par[4], $par[5], $par[6]);
             }
-            $celk = "";
-            if (isset($column[3])) {
-                $celk = $column[3];
-            }
-            $storage->importDeaths($iddat,$pockov,$pocskov,$celk);
+            //$vyslo += $storage->importDeaths($iddat, $rok, $mesiac, $den, $pockov, $pocskov, $celk);
+
+        }
+        if ($vyslo != 0) {
+            ?>
+            <script>
+                window.alert("Nepodarilo sa vložiť! PK už existuje");
+            </script>
+        <?php } else { ?>
+            <script>
+                window.alert("Vložili sa údaje");
+            </script>
+            <?php
+
         }
     }
-
 }
 ?>
 
 <script>
+
     function imp() {
-        if(document.getElementById("rozbal").style.display== "none") {
+        if (document.getElementById("rozbal").style.display == "none") {
             document.getElementById("rozbal").style.display = "block";
         } else {
             document.getElementById("rozbal").style.display = "none";
@@ -41,34 +73,35 @@ if (isset($_POST['import'])) {
     }
 
     function exp() {
-        <?php if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) {
-        $storage->exportDeaths(); ?>
-        alert("Štatistika Úmrtí bola exportovaná!");
-        <?php
-        } else if(strpos($_SERVER['REQUEST_URI'], "Denne") !== false) {
-        $storage->exportDenne();
-        ?>
-        alert("Štatistika Denných testov bola exportovaná!");
-        <?php
-        } else if(strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) {
-        $storage->exportKraje();
-        ?>
-        alert("Štatistika Krajov bola exportovaná!");
-        <?php
-        } else if(strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) {
-        $storage->exportHosp();
-        ?>
-        alert("Štatistika Nemocníc bola exportovaná!");
-        <?php
+        var r = confirm("Naozaj chceš exportovať túto štatistiku?");
+        if (r === true) {
+            <?php if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) {
+            $storage->exportDeaths(); ?>
+            alert("Štatistika Úmrtí bola exportovaná!");
+            <?php
+            } else if(strpos($_SERVER['REQUEST_URI'], "Denne") !== false) {
+            $storage->exportDenne();
+            ?>
+            alert("Štatistika Denných testov bola exportovaná!");
+            <?php
+            } else if(strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) {
+            $storage->exportKraje();
+            ?>
+            alert("Štatistika Krajov bola exportovaná!");
+            <?php
+            } else if(strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) {
+            $storage->exportHosp();
+            ?>
+            alert("Štatistika Nemocníc bola exportovaná!");
+            <?php
+            }
+            ?>
         }
-        ?>
-
     }
 </script>
 
 <main class="container">
-
-    <form method="post">
+    <form method="post"  >
         <div class="row pb-4 mb-4">
             <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false || strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
                 <div class="column col-lg-4">
@@ -78,22 +111,22 @@ if (isset($_POST['import'])) {
                     <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
                         <div>
                             <label> Od: </label>
-                            <input type="date" name="date" id="date" value="2020-09-03" min="2020-09-03"
-                                   max="2021-02-17">
+                            <input type="date" name="date" id="date" value="<?= $storage->getDate('min','kraje_stat')?>" min="<?= $storage->getDate('min','kraje_stat')?>"
+                                   max="<?= $storage->getDate('max','kraje_stat')?>">
                             <br>
                             <label> Do: </label>
-                            <input type="date" name="date2" id="date2" value="2021-02-17" min="2020-09-03"
-                                   max="2021-02-17">
+                            <input type="date" name="date2" id="date2" value="<?= $storage->getDate('max','kraje_stat')?>" min="<?= $storage->getDate('min','kraje_stat')?>"
+                                   max="<?= $storage->getDate('max','kraje_stat')?>">
                             <br><br>
                         </div>
                     <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
                         <div>
                             <label> Od: </label>
-                            <input type="date" name="date" id="date" value="2020-10-01" max="2021-02-18"
-                                   min="2020-10-01"><br>
+                            <input type="date" name="date" id="date" value="<?= $storage->getDate('min','hospitals_stat')?>" max="<?= $storage->getDate('max','hospitals_stat')?>"
+                                   min="<?= $storage->getDate('min','hospitals_stat')?>"><br>
                             <label> Do: </label>
-                            <input type="date" name="date2" id="date2" value="2021-02-18" max="2021-02-18"
-                                   min="2020-10-01"><br>
+                            <input type="date" name="date2" id="date2" value="<?= $storage->getDate('max','hospitals_stat')?>" max="<?= $storage->getDate('max','hospitals_stat')?>"
+                                   min="<?= $storage->getDate('min','hospitals_stat')?>"><br>
                         </div> <?php } ?>
 
                 </div>
@@ -181,18 +214,30 @@ if (isset($_POST['import'])) {
                 </div>
                 <?php if (strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false) { ?>
                     <div>
-                        &emsp;<label for="date"> Od: </label>
-                        <input type="date" name="date" id="date" value="2020-09-24" max="2021-02-18" min="2020-09-24">
-                        <label for="date2"> Do: </label>
-                        <input type="date" name="date2" id="date2" value="2021-02-18" max="2021-02-18" min="2020-09-24"><br>
+                        <div>
+                            &emsp;<label for="date"> Od: </label>
+                            <input type="date" name="date" id="date" value="<?= $storage->getDate('min','kazdodenne_stat')?>" max="<?= $storage->getDate('max','kazdodenne_stat')?>"
+                                   min="<?= $storage->getDate('min','kazdodenne_stat')?>">
+                        </div>
+                        <div>
+                            &emsp;<label for="date2"> Do: </label>
+                            <input type="date" name="date2" id="date2" value="<?= $storage->getDate('max','kazdodenne_stat')?>" max="<?= $storage->getDate('max','kazdodenne_stat')?>"
+                                   min="<?= $storage->getDate('min','kazdodenne_stat')?>"<br>
+                        </div>
                     </div>
 
                 <?php } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
                     <div>
-                        &emsp;<label for="date"> Od: </label>
-                        <input type="date" name="date" id="date" value="2020-09-24" max="2021-02-14" min="2020-09-24">
-                        <label for="date2"> Do: </label>
-                        <input type="date" name="date2" id="date2" value="2021-02-14" max="2021-02-14" min="2020-09-24"><br>
+                        <div>
+                            &emsp;<label for="date"> Od: </label>
+                            <input type="date" name="date" id="date" value="<?= $storage->getDate('min','deaths_stat')?>" max="<?= $storage->getDate('max','deaths_stat')?>"
+                                   min="<?= $storage->getDate('min','deaths_stat')?>">
+                        </div>
+                        <div>
+                            &emsp;<label for="date2"> Do: </label>
+                            <input type="date" name="date2" id="date2" value="<?= $storage->getDate('max','deaths_stat')?>" max="<?= $storage->getDate('max','deaths_stat')?>"
+                                   min="<?= $storage->getDate('min','deaths_stat')?>"><br>
+                        </div>
                     </div>
                 <?php } ?>
 
@@ -246,48 +291,72 @@ if (isset($_POST['import'])) {
             </div>
 
         </div>
-        <div class="row ">
+        <div class="row pb-4 mb-4">
             <div class="col-lg-6">
                 <input type="submit" name="Send1" value="Zobraz">
             </div>
-            <?php if (isset($_SESSION["name"])) {
-                if ($_SESSION["name"] == 'admin') {
-                    ?>
-                    <div class="admin_part col-lg-6">
-                        <div class="p-4 mb-3 bg-light rounded">
-                            <div class="row col-lg-12 pb-2 mb-2">
-                                <div class="col-lg-12">
-                                    <h4 class="fst-italic text-center">Zvoľ:</h4>
-                                </div>
-                            </div>
-                            <div class="row col-lg-12">
-                                <div class="col-lg-4">
-                                    <p><a class="btn btn-secondary " onclick="imp()"> Import &raquo;</a></p>
-                                </div>
+        </div>
 
-                                <div class="col-lg-4">
-                                    <p><a class="btn btn-secondary " onclick="exp()"> Export &raquo;</a></p>
-                                </div>
-                                <div class="col-lg-4">
-                                    <p><a class="btn btn-secondary " > PDF export &raquo;</a></p>
-                                </div>
-                            </div>
-                            <div class="row col-lg-12 " id="rozbal" style="display: none">
-                                <form class="form-horizontal" action="" method="post" name="frmCSVImport" id="frmCSVImport" enctype="multipart/form-data">
-                                    <input type="file" name="myFile" id="myFile" accept=".csv">
-                                    <button type="submit" id="submit" name="import"  class="btn-submit">Import</button>
-                                    <br/>
-                                </form>
-                            </div>
 
-                        </div>
+    </form>
+    <?php if (isset($_SESSION["name"])) {
+    if ($_SESSION["name"] == 'admin') {
+    ?>
+    <div class="row">
+        <div class="col-lg-6">
+        </div>
+        <div class="admin_part col-lg-6">
+            <div class="p-4 mb-3 bg-light rounded">
+                <div class="row col-lg-12 pb-2 mb-2">
+                    <div class="col-lg-12">
+                        <h4 class="fst-italic text-center">Zvoľ:</h4>
+                    </div>
+                </div>
+                <div class="row col-lg-12">
+                    <div class="col-lg-4">
+                        <p><a class="btn btn-secondary " onclick="imp()"> Import &raquo;</a></p>
                     </div>
 
-                <?php }
-            }
-            ?>
+                    <div class="col-lg-4">
+                        <p><a class="btn btn-secondary " onclick="exp()"> Export &raquo;</a></p>
+                    </div>
+                    <div class="col-lg-4">
+                        <p><a class="btn btn-secondary " href="pdf.php?a=2021-03-15"> PDF export &raquo;</a></p>
+                    </div>
+                </div>
+                <div class="row col-lg-12 " id="rozbal" style="display: none">
+                    <form class="form-horizontal" method="post" name="frmCSVImport"
+                          id="frmCSVImport" enctype="multipart/form-data">
+                        <input type="file" name="myFile" id="myFile" accept=".csv">
+                        <button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+                        <br/>
+                    </form>
+                    <h4> ! Formát dát: </h4>
+                    <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
+                        <a> id_kraj ; id_datum ; rok ; mesiac ; den ; ag_vykonane ; ag_poz ; pcr_poz ; newcases ;
+                            poc_celkovo</a>
+                    <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
+                        <a> id_datum ; rok ; mesiac ; den ; id_nemocnice ; obsadene_lozka ; pluc_ventilacia ;
+                            hospitalizovani</a>
+                        <?php
+                    } else if (strpos($_SERVER['REQUEST_URI'], "Denne") !== false) { ?>
+                        <a> id_datum ; rok ; mesiac ; den ; pcr_potvrdene ; pcr_poc ; pcr_poz ; ag_poc ; ag_poz</a>
+                        <?php
+
+                    } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
+                        <a> id_datum ; rok ; mesiac ; den ; poc_na_kovid ; poc_s_kovid ; celkovo</a>
+                        <?php
+                    } ?>
+                    <a></a>
+                </div>
+
+            </div>
         </div>
-    </form>
+
+        <?php }
+        }
+        ?>
+    </div>
 </main>
 <main class="container">
     <p class='pb-4 mb-2 '></p>
@@ -297,7 +366,7 @@ if (isset($_POST['import'])) {
     <p class='pb-4 mb-2 '></p>
     <?php if (isset($_POST['Send1'])) { ?>
 
-    <div class="col-lg-11 text-center">
+    <div class="col-lg-12 text-center">
         <input id="prev" onclick="previous()" type="button" value="< späť"/>
         <input id="next" onclick="next()" type="button" value="ďalej >"/>
     </div>

@@ -4,10 +4,6 @@ require "header.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-
-</head>
-
 <script>
     document.getElementById("index").className += " active";
 </script>
@@ -18,13 +14,15 @@ require "header.php";
 
 <div class="container">
     <div class="row posun">
-        <div class="col-lg-6">
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-5">
             <img src="pics/logo.png" width="140" height="140">
             <h2>Informácie</h2>
             <p>Základné informácie o ochorení COVID-19</p>
             <p><a class="btn btn-secondary" href="Info.php">Pozri viac &raquo;</a></p>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-5">
             <img src="pics/graph.png" height="140" width="140">
             <h2>Štatistiky</h2>
             <p>Zozbierané štatistiky k ochoreniu COVID-19.</p>

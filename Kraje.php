@@ -116,7 +116,7 @@ if (isset($_POST['Send1'])) {
         Štatistika testovania po krajoch:
     </h3>
 </main>
-    <?php require "parts/body.php" ?>
+    <?php require "body.php" ?>
 
 
 </body>

@@ -74,7 +74,8 @@ th {
 
 @media only screen and (min-width: 768px) {
     .row.posun {
-        margin-left: 20%;
+        margin-left: auto;
+
     }
 
     img.zasady {

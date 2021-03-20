@@ -1,6 +1,5 @@
 <?php
-require "header.php";
-//require "action.php";
+require_once "DB_storage.php";
 $storage = new DB_storage();
 $umrtia = '';
 
@@ -37,9 +36,8 @@ if (isset($_POST['Send1'])) {
             $umrtia = $storage->getDeathsAtDate($_POST['date'], $_POST['date2']);
         }
     }
-}
-
-?>
+    header("Location: Umrtia.php?#");
+}?>
 <script>
     var j = 1;
     var size = parseInt('<?= sizeof($umrtia) ?>');
@@ -86,19 +84,4 @@ if (isset($_POST['Send1'])) {
     }
 
 </script>
-<body>
-<main class="container">
-<div class="col-lg-12">
-    <h3 class="pb-4 mb-4 fst-italic border-bottom ">
-        Štatistika úmrtí:
-    </h3>
-</div>
-</main>
-</body>
-    <?php require "body.php" ?>
 
-
-</body>
-<?php
-require "parts/footer.php";
-?>
