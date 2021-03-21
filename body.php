@@ -101,7 +101,7 @@ if (isset($_POST['import'])) {
 </script>
 
 <main class="container">
-    <form method="post"  >
+    <form method="post">
         <div class="row pb-4 mb-4">
             <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false || strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
                 <div class="column col-lg-4">
@@ -110,23 +110,55 @@ if (isset($_POST['import'])) {
                     </div>
                     <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
                         <div>
+                            <?php if (isset($_POST['Send1'])) {
+                                $od2 = $_POST['date'];
+                            } else {
+                                $od2 = $storage->getDate('min', 'kraje_stat');
+                            } ?>
+
                             <label> Od: </label>
-                            <input type="date" name="date" id="date" value="<?= $storage->getDate('min','kraje_stat')?>" min="<?= $storage->getDate('min','kraje_stat')?>"
-                                   max="<?= $storage->getDate('max','kraje_stat')?>">
+                            <input type="date" name="date" id="date"
+                                   value="<?= $od2 ?>"
+                                   min="<?= $storage->getDate('min', 'kraje_stat') ?>"
+                                   max="<?= $storage->getDate('max', 'kraje_stat') ?>">
                             <br>
                             <label> Do: </label>
-                            <input type="date" name="date2" id="date2" value="<?= $storage->getDate('max','kraje_stat')?>" min="<?= $storage->getDate('min','kraje_stat')?>"
-                                   max="<?= $storage->getDate('max','kraje_stat')?>">
+                            <?php if (isset($_POST['Send1'])) {
+                                $do2 = $_POST['date2'];
+                            } else {
+                                $do2 = $storage->getDate('max', 'kraje_stat');
+                            } ?>
+
+                            <input type="date" name="date2" id="date2"
+                                   value="<?= $do2 ?>"
+                                   min="<?= $storage->getDate('min', 'kraje_stat') ?>"
+                                   max="<?= $storage->getDate('max', 'kraje_stat') ?>">
                             <br><br>
                         </div>
                     <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
                         <div>
+                            <?php if (isset($_POST['Send1'])) {
+                                $od3 = $_POST['date'];
+                            } else {
+                                $od3 = $storage->getDate('min', 'hospitals_stat');
+                            } ?>
+
                             <label> Od: </label>
-                            <input type="date" name="date" id="date" value="<?= $storage->getDate('min','hospitals_stat')?>" max="<?= $storage->getDate('max','hospitals_stat')?>"
-                                   min="<?= $storage->getDate('min','hospitals_stat')?>"><br>
+                            <input type="date" name="date" id="date"
+                                   value="<?= $od3 ?>"
+                                   max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
+                                   min="<?= $storage->getDate('min', 'hospitals_stat') ?>"><br>
                             <label> Do: </label>
-                            <input type="date" name="date2" id="date2" value="<?= $storage->getDate('max','hospitals_stat')?>" max="<?= $storage->getDate('max','hospitals_stat')?>"
-                                   min="<?= $storage->getDate('min','hospitals_stat')?>"><br>
+                            <?php if (isset($_POST['Send1'])) {
+                                $do3 = $_POST['date2'];
+                            } else {
+                                $do3 = $storage->getDate('max', 'hospitals_stat');
+                            } ?>
+
+                            <input type="date" name="date2" id="date2"
+                                   value="<?= $do3 ?>"
+                                   max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
+                                   min="<?= $storage->getDate('min', 'hospitals_stat') ?>"><br>
                         </div> <?php } ?>
 
                 </div>
@@ -148,11 +180,15 @@ if (isset($_POST['import'])) {
                             </select>
                         </div>
                     <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
-
+                        <?php if (isset($_POST['Send1'])) {
+                            $okres = $_POST['tags'];
+                        } else {
+                            $okres = "Okres Bratislava I";
+                        } ?>
                         <div>
                             <div class="ui-widget">
                                 <label for="tags"> </label>
-                                <input id="tags" name="tags" value="Okres Bratislava I">
+                                <input id="tags" name="tags" value="<?= $okres ?>">
                             </div>
                         </div> <?php } ?>
 
@@ -215,28 +251,59 @@ if (isset($_POST['import'])) {
                 <?php if (strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false) { ?>
                     <div>
                         <div>
+                            <?php if (isset($_POST['Send1'])) {
+                                $od = $_POST['date'];
+                            } else {
+                                $od = $storage->getDate('min', 'kazdodenne_stat');
+                            } ?>
                             &emsp;<label for="date"> Od: </label>
-                            <input type="date" name="date" id="date" value="<?= $storage->getDate('min','kazdodenne_stat')?>" max="<?= $storage->getDate('max','kazdodenne_stat')?>"
-                                   min="<?= $storage->getDate('min','kazdodenne_stat')?>">
+                            <input type="date" name="date" id="date"
+                                   value="<?= $od ?>"
+                                   max="<?= $storage->getDate('max', 'kazdodenne_stat') ?>"
+                                   min="<?= $storage->getDate('min', 'kazdodenne_stat') ?>">
                         </div>
                         <div>
+                            <?php if (isset($_POST['Send1'])) {
+                                $do = $_POST['date2'];
+                            } else {
+                                $do = $storage->getDate('max', 'kazdodenne_stat');
+                            } ?>
+
                             &emsp;<label for="date2"> Do: </label>
-                            <input type="date" name="date2" id="date2" value="<?= $storage->getDate('max','kazdodenne_stat')?>" max="<?= $storage->getDate('max','kazdodenne_stat')?>"
-                                   min="<?= $storage->getDate('min','kazdodenne_stat')?>"<br>
+                            <input type="date" name="date2" id="date2"
+                                   value="<?= $do ?>"
+                                   max="<?= $storage->getDate('max', 'kazdodenne_stat') ?>"
+                                   min="<?= $storage->getDate('min', 'kazdodenne_stat') ?>"<br>
                         </div>
                     </div>
 
                 <?php } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
                     <div>
                         <div>
+                            <?php if (isset($_POST['Send1'])) {
+                                $od1 = $_POST['date'];
+                            } else {
+                                $od1 = $storage->getDate('min', 'deaths_stat');
+                            } ?>
+
                             &emsp;<label for="date"> Od: </label>
-                            <input type="date" name="date" id="date" value="<?= $storage->getDate('min','deaths_stat')?>" max="<?= $storage->getDate('max','deaths_stat')?>"
-                                   min="<?= $storage->getDate('min','deaths_stat')?>">
+                            <input type="date" name="date" id="date"
+                                   value="<?= $od1 ?>"
+                                   max="<?= $storage->getDate('max', 'deaths_stat') ?>"
+                                   min="<?= $storage->getDate('min', 'deaths_stat') ?>">
                         </div>
                         <div>
+                            <?php if (isset($_POST['Send1'])) {
+                                $do1 = $_POST['date2'];
+                            } else {
+                                $do1 = $storage->getDate('max', 'deaths_stat');
+                            } ?>
+
                             &emsp;<label for="date2"> Do: </label>
-                            <input type="date" name="date2" id="date2" value="<?= $storage->getDate('max','deaths_stat')?>" max="<?= $storage->getDate('max','deaths_stat')?>"
-                                   min="<?= $storage->getDate('min','deaths_stat')?>"><br>
+                            <input type="date" name="date2" id="date2"
+                                   value="<?= $do1 ?>"
+                                   max="<?= $storage->getDate('max', 'deaths_stat') ?>"
+                                   min="<?= $storage->getDate('min', 'deaths_stat') ?>"><br>
                         </div>
                     </div>
                 <?php } ?>
@@ -292,7 +359,7 @@ if (isset($_POST['import'])) {
 
         </div>
         <div class="row pb-4 mb-4">
-            <div class="col-lg-6">
+            <div class="col-sm-1">
                 <input type="submit" name="Send1" value="Zobraz">
             </div>
         </div>
@@ -322,20 +389,32 @@ if (isset($_POST['import'])) {
                     </div>
                     <div class="col-lg-4">
 
-                       <?php if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false ) { ?>
-                        <p><a class="btn btn-secondary " href="pdf.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&d=<?= isset($_POST['umrtia_s_kov'])?>&c=<?= isset($_POST['umrtia_na_kov'])?>&e=<?= isset($_POST['celk'])?>"> PDF export &raquo;</a></p>
-                        <?php } else if(strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false){ ?>
-                           <p><a class="btn btn-secondary " href="pdf.php?a=a&b=a"> PDF export &raquo;</a></p>
-                       <?php }  else if(isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false ) { ?>
-                        <p><a class="btn btn-secondary " href="PDFDenne.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['pcr_pot'])?>&d=<?= isset($_POST['pcr_poc'])?>&e=<?= isset($_POST['pcr_poz'])?>&f=<?= isset($_POST['ag_poc'])?>&g=<?= isset($_POST['ag_poz'])?>"> PDF export &raquo;</a></p>
-                        <?php }  else if(strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false ) { ?>
-                           <p><a class="btn btn-secondary " href="PDFDenne.php?a=a&b=a"> PDF export &raquo;</a></p>
-                       <?php } else if(isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false ) { ?>
-                           <p><a class="btn btn-secondary " href="PDFHospitals.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['obs'])?>&d=<?= isset($_POST['pluc'])?>&e=<?= isset($_POST['hosp'])?>&f=<?= ($_POST['tags']) ?>&g="> PDF export &raquo;</a></p>
-                       <?php } else if(strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false)  { ?>
-                           <p><a class="btn btn-secondary " href="PDFHospitals.php?a=a&b=a"> PDF export &raquo;</a></p>
+                        <?php if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
+                            <p><a class="btn btn-secondary "
+                                  href="pdf.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&d=<?= isset($_POST['umrtia_s_kov']) ?>&c=<?= isset($_POST['umrtia_na_kov']) ?>&e=<?= isset($_POST['celk']) ?>">
+                                    PDF export &raquo;</a></p>
+                        <?php } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
+                            <p><a class="btn btn-secondary " href="pdf.php?a=a&b=a"> PDF export &raquo;</a></p>
+                        <?php } else if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false) { ?>
+                            <p><a class="btn btn-secondary "
+                                  href="PDFDenne.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['pcr_pot']) ?>&d=<?= isset($_POST['pcr_poc']) ?>&e=<?= isset($_POST['pcr_poz']) ?>&f=<?= isset($_POST['ag_poc']) ?>&g=<?= isset($_POST['ag_poz']) ?>">
+                                    PDF export &raquo;</a></p>
+                        <?php } else if (strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false) { ?>
+                            <p><a class="btn btn-secondary " href="PDFDenne.php?a=a&b=a"> PDF export &raquo;</a></p>
+                        <?php } else if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
+                            <p><a class="btn btn-secondary "
+                                  href="PDFHospitals.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['obs']) ?>&d=<?= isset($_POST['pluc']) ?>&e=<?= isset($_POST['hosp']) ?>&f=<?= ($_POST['tags']) ?>&g=">
+                                    PDF export &raquo;</a></p>
+                        <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
+                            <p><a class="btn btn-secondary " href="PDFHospitals.php?a=a&b=a"> PDF export &raquo;</a></p>
+                        <?php } else if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
+                            <p><a class="btn btn-secondary "
+                                  href="PDFKraje.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['ag_vyk']) ?>&d=<?= isset($_POST['ag_poz']) ?>&e=<?= isset($_POST['pcr_poz']) ?>&f=<?= isset($_POST['newcases']) ?>&g=<?= isset($_POST['poz_celk']) ?>&h=<?= $_POST['krajelist'] ?>">
+                                    PDF export &raquo;</a></p>
+                        <?php } else if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
+                            <p><a class="btn btn-secondary " href="PDFKraje.php?a=a&b=a"> PDF export &raquo;</a></p>
+                        <?php } ?>
 
-                       <?php } ?>
                     </div>
                 </div>
                 <div class="row col-lg-12 " id="rozbal" style="display: none">

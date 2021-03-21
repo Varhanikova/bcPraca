@@ -1,6 +1,5 @@
 <?php
 require_once "DB_storage.php";
-
 $storage = new DB_storage();
 session_start();
 if (isset($_POST['Send'])) {
