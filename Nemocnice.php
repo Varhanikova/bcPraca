@@ -1,7 +1,7 @@
 <?php
 require "header.php";
 $storage = new DB_storage();
-$hosp = "";
+$hosp = [];
 $nemocnice = $storage->getAllHospitals();
 $okresy = $storage->getOkresy();
 $chcem = "";
@@ -94,9 +94,11 @@ if (isset($_POST['Send1'])) {
         if (s !== "") {
             s = "všetko";
         }
+        <?php if(isset($_POST['Send1'])) { ?>
         var a = "<?=$_POST['date'] ?>";
         var b = '<?=$_POST['date2'] ?>';
         var t = "<?= ($_POST['tags']) ?>";
+        <?php } ?>
         var ktore = "nemocnice";
         xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
         xhttp.send();

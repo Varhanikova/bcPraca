@@ -2,10 +2,8 @@
 require "header.php";
 require_once "DB_storage.php";
 $storage = new DB_storage();
-$array = "";
+$array = [];
 $chcem = "";
-$od = "";
-$do = "";
 $kraje = $storage->getKraje();
 if (isset($_POST['Send1'])) {
     $chyba1 = 0;
@@ -39,11 +37,7 @@ if (isset($_POST['Send1'])) {
     <?php } else if (empty($_POST['date'])) {
         $_POST['date'] = "2020-09-03";
     }
-    if ($chyba1 == 1) {
-        $od = $_POST['date'];
-        $do = $_POST['date2'];
-
-    } else {
+    if ($chyba1 == 0) {
         $array = $storage->getKrajeStat($_POST['date'], $_POST['date2'], $chcem);
 
     }
@@ -65,9 +59,10 @@ if (isset($_POST['Send1'])) {
             }
         };
         var c = j.toString();
+        <?php if(isset($_POST['Send1'])) { ?>
         var a = "<?=$_POST['date'] ?>";
         var b = '<?=$_POST['date2'] ?>';
-
+        <?php } ?>
         var m = "<?= isset($_POST['ag_vyk']) ?>";
 
         if (m !== "") {

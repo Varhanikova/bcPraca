@@ -73,8 +73,19 @@ class DB_storage
     }
 
     // ---------------------Deaths---------
-    public function getDeaths() {
-        $stmt = $this->conn->query("select * from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum");
+    public function getDeaths($dat,$dat2) {
+        $stmt = $this->conn->query("select * from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum where deaths_stat.id_datum between '$dat' and '$dat2'");
+        $stat = [];
+        while ($row = $stmt->fetch()) {
+            $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
+            $umrtie = new Umrtia_stat($dat, $row['poc_umrti_kov'], $row['poc_s_kov'], $row['celk_poc_umrti']);
+
+            $stat[] = $umrtie;
+        }
+        return $stat;
+    }
+    public function getDeathsAll() {
+        $stmt = $this->conn->query("select * from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum ");
         $stat = [];
         while ($row = $stmt->fetch()) {
             $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
@@ -87,7 +98,7 @@ class DB_storage
 
     public function getDeathsAtDate($datum, $datum2)
     {
-        $stmt = $this->conn->query("SELECT  dat.id_datum,den,mesiac,rok,poc_umrti_kov,poc_s_kov,celk_poc_umrti FROM deaths_stat  
+        $stmt = $this->conn->query("SELECT dat.id_datum,den,mesiac,rok,poc_umrti_kov,poc_s_kov,celk_poc_umrti FROM deaths_stat  
                 join dat on(dat.id_datum=deaths_stat.id_datum) where deaths_stat.id_datum between '$datum' and '$datum2' ");
         $stat = [];
         while ($row = $stmt->fetch()) {
@@ -118,7 +129,7 @@ class DB_storage
     }
     public function exportDeaths() {
         $stmt = $this->conn->query("SELECT * from deaths_stat");
-        $fp = fopen('deaths_stat.csv', 'w');
+        $fp = fopen('export/deaths_stat.csv', 'w');
         while ($row = $stmt->fetch()) {
 
             fputcsv($fp, $row);
@@ -165,7 +176,7 @@ class DB_storage
     }
     public function exportKraje() {
         $stmt = $this->conn->query("SELECT * from kraje_stat");
-        $fp = fopen('kraje_stat.csv', 'w');
+        $fp = fopen('export/kraje_stat.csv', 'w');
         while ($row = $stmt->fetch()) {
 
             fputcsv($fp, $row);
@@ -193,7 +204,6 @@ class DB_storage
     //------------hospitals---------
     public function getHospitalStat($datum, $dat2, $chcem)
     {
-
         $stmt = $this->conn->query("SELECT nazov,obsadene_lozka,pluc_ventilacia,hospitalizovani,
                 dat.id_datum,den,mesiac, rok FROM hospitals_stat  join dat on(dat.id_datum=hospitals_stat.id_datum ) 
                 join nemocnice n on hospitals_stat.id_nemocnica = n.id_nemocnica 
@@ -232,7 +242,7 @@ class DB_storage
     public function exportHosp() {
         $stmt = $this->conn->query("SELECT * from hospitals_stat");
 
-        $fp = fopen('hospitals_stat.csv', 'w');
+        $fp = fopen('export/hospitals_stat.csv', 'w');
         while ($row = $stmt->fetch()) {
 
             fputcsv($fp, $row);
@@ -269,9 +279,19 @@ class DB_storage
         return $stat;
 
     }
+    public function getAllDenne(){
+        $stmt = $this->conn->query("select * from kazdodenne_stat join dat on kazdodenne_stat.id_datum = dat.id_datum");
+        $stat = [];
+        while ($row = $stmt->fetch()) {
+            $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
+            $test = new kazdodenne_stat($dat, $row['pcr_potvrdene'], $row['pcr_poc'], $row['pcr_poz'], $row['ag_poc'], $row['ag_poz']);
+            $stat[] = $test;
+        }
+        return $stat;
+    }
     public function exportDenne() {
         $stmt = $this->conn->query("SELECT * from kazdodenne_stat");
-        $fp = fopen('kazdodenne_stat.csv', 'w');
+        $fp = fopen('export/kazdodenne_stat.csv', 'w');
         while ($row = $stmt->fetch()) {
 
             fputcsv($fp, $row);

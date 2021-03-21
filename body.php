@@ -321,7 +321,21 @@ if (isset($_POST['import'])) {
                         <p><a class="btn btn-secondary " onclick="exp()"> Export &raquo;</a></p>
                     </div>
                     <div class="col-lg-4">
-                        <p><a class="btn btn-secondary " href="pdf.php?a=2021-03-15"> PDF export &raquo;</a></p>
+
+                       <?php if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false ) { ?>
+                        <p><a class="btn btn-secondary " href="pdf.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&d=<?= isset($_POST['umrtia_s_kov'])?>&c=<?= isset($_POST['umrtia_na_kov'])?>&e=<?= isset($_POST['celk'])?>"> PDF export &raquo;</a></p>
+                        <?php } else if(strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false){ ?>
+                           <p><a class="btn btn-secondary " href="pdf.php?a=a&b=a"> PDF export &raquo;</a></p>
+                       <?php }  else if(isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false ) { ?>
+                        <p><a class="btn btn-secondary " href="PDFDenne.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['pcr_pot'])?>&d=<?= isset($_POST['pcr_poc'])?>&e=<?= isset($_POST['pcr_poz'])?>&f=<?= isset($_POST['ag_poc'])?>&g=<?= isset($_POST['ag_poz'])?>"> PDF export &raquo;</a></p>
+                        <?php }  else if(strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false ) { ?>
+                           <p><a class="btn btn-secondary " href="PDFDenne.php?a=a&b=a"> PDF export &raquo;</a></p>
+                       <?php } else if(isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false ) { ?>
+                           <p><a class="btn btn-secondary " href="PDFHospitals.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['obs'])?>&d=<?= isset($_POST['pluc'])?>&e=<?= isset($_POST['hosp'])?>&f=<?= ($_POST['tags']) ?>&g="> PDF export &raquo;</a></p>
+                       <?php } else if(strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false)  { ?>
+                           <p><a class="btn btn-secondary " href="PDFHospitals.php?a=a&b=a"> PDF export &raquo;</a></p>
+
+                       <?php } ?>
                     </div>
                 </div>
                 <div class="row col-lg-12 " id="rozbal" style="display: none">
