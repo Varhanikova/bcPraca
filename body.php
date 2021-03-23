@@ -3,7 +3,6 @@
 $storage = new DB_storage();
 $kraje = $storage->getKraje();
 
-
 if (isset($_POST['import'])) {
     if ($_FILES["myFile"]["error"] > 0) {
         echo "Return Code: " . $_FILES["myFile"]["error"] . "<br />";
@@ -60,6 +59,8 @@ if (isset($_POST['import'])) {
         }
     }
 }
+
+
 ?>
 
 <script>
@@ -73,7 +74,7 @@ if (isset($_POST['import'])) {
     }
 
     function exp() {
-        var r = confirm("Naozaj chceš exportovať túto štatistiku?");
+        var r = confirm("Naozaj chceš exportovať túto štatistiku?"); //******skúsiť dať názov štat
         if (r === true) {
             <?php if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) {
             $storage->exportDeaths(); ?>
@@ -100,7 +101,7 @@ if (isset($_POST['import'])) {
     }
 </script>
 
-<main class="container">
+<main class="container ">
     <form method="post">
         <div class="row pb-4 mb-4">
             <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false || strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
@@ -451,7 +452,7 @@ if (isset($_POST['import'])) {
         ?>
     </div>
 </main>
-<main class="container">
+<main class="container ">
     <p class='pb-4 mb-2 '></p>
     <table id="tu">
 
@@ -459,7 +460,7 @@ if (isset($_POST['import'])) {
     <p class='pb-4 mb-2 '></p>
     <?php if (isset($_POST['Send1'])) { ?>
 
-    <div class="col-lg-12 text-center">
+    <div class="col-lg-12 text-center pb-4 mb-4 fst-italic border-bottom">
         <input id="prev" onclick="previous()" type="button" value="< späť"/>
         <input id="next" onclick="next()" type="button" value="ďalej >"/>
     </div>

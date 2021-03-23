@@ -13,28 +13,30 @@ if (isset($_POST['Send1'])) {
         </script>
         <?php
     }
-    if (!empty($_POST['date']) && $storage->isThere($_POST['date'], "kazdodenne_stat") == '') {
+   /* if (!empty($_POST['date']) && $storage->isThere($_POST['date'], "kazdodenne_stat") == '') {
         $chyba1 = 1;
         ?>
         <script>
             window.alert("Neplatný dátum");
         </script>
-    <?php } else if (empty($_POST['date'])) {
-        $_POST['date'] = "2020-03-06";
-    }
-    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'], "kazdodenne_stat") == '') {
+    <?php }
+   /* if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'], "kazdodenne_stat") == '') {
         ?>
         <script>
             window.alert("Neplatný dátum");
         </script>
-    <?php } else if ($_POST['date2'] == "") {
-        $_POST['date2'] = "2021-02-18";
-    }
+    <?php }*/
+    if ($_POST['date'] > $_POST['date2']) {
+        $chyba1 = 1; ?>
+        <script>
+            window.alert("Nesprávne zadaný dátum!");
+        </script
+    <?php }
 
     if ($chyba1 == 0) {
-        if (isset($_POST['date2'])) {
+       // if (isset($_POST['date2'])) {
             $testy = $storage->getAllKazdodenneStat($_POST['date'], $_POST['date2']);
-        }
+       // }
     }
 }
 ?>

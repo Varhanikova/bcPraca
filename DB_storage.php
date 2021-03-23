@@ -112,22 +112,73 @@ class DB_storage
         }
         return $stat;
     }
+    public function mesacneUmrtiaNaKov(){
+        $spolu = 0;
+        $stat = [];
+       $rok= 2020;
+       $po = 13;
+        for($i=9;$i<$po; $i++ ) {
+            $stmt = $this->conn->query("select sum(poc_s_kov) as s,sum(poc_umrti_kov) as na from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum 
+                                            where mesiac = '$i' and rok = '$rok'");
+            $stmt1 = $this->conn->query("select sum(celk_poc_umrti) as spolu from deaths_stat");
+            $spolu = $stmt1->fetch()['spolu'];
+            while ($row = $stmt->fetch()) {
 
+                $na = $row['na'];
+                $s = $row['s'];
+                if($spolu>0) {
+                    $stat[] = round($na / $spolu * 100,2);
+                    $stat[] = round($s / $spolu * 100,2);
+                }
+            }
+            if($i==12 && $rok==2020){
+                $i=0;
+                $rok = 2021;
+                $po = 3;
+            }
+        }
+        return $stat;
+    }
+    public function mesacneUmrtiaSKov(){
+        $stat = [];
+        $rok= 2020;
+        for($i=9;$i<13;$i++ ) {
+            $stmt = $this->conn->query("select sum(celk_poc_umrti) as spolu,sum(poc_s_kov) as s from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum 
+                                            where mesiac = '$i' and rok = '$rok'");
+            while ($row = $stmt->fetch()) {
+                $spolu = $row['spolu'];
+                $s = $row['s'];
+                if($spolu>0) {
+                    $stat[] = round($s / $spolu * 100,2);
+                }
+            }
+            if($i==12 && $rok==2020){
+                $i=0;
+                $rok = 2021;
+            }
+        }
+        return $stat;
+    }
     public function isThere($datumik, $datab)
     {
         $date = '';
+        $min = '';
+        $max ='';
         if ($datab == "deaths_stat") {
-            $stmt = $this->conn->query("SELECT id_datum FROM deaths_stat WHERE id_datum='$datumik'");
+            $stmt = $this->conn->query("SELECT min(id_datum) as min, max(id_datum) as max FROM deaths_stat WHERE id_datum='$datumik'");
         } else if ($datab == "hospitals_stat") {
-            $stmt = $this->conn->query("SELECT id_datum FROM hospitals_stat WHERE id_datum='$datumik'");
+            $stmt = $this->conn->query("SELECT  min(id_datum) as min, max(id_datum) as max FROM hospitals_stat WHERE id_datum='$datumik'");
         } else if ($datab == "kazdodenne_stat") {
-            $stmt = $this->conn->query("SELECT id_datum FROM kazdodenne_stat WHERE id_datum='$datumik'");
+            $stmt = $this->conn->query("SELECT  min(id_datum) as min, max(id_datum) as max FROM kazdodenne_stat WHERE id_datum='$datumik'");
         } else {
-            $stmt = $this->conn->query("SELECT id_datum FROM kraje_stat WHERE id_datum='$datumik'");
+            $stmt = $this->conn->query("SELECT min(id_datum) as min, max(id_datum) as max FROM kraje_stat WHERE id_datum='$datumik'");
         }
         while ($row = $stmt->fetch()) {
-            $date = $row['id_datum'];
+
+            $min = $row['min'];
+            $max = $row['max'];
         }
+        if($min <=$datumik && $max >=$datumik){$date = $datumik;}
         return $date;
     }
 

@@ -7,6 +7,7 @@ if ($_GET['ktore'] == "kazdodenne") {
     $stat = $storagee->getAllKazdodenneStat($_GET['a'], $_GET['b']);
 } else if($_GET['ktore'] == "umrtia") {
     $stat = $storagee->getDeathsAtDate($_GET['a'], $_GET['b']);
+
 } else if($_GET['ktore']=="kraje") {
     $t = $_GET['t'];
     $p = $_GET['p'];
@@ -24,13 +25,13 @@ $n = $_GET['n'];
 $o = $_GET['o'];
 $s = $_GET['s'];
 $vypis = intval($_GET['c']);
-$pridane = $vypis + 14;
+$pridane = $vypis + 9;
 
 $pocet = sizeof($stat);
 
 $limit = 0;
 if ($pocet - $pridane > 0) {
-    $limit = $vypis + 14;
+    $limit = $vypis + 9;
 } else {
     $kolko = $pocet - $vypis + 1;
     $limit = $pocet;
@@ -73,7 +74,7 @@ if ($_GET['ktore'] == "kazdodenne" || $_GET['ktore'] == "kraje") {
 echo "</tr>";
 if ($stat != '') {
     for ($i = $vypis - 1; $i < $limit; $i++) {
-        echo "<tr>";
+        echo "<tr >";
         $pam = $stat[$i]->getDatum();
         if ($_GET['ktore'] == "umrtia") {
             $pam1 = $stat[$i]->getPocNaKov();

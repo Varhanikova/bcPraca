@@ -19,28 +19,30 @@ if (isset($_POST['Send1'])) {
     if (!empty($_POST['tags'])) {
         $chcem = "and okres = '" . $_POST['tags'] . "' ";
     }
-    if (!empty($_POST['date']) && $storage->isThere($_POST['date'], "hospitals_stat") == '') {
+    /*if (!empty($_POST['date']) && $storage->isThere($_POST['date'], "hospitals_stat") == '') {
         $chyba1 = 1;
         ?>
         <script>
             window.alert("Neplatný dátum");
         </script>
-    <?php } else if (empty($_POST['date'])) {
-        $_POST['date'] = "2020-10-01";
-    }
+    <?php }
     if (($_POST['date2'] != "") && $storage->isThere($_POST['date2'], "hospitals_stat") == '') {
         ?>
         <script>
             window.alert("Neplatný dátum");
         </script>
-    <?php } else if ($_POST['date2'] == "") {
-        $_POST['date2'] = "2021-02-18";
-    }
+    <?php }*/
+    if ($_POST['date'] > $_POST['date2']) {
+        $chyba1 = 1; ?>
+        <script>
+            window.alert("Nesprávne zadaný dátum!");
+        </script
+    <?php }
 
     if ($chyba1 == 0) {
-        if (isset($_POST['date2'])) {
+      //  if (isset($_POST['date2'])) {
             $hosp = $storage->getHospitalStat($_POST['date'], $_POST['date2'], $chcem);
-        }
+       // }
     }
 }
 ?>

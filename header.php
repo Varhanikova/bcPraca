@@ -68,15 +68,15 @@ if (isset($_POST['logout'])) {
         }
 
         function next() {
-            if (j < size - 14) {
-                j += 15;
+            if (j < size - 9) {
+                j += 10;
                 displayResults(j);
             }
         }
 
         function previous() {
             if (j > 1) {
-                j -= 15;
+                j -= 10;
                 displayResults(j);
             }
         }

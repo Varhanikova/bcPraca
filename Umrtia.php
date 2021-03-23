@@ -1,6 +1,5 @@
 <?php
 require "header.php";
-//require "action.php";
 $storage = new DB_storage();
 $umrtia = [];
 
@@ -14,28 +13,15 @@ if (isset($_POST['Send1'])) {
         </script>
         <?php
     }
-    if (!empty($_POST['date']) && $storage->isThere($_POST['date'], "deaths_stat") == '') {
-        $chyba1 = 1;
-        ?>
+     if ($_POST['date'] > $_POST['date2']) {
+        $chyba1 = 1; ?>
         <script>
-            window.alert("Neplatný dátum");
-        </script>
-    <?php } else if (empty($_POST['date'])) {
-        $_POST['date'] = "2020-09-24";
-    }
-    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'], "deaths_stat") == '') {
-        ?>
-        <script>
-            window.alert("Neplatný dátum");
-        </script>
-    <?php } else if ($_POST['date2'] == "") {
-        $_POST['date2'] = "2021-02-14";
-    }
+            window.alert("Nesprávne zadaný dátum!");
+        </script
+    <?php }
 
     if ($chyba1 == 0) {
-        if (isset($_POST['date2'])) {
-            $umrtia = $storage->getDeathsAtDate($_POST['date'], $_POST['date2']);
-        }
+        $umrtia = $storage->getDeathsAtDate($_POST['date'], $_POST['date2']);
     }
 }
 
@@ -97,7 +83,45 @@ if (isset($_POST['Send1'])) {
     </div>
 </main>
 </body>
-<?php require "body.php" ?>
+<?php require "body.php" ;
+$na = $storage->mesacneUmrtiaNaKov();
+//$s= $storage->mesacneUmrtiaSKov();
+$mesiace = ["september","","október","","november","","december","","január","","február"];
+?>
+<main class="container " >
+
+    <div class="col-lg-12">
+        <h3 class="pb-4 mb-4 fst-italic  ">
+            Percentuálne vyjadrené mesačné úmrtia:
+        </h3>
+    </div>
+        <p class='pb-4 mb-2 '></p>
+        <table id="tu">
+                <tr>
+                    <th>Mesiac</th>
+                    <th>percentá úmrtí na kovid</th>
+                    <th>percentá úmrtí s kovid</th>
+                </tr>
+
+                <?php
+                for($i=0;$i<sizeof($na);$i++) { ?>
+            <tr>
+
+                <td><?= $mesiace[$i] ?> </td>
+
+                    <td> <?= $na[$i] ?> %</td>
+                <?php $i++; ?>
+                    <td> <?= $na[$i] ?> %</td>
+            </tr>
+             <?php   }?>
+
+
+        </table>
+        <p class='pb-4 mb-2 '></p>
+
+</main>
+
+
 
 
 </body>

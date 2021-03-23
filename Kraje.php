@@ -19,14 +19,12 @@ if (isset($_POST['Send1'])) {
         $chcem = "and kraj = '" . $_POST['krajelist'] . "' ";
     }
 
-    if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'], "kraje_stat") == '') {
+   /* if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'], "kraje_stat") == '') {
         ?>
         <script>
             window.alert("Neplatný dátum");
         </script>
-    <?php } else if ($_POST['date2'] == "") {
-        $_POST['date2'] = "2021-02-17";
-    }
+    <?php }
 
     if (!empty($_POST['date']) && $storage->isThere($_POST['date'], "kraje_stat") == '') {
         $chyba1 = 1;
@@ -34,9 +32,13 @@ if (isset($_POST['Send1'])) {
         <script>
             window.alert("Neplatný dátum");
         </script>
-    <?php } else if (empty($_POST['date'])) {
-        $_POST['date'] = "2020-09-03";
-    }
+    <?php }*/
+    if ($_POST['date'] > $_POST['date2']) {
+        $chyba1 = 1; ?>
+        <script>
+            window.alert("Nesprávne zadaný dátum!");
+        </script
+    <?php }
     if ($chyba1 == 0) {
         $array = $storage->getKrajeStat($_POST['date'], $_POST['date2'], $chcem);
 
