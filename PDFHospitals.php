@@ -11,8 +11,6 @@ class PDFHospitals extends FPDF
         $this->SetFont('Helvetica', 'B', 15);
         $this->SetXY(12, 10);
         $this->Cell(0, 10, 'Nemocnice', 1, 0, 'C');
-
-
     }
 
     function Footer()
@@ -23,7 +21,6 @@ class PDFHospitals extends FPDF
     }
 }
 
-
 $c = " ";
 $d = " ";
 $e = " ";
@@ -31,8 +28,8 @@ $f = " ";
 if ($_GET['a'] == "a") {
     $stat = $storage->getAllHospital_stat();
 } else {
-    $chcem = "and okres = '" . $_GET['f'] . "' ";
-    $stat = $storage->getHospitalStat($_GET['a'], $_GET['b'], $chcem);
+    $chcem = $_GET['f'];
+    $stat = $storage->getAllHospital_stat1($_GET['a'], $_GET['b'], $chcem);
     $c = $_GET['c'];
     $d = $_GET['d'];
     $e = $_GET['e'];
@@ -46,19 +43,7 @@ $pdf->SetTitle('Hospitals');
 
 $y = 46;
 for ($i = 0; $i < sizeof($stat); $i++) {
-    if ($c == "" && $d!="" && $e!="" || $d=="" && $c!="" && $e!="" || $e=="" && $c!="" && $d!="") {
-        $x = 9;
-        $xx = 9;
-        $nem = 110;
-    } else if($c != "" && $d != "" && $e != "") {
-        $nem=85;
-        $x = 5;
-        $xx = 5;
-}else {
-        $nem=130;
-        $x = 10;
-        $xx = 10;
-    }
+        $x = 15;
     if ($i % 16 == 0) {
         $pdf->AddPage();
 
@@ -67,68 +52,52 @@ for ($i = 0; $i < sizeof($stat); $i++) {
         $pdf->SetY(26);
         $pdf->SetX($x);
 
-        $pdf->MultiCell(25, 19.5, 'Datum', 1, 'L', 1);
+        $pdf->MultiCell(25, 15, 'Datum', 1, 'L', 1);
         $x+=25;
         $pdf->SetY(26);
         $pdf->SetX($x);
-        $pdf->MultiCell($nem, 19.5, 'Nazov nemocnice', 1, 'L', 1);
-        $x+=$nem;
+        $pdf->MultiCell(50, 15, 'Okres', 1, 'L', 1);
+        $x+=50;
 
         if ($c != "") {
             $pdf->SetY(26);
             $pdf->SetX($x);
-            $pdf->MultiCell(30, 6.5, 'Pocet obsadenych lozok', 1, 'L', 1);
-            $x += 30;
+            $pdf->MultiCell(35, 5, 'Pocet obsadenych lozok', 1, 'L', 1);
+            $x += 35;
 
         }
         if ($d != "") {
             $pdf->SetY(26);
             $pdf->SetX($x);
-            $pdf->multiCell(30, 6.5, 'Pocet osob na plucnej ventilacii', 1, 'L', 1);
-            $x += 30;
+            $pdf->multiCell(35, 5, 'Pocet osob na plucnej ventilacii', 1, 'L', 1);
+            $x += 35;
         }
         if ($e != "") {
             $pdf->SetY(26);
             $pdf->SetX($x);
-            $pdf->multiCell(30, 4.9, 'Celkovy pocet hospitalizovanych', 1, 'L', 1);
-            $x += 30;
+            $pdf->multiCell(35, 5, 'Celkovy pocet hospitalizovanych', 1, 'L', 1);
+            $x += 35;
         }
-        $y = 46;
+        $y = 41;
     }
 
     $pdf->Ln();
     $pdf->SetY($y);
-    $pdf->SetX($xx);
-    $pdf->multiCell(25, 14, $stat[$i]->getDatum(), 1);
-    $xx+=25;
+    $pdf->SetX(15);
+    $pdf->cell(25, 14, $stat[$i], 1);
 
-    $pdf->SetY($y);
-    $pdf->SetX($xx);
-    if ((($i % 16) == 15 && $i > 0) || ($i + 1) == sizeof($stat)) {
-        $pdf->multicell($nem, 4.7, $stat[$i]->getNemocnica(), 1);
-    } else {
-        $pdf->multicell($nem, 4.7, $stat[$i]->getNemocnica(), 'LRT');
-    }
-    $xx += $nem;
+    $pdf->cell(50, 14, $stat[$i+1], 1);
     if ($c != "") {
-        $pdf->SetY($y);
-        $pdf->SetX($xx);
-        $pdf->multiCell(30, 14, $stat[$i]->getObsadeneLozka(), 1);
-        $xx += 30;
+        $pdf->cell(35, 14, $stat[$i+2], 1);
     }
     if ($d != "") {
-        $pdf->SetY($y);
-        $pdf->SetX($xx);
-        $pdf->multiCell(30, 14, $stat[$i]->getPlucVent(), 1);
-        $xx += 30;
+        $pdf->cell(35, 14, $stat[$i+3], 1);
     }
     if ($e != "") {
-        $pdf->SetY($y);
-        $pdf->SetX($xx);
-        $pdf->multiCell(30, 14, $stat[$i]->getHospitalizovani(), 1);
-        $xx += 30;
+        $pdf->cell(35, 14, $stat[$i+4], 1);
     }
     $y += 14;
+    $i+=4;
 }
 
 $pdf->Output('hospitals_stat.pdf', 'I');

@@ -5,9 +5,24 @@ if ($_GET['ktore'] == "kazdodenne") {
     $p = $_GET['p'];
     $r = $_GET['r'];
     $stat = $storagee->getAllKazdodenneStat($_GET['a'], $_GET['b']);
-} else if($_GET['ktore'] == "umrtia") {
+} else if($_GET['ktore'] == "umrtia" ) {
     $stat = $storagee->getDeathsAtDate($_GET['a'], $_GET['b']);
 
+} else if($_GET['ktore'] == "nemocnice1" ) {
+    $stat = $storagee->getAllHospital_stat();
+
+} else if($_GET['ktore'] == "denne1" ) {
+    $stat = $storagee->getAllDenne();
+    $p = $_GET['p'];
+    $r = $_GET['r'];
+
+} else if($_GET['ktore']=="kraje1") {
+    $stat = $storagee->getAllKraje();
+    $t = $_GET['t'];
+    $p = $_GET['p'];
+    $r = $_GET['r'];
+} else if( $_GET['ktore']=="umrtia1") {
+    $stat = $storagee->getDeathsAll();
 } else if($_GET['ktore']=="kraje") {
     $t = $_GET['t'];
     $p = $_GET['p'];
@@ -16,8 +31,8 @@ if ($_GET['ktore'] == "kazdodenne") {
     $stat = $storagee->getKrajeStat($_GET['a'], $_GET['b'], $chcem);
 } else if($_GET['ktore']=="nemocnice"){
     $t = $_GET['t'];
-    $chcem = "and okres = '" . $t . "' ";
-    $stat = $storagee->getHospitalStat($_GET['a'], $_GET['b'], $chcem);
+    $chcem =  $t;
+    $stat = $storagee->getAllHospital_stat1($_GET['a'], $_GET['b'], $chcem);
 }
 
 $m = $_GET['m'];
@@ -36,6 +51,9 @@ if ($pocet - $pridane > 0) {
     $kolko = $pocet - $vypis + 1;
     $limit = $pocet;
 }
+if($_GET['ktore']=="nemocnice" || $_GET['ktore']=="nemocnice1" ){
+    $limit +=5*8;
+}
 echo
 
 " <tr>";
@@ -43,14 +61,14 @@ echo
 if ($stat != '') {
     echo "<th>Dátum</th>";
 }
-if($_GET['ktore']=="kraje") {
+if($_GET['ktore']=="kraje" || $_GET['ktore']=="kraje1") {
     if ($stat != '') {
         echo "<th>Kraj</th>";
     }
 }
-if($_GET['ktore']=="nemocnice") {
+if($_GET['ktore']=="nemocnice" || $_GET['ktore']=="nemocnice1") {
     if ($stat != '') {
-        echo "<th>Názov nemocnice</th>";
+        echo "<th>Názov okresu</th>";
     }
 }
 if ($m != "" || $s != "") {
@@ -63,7 +81,7 @@ if (($o != "" || $s != "")) {
     echo "<th>$o</th>";
 }
 
-if ($_GET['ktore'] == "kazdodenne" || $_GET['ktore'] == "kraje") {
+if ($_GET['ktore'] == "kazdodenne" || $_GET['ktore'] == "kraje" || $_GET['ktore'] == "denne1" || $_GET['ktore']=="kraje1") {
     if ($p != "" || $s != "") {
         echo "<th>$p</th>";
     }
@@ -75,34 +93,39 @@ echo "</tr>";
 if ($stat != '') {
     for ($i = $vypis - 1; $i < $limit; $i++) {
         echo "<tr >";
-        $pam = $stat[$i]->getDatum();
-        if ($_GET['ktore'] == "umrtia") {
+
+        if ($_GET['ktore'] == "umrtia" || $_GET['ktore'] == "umrtia1") {
+            $pam = $stat[$i]->getDatum();
             $pam1 = $stat[$i]->getPocNaKov();
             $pam2 = $stat[$i]->getPocSKov();
             $pam3 = $stat[$i]->getCelk();
-        } else if($_GET['ktore'] == "kazdodenne" ) {
+        } else if($_GET['ktore'] == "kazdodenne" || $_GET['ktore'] == "denne1" ) {
+            $pam = $stat[$i]->getDatum();
             $pam1 = $stat[$i]->getPcrPotv();
             $pam2 = $stat[$i]->getPcrPoc();
             $pam3 = $stat[$i]->getPcrPoz();
             $pam4 = $stat[$i]->getAgPoc();
             $pam5 = $stat[$i]->getAgPoz();
-        } else if( $_GET['ktore'] == "kraje") {
+        } else if( $_GET['ktore'] == "kraje" || $_GET['ktore']=="kraje1") {
+            $pam = $stat[$i]->getDatum();
             $pam0 = $stat[$i]->getIdKraj();
             $pam1 = $stat[$i]->getAgVyk();
             $pam2 = $stat[$i]->getAgPoz();
             $pam3 = $stat[$i]->getPcrPoz();
             $pam4 = $stat[$i]->getNewcases();
             $pam5 = $stat[$i]->getPozCelk();
-        } else if( $_GET['ktore'] == "nemocnice"){
-            $pam1 = $stat[$i]->getObsadeneLozka();
-            $pam2 = $stat[$i]->getPlucVent();
-            $pam3 = $stat[$i]->getHospitalizovani();
-            $pam0=$stat[$i]->getNemocnica();
+        } else if( $_GET['ktore'] == "nemocnice" || $_GET['ktore']=="nemocnice1"){
+            $pam = $stat[$i];
+            $pam1 = $stat[$i+2];
+            $pam2 = $stat[$i+3];
+            $pam3 = $stat[$i+4];
+            $pam0=$stat[$i+1];
+            $i+=4;
         }
 
 
         echo "<td> $pam </td>";
-        if($_GET['ktore']=="kraje" || $_GET['ktore'] == "nemocnice")  {
+        if($_GET['ktore']=="kraje" || $_GET['ktore'] == "nemocnice" || $_GET['ktore']=="nemocnice1")  {
             echo "<td> $pam0</td>";
         }
         if ($m != "" || $s != "") {
@@ -115,7 +138,7 @@ if ($stat != '') {
             echo "<td> $pam3 </td>";
         }
 
-        if ($_GET['ktore'] == "kazdodenne" ||$_GET['ktore'] == "kraje" ) {
+        if ($_GET['ktore'] == "kazdodenne" ||$_GET['ktore'] == "kraje" || $_GET['ktore'] == "denne1" || $_GET['ktore']=="kraje1" ) {
             if (($p != "" || $s != "")) {
                 echo "<td> $pam4 </td>";
             }

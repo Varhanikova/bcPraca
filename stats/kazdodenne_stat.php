@@ -1,6 +1,4 @@
 <?php
-
-
 class kazdodenne_stat
 {
     private $datum;
@@ -10,7 +8,7 @@ class kazdodenne_stat
     private $ag_poz;
     private $pcr_poc;
 
-    public function __construct($datum,$pcr_potv,$pcr_poc, $pcr_poz, $ag_poz, $ag_poc )
+    public function __construct($datum,$pcr_potv,$pcr_poc, $pcr_poz, $ag_poc, $ag_poz )
     {
         $this->datum = $datum;
         $this->pcr_potv = $pcr_potv;

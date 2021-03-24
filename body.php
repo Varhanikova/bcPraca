@@ -1,5 +1,4 @@
 <?php
-//require "action.php";
 $storage = new DB_storage();
 $kraje = $storage->getKraje();
 
@@ -42,7 +41,7 @@ if (isset($_POST['import'])) {
                 //$id_dat,$rok,$mesiac,$den,$pockov,$pocskov,$celk
                 $vyslo += $storage->importDeaths($par[0], $par[1], $par[2], $par[3], $par[4], $par[5], $par[6]);
             }
-            //$vyslo += $storage->importDeaths($iddat, $rok, $mesiac, $den, $pockov, $pocskov, $celk);
+
 
         }
         if ($vyslo != 0) {
@@ -59,7 +58,9 @@ if (isset($_POST['import'])) {
         }
     }
 }
-
+if(isset($_POST['Send1'])){
+    $ulozene = $_POST['krajelist'];
+}
 
 ?>
 
@@ -174,9 +175,13 @@ if (isset($_POST['import'])) {
                     <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
                         <div>
                             <select id="krajelist" name="krajelist">
-                                <?php for ($i = 0; $i < sizeof($kraje); $i++) { ?>
-                                    <option value="<?= $kraje[$i]->getKraj() ?>"><?= $kraje[$i]->getKraj() ?> </option>
-                                <?php } ?>
+                                <?php for ($i = 0; $i < sizeof($kraje); $i++) {
+                                    if($kraje[$i]->getKraj()==$ulozene){ ?>
+                                    <option selected="selected"><?= $kraje[$i]->getKraj() ?> </option>
+                                <?php } else { ?>
+                                        <option ><?= $kraje[$i]->getKraj() ?> </option>
+                                <?php    }
+                                }?>
                                 <option value="všetky">všetky</option>
                             </select>
                         </div>
@@ -361,7 +366,7 @@ if (isset($_POST['import'])) {
         </div>
         <div class="row pb-4 mb-4">
             <div class="col-sm-1">
-                <input type="submit" name="Send1" value="Zobraz">
+                <input type="submit" name="Send1" value="Filtruj">
             </div>
         </div>
 
@@ -455,17 +460,16 @@ if (isset($_POST['import'])) {
 <main class="container ">
     <p class='pb-4 mb-2 '></p>
     <table id="tu">
-
     </table>
     <p class='pb-4 mb-2 '></p>
-    <?php if (isset($_POST['Send1'])) { ?>
-
     <div class="col-lg-12 text-center pb-4 mb-4 fst-italic border-bottom">
+        <?php// if (isset($_POST['Send1'])) { ?>
         <input id="prev" onclick="previous()" type="button" value="< späť"/>
         <input id="next" onclick="next()" type="button" value="ďalej >"/>
+        <?php// } ?>
     </div>
 </main>
-<?php } ?>
+
 
 
 

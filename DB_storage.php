@@ -112,75 +112,92 @@ class DB_storage
         }
         return $stat;
     }
-    public function mesacneUmrtiaNaKov(){
+
+    public function getMesiac($cislo)
+    {
+        $mes = "";
+        switch ($cislo) {
+            case 1:
+                $mes = "január";
+                break;
+            case 2:
+                $mes = "február";
+                break;
+            case 3:
+                $mes = "marec";
+                break;
+            case 4:
+                $mes = "apríl";
+                break;
+            case 5:
+                $mes = "máj";
+                break;
+            case 6:
+                $mes = "jún";
+                break;
+            case 7:
+                $mes = "júl";
+                break;
+            case 8:
+                $mes = "august";
+                break;
+            case 9:
+                $mes = "september";
+                break;
+            case 10:
+                $mes = "október";
+                break;
+            case 11:
+                $mes = "november";
+                break;
+            case 12:
+                $mes = "december";
+                break;
+        }
+        return $mes;
+    }
+
+    public function mesacneUmrtiaNaKov()
+    {
+        $stmtrok = $this->conn->query("select min(rok) as rok from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum");
+        $minrok = $stmtrok->fetch()['rok'];
+        $stmtmaxrok = $this->conn->query("select max(rok) as rok from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum");
+        $maxrok = $stmtmaxrok->fetch()['rok'];
+        $stmtmaxmeeiac = $this->conn->query("select max(mesiac) as mesiac from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum where rok = '$maxrok'");
+        $maxmes = $stmtmaxmeeiac->fetch()['mesiac'];
         $spolu = 0;
         $stat = [];
-       $rok= 2020;
-       $po = 13;
-        for($i=9;$i<$po; $i++ ) {
-            $stmt = $this->conn->query("select sum(poc_s_kov) as s,sum(poc_umrti_kov) as na from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum 
-                                            where mesiac = '$i' and rok = '$rok'");
-            $stmt1 = $this->conn->query("select sum(celk_poc_umrti) as spolu from deaths_stat");
-            $spolu = $stmt1->fetch()['spolu'];
-            while ($row = $stmt->fetch()) {
+        $rok = $minrok;
+        $stmt1 = $this->conn->query("select sum(celk_poc_umrti) as spolu from deaths_stat");
+        $spolu = $stmt1->fetch()['spolu'];
+        $po = 12;
+        for ($i = 9; $i < $po + 1; $i++) {
+            $stmt = $this->conn->query("select sum(poc_s_kov) as s,sum(poc_umrti_kov) as na from deaths_stat
+                                            join dat on deaths_stat.id_datum = dat.id_datum 
+                                            where dat.mesiac = '$i' and rok = '$rok'");
 
+            while ($row = $stmt->fetch()) {
                 $na = $row['na'];
                 $s = $row['s'];
-                if($spolu>0) {
-                    $stat[] = round($na / $spolu * 100,2);
-                    $stat[] = round($s / $spolu * 100,2);
+                if ($spolu > 0) {
+                    $stat[] = round($na / $spolu * 100, 2);
+                    $stat[] = round($s / $spolu * 100, 2);
+                    $stat[] = $i;
+                    $stat[] = $rok;
                 }
             }
-            if($i==12 && $rok==2020){
-                $i=0;
-                $rok = 2021;
-                $po = 3;
-            }
-        }
-        return $stat;
-    }
-    public function mesacneUmrtiaSKov(){
-        $stat = [];
-        $rok= 2020;
-        for($i=9;$i<13;$i++ ) {
-            $stmt = $this->conn->query("select sum(celk_poc_umrti) as spolu,sum(poc_s_kov) as s from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum 
-                                            where mesiac = '$i' and rok = '$rok'");
-            while ($row = $stmt->fetch()) {
-                $spolu = $row['spolu'];
-                $s = $row['s'];
-                if($spolu>0) {
-                    $stat[] = round($s / $spolu * 100,2);
+            if ($i == 12) {
+                $i = 0;
+                $rok++;
+                if ($rok == $maxrok) {
+                    $po = $maxmes;
                 }
-            }
-            if($i==12 && $rok==2020){
-                $i=0;
-                $rok = 2021;
-            }
-        }
-        return $stat;
-    }
-    public function isThere($datumik, $datab)
-    {
-        $date = '';
-        $min = '';
-        $max ='';
-        if ($datab == "deaths_stat") {
-            $stmt = $this->conn->query("SELECT min(id_datum) as min, max(id_datum) as max FROM deaths_stat WHERE id_datum='$datumik'");
-        } else if ($datab == "hospitals_stat") {
-            $stmt = $this->conn->query("SELECT  min(id_datum) as min, max(id_datum) as max FROM hospitals_stat WHERE id_datum='$datumik'");
-        } else if ($datab == "kazdodenne_stat") {
-            $stmt = $this->conn->query("SELECT  min(id_datum) as min, max(id_datum) as max FROM kazdodenne_stat WHERE id_datum='$datumik'");
-        } else {
-            $stmt = $this->conn->query("SELECT min(id_datum) as min, max(id_datum) as max FROM kraje_stat WHERE id_datum='$datumik'");
-        }
-        while ($row = $stmt->fetch()) {
 
-            $min = $row['min'];
-            $max = $row['max'];
+            }
         }
-        if($min <=$datumik && $max >=$datumik){$date = $datumik;}
-        return $date;
+        return $stat;
     }
+
 
     public function exportDeaths()
     {
@@ -222,11 +239,45 @@ class DB_storage
         }
         return $stat;
     }
+    public function mesacneKraje($kraj){
+        $stmtrok = $this->conn->query("select min(rok) as rok from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum");
+        $minrok = $stmtrok->fetch()['rok'];
+        $stmtmaxrok = $this->conn->query("select max(rok) as rok from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum");
+        $maxrok = $stmtmaxrok->fetch()['rok'];
+        $stmtmaxmeeiac = $this->conn->query("select max(mesiac) as mesiac from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum where rok = '$maxrok'");
+        $maxmes = $stmtmaxmeeiac->fetch()['mesiac'];
+        $stat = [];
+        $rok = $minrok;
+        $po = 12;
+        for ($i = 9; $i < $po + 1; $i++) {
+            $stmt = $this->conn->query("select avg(pcr_poz) as pcr,avg(ag_poz) as ag from kraje_stat
+                                            join dat on kraje_stat.id_datum = dat.id_datum 
+                                            join kraje k on kraje_stat.id_kraj = k.id_kraj
+                                            where dat.mesiac = '$i' and rok = '$rok' and kraj = '$kraj'");
+
+            while ($row = $stmt->fetch()) {
+                    $stat[] = $kraj;
+                    $stat[] = $row['pcr'];
+                    $stat[] = $row['ag'];
+                    $stat[] = $i;
+                    $stat[] = $rok;
+            }
+            if ($i == 12) {
+                $i = 0;
+                $rok++;
+                if ($rok == $maxrok) {
+                    $po = $maxmes;
+                }
+
+            }
+        }
+        return $stat;
+    }
 
     public function getAllKraje()
     {
         $stmt = $this->conn->query("SELECT * from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum
-                                            join kraje on kraje_stat.id_kraj = kraje.id_kraj");
+                                            join kraje on kraje_stat.id_kraj = kraje.id_kraj where kraj = 'Žilinský kraj'");
         $stat = [];
         while ($row = $stmt->fetch()) {
             $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
@@ -280,37 +331,80 @@ class DB_storage
     }
 
     //------------hospitals---------
-    public function getHospitalStat($datum, $dat2, $chcem)
-    {
-        $stmt = $this->conn->query("SELECT nazov,obsadene_lozka,pluc_ventilacia,hospitalizovani,
-                dat.id_datum,den,mesiac, rok FROM hospitals_stat  join dat on(dat.id_datum=hospitals_stat.id_datum ) 
-                join nemocnice n on hospitals_stat.id_nemocnica = n.id_nemocnica 
-                join okresy o on n.id_okres = o.id_okres
-                where hospitals_stat.id_datum between '$datum' and '$dat2' $chcem order by dat.id_datum");
-        $stat = [];
-        while ($row = $stmt->fetch()) {
-            $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
-            $hospital = new hospitals_stat($dat, $row['nazov'], $row['obsadene_lozka'], $row['pluc_ventilacia'], $row['hospitalizovani']);
-            $stat[] = $hospital;
-        }
-        return $stat;
-    }
+
 
     public function getAllHospital_stat()
     {
 
-        $stmt = $this->conn->query("SELECT * FROM hospitals_stat  join dat on(dat.id_datum=hospitals_stat.id_datum ) 
-                join nemocnice n on hospitals_stat.id_nemocnica = n.id_nemocnica 
-                join okresy o on n.id_okres = o.id_okres ");
+        $stmt = $this->conn->query("SELECT den,mesiac,rok,okres,sum(obsadene_lozka) as obs,
+       sum(pluc_ventilacia) as pluc, sum(hospitalizovani) as hosp FROM hospitals_stat  
+           join dat on(dat.id_datum=hospitals_stat.id_datum )  
+           join nemocnice n on hospitals_stat.id_nemocnica = n.id_nemocnica  
+           join okresy o on n.id_okres = o.id_okres where okres = 'Okres Bratislava I' group by okres,rok,mesiac,den ");
         $stat = [];
         while ($row = $stmt->fetch()) {
             $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
-            $hospital = new hospitals_stat($dat, $row['nazov'], $row['obsadene_lozka'], $row['pluc_ventilacia'], $row['hospitalizovani']);
-            $stat[] = $hospital;
+            $stat[] =$dat;
+            $stat[] =$row['okres'];
+            $stat[] =$row['obs'];
+            $stat[] =$row['pluc'];
+            $stat[] =$row['hosp'];
+        }
+
+        return $stat;
+    }
+    public function getAllHospital_stat1($datum, $dat2, $chcem)
+    {
+        $stmt = $this->conn->query("SELECT den,mesiac,rok,sum(obsadene_lozka) as obs,
+       sum(pluc_ventilacia) as pluc, sum(hospitalizovani) as hosp FROM hospitals_stat  
+           join dat on(dat.id_datum=hospitals_stat.id_datum )  
+           join nemocnice n on hospitals_stat.id_nemocnica = n.id_nemocnica  
+           join okresy o on n.id_okres = o.id_okres
+              where hospitals_stat.id_datum between '$datum' and '$dat2' and okres = '$chcem' group by rok,mesiac,den");
+        $stat = [];
+        while ($row = $stmt->fetch()) {
+            $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
+            $stat[] =$dat;
+            $stat[] =$chcem;
+            $stat[] =$row['obs'];
+            $stat[] =$row['pluc'];
+            $stat[] =$row['hosp'];
+        }
+
+        return $stat;
+    }
+    public function mesacneStat(){
+        $stmtrok = $this->conn->query("select min(rok) as rok from hospitals_stat join dat on hospitals_stat.id_datum = dat.id_datum");
+        $minrok = $stmtrok->fetch()['rok'];
+        $stmtmaxrok = $this->conn->query("select max(rok) as rok from hospitals_stat join dat on hospitals_stat.id_datum = dat.id_datum");
+        $maxrok = $stmtmaxrok->fetch()['rok'];
+        $stmtmaxmeeiac = $this->conn->query("select max(mesiac) as mesiac from hospitals_stat join dat on hospitals_stat.id_datum = dat.id_datum where rok = '$maxrok'");
+        $maxmes = $stmtmaxmeeiac->fetch()['mesiac'];
+        $stat = [];
+        $rok = $minrok;
+        $po = 12;
+        for ($i = 10; $i < $po + 1; $i++) {
+            $stmt = $this->conn->query("select sum(obsadene_lozka) as obs, sum(pluc_ventilacia) as pluc,sum(hospitalizovani) as hosp from hospitals_stat
+                                join dat on hospitals_stat.id_datum = dat.id_datum 
+                                where dat.mesiac = '$i' and rok = '$rok'");
+
+            while ($row = $stmt->fetch()) {
+                $stat[] = $row['obs'];
+                $stat[] = $row['pluc'];
+                $stat[] = $row['hosp'];
+                $stat[] = $i;
+                $stat[] = $rok;
+            }
+            if ($i == 12) {
+                $i = 0;
+                $rok++;
+                if ($rok == $maxrok) {
+                    $po = $maxmes;
+                }
+            }
         }
         return $stat;
     }
-
     public function getAllHospitals()
     {
         $stmt = $this->conn->query("SELECT *  FROM nemocnice");
@@ -414,6 +508,47 @@ class DB_storage
             $stmt->execute([$denne->getDatum(), $denne->getPcrPotv(), $denne->getPcrPoc(), $denne->getPcrPoz(), $denne->getAgPoc(), $denne->getAgPoz()]);
             return 0;
         }
+    }
+
+    public function mesacnepozitivne()
+    {
+        $stmtrok = $this->conn->query("select min(rok) as rok from kazdodenne_stat join dat on kazdodenne_stat.id_datum = dat.id_datum");
+        $minrok = $stmtrok->fetch()['rok'];
+        $stmtmaxrok = $this->conn->query("select max(rok) as rok from kazdodenne_stat join dat on kazdodenne_stat.id_datum = dat.id_datum");
+        $maxrok = $stmtmaxrok->fetch()['rok'];
+        $stmtmaxmeeiac = $this->conn->query("select max(mesiac) as mesiac from kazdodenne_stat join dat on kazdodenne_stat.id_datum = dat.id_datum where rok = '$maxrok'");
+        $maxmes = $stmtmaxmeeiac->fetch()['mesiac'];
+        $stat = [];
+        $rok = $minrok;
+        $po = 12;
+        for ($i = 3; $i < $po + 1; $i++) {
+            $stmt = $this->conn->query("select sum(pcr_poc) as pcrp, sum(pcr_poz) as pcr,sum(ag_poc) as agp, sum(ag_poz) as ag  from kazdodenne_stat
+                                            join dat on kazdodenne_stat.id_datum = dat.id_datum 
+                                            where dat.mesiac = '$i' and rok = '$rok'");
+
+            while ($row = $stmt->fetch()) {
+                $pcr = $row['pcr'];
+                $ag = $row['ag'];
+                $pcrp = $row['pcrp'];
+                $agp = $row['agp'];
+                $stat[] = round($pcr / $pcrp * 100, 2);
+                if ($agp == 0) {
+                    $stat[] = 0;
+                } else {
+                    $stat[] = round($ag / $agp * 100, 2);
+                }
+                $stat[] = $i;
+                $stat[] = $rok;
+            }
+            if ($i == 12) {
+                $i = 0;
+                $rok++;
+                if ($rok == $maxrok) {
+                    $po = $maxmes;
+                }
+            }
+        }
+        return $stat;
     }
 
     public function getDate($ktory, $db)

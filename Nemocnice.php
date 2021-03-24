@@ -17,33 +17,20 @@ if (isset($_POST['Send1'])) {
         <?php
     }
     if (!empty($_POST['tags'])) {
-        $chcem = "and okres = '" . $_POST['tags'] . "' ";
+        $chcem = $_POST['tags'] ;
     }
-    /*if (!empty($_POST['date']) && $storage->isThere($_POST['date'], "hospitals_stat") == '') {
-        $chyba1 = 1;
-        ?>
-        <script>
-            window.alert("Neplatný dátum");
-        </script>
-    <?php }
-    if (($_POST['date2'] != "") && $storage->isThere($_POST['date2'], "hospitals_stat") == '') {
-        ?>
-        <script>
-            window.alert("Neplatný dátum");
-        </script>
-    <?php }*/
     if ($_POST['date'] > $_POST['date2']) {
         $chyba1 = 1; ?>
         <script>
             window.alert("Nesprávne zadaný dátum!");
-        </script
+        </script>
     <?php }
 
     if ($chyba1 == 0) {
-      //  if (isset($_POST['date2'])) {
-            $hosp = $storage->getHospitalStat($_POST['date'], $_POST['date2'], $chcem);
-       // }
+            $hosp = $storage->getAllHospital_stat1($_POST['date'], $_POST['date2'], $chcem);
     }
+} else {
+    $hosp = $storage->getAllHospital_stat();
 }
 ?>
 <script>
@@ -73,6 +60,8 @@ if (isset($_POST['Send1'])) {
             }
         };
         var c = j.toString();
+        var je = "<?= isset($_POST['Send1'])?>";
+        if (je !== "") {
         var m = "<?= isset($_POST['obs']) ?>";
 
         if (m !== "") {
@@ -102,6 +91,16 @@ if (isset($_POST['Send1'])) {
         var t = "<?= ($_POST['tags']) ?>";
         <?php } ?>
         var ktore = "nemocnice";
+        } else {
+            n = "Počet osôb na pľúcnej ventilácii";
+            m = "Počet obsadených lôžok";
+            o = "Celkový počet hospitalizovaných";
+            s = "všetko";
+            a="";
+            b="";
+            t="Okres Bratislava I";
+            var ktore = "nemocnice1";
+        }
         xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
         xhttp.send();
     }
@@ -109,12 +108,50 @@ if (isset($_POST['Send1'])) {
 <body>
 <main class="container">
 
-    <h3 class="pb-4 mb-4 fst-italic border-bottom  ">
+    <h3 class="pb-4 mb-4 fst-italic border-bottom text-center ">
         Štatistika nemocníc:
     </h3>
+    <h4 class="pb-4 mb-4 fst-italic  ">
+        Počty pacientov v nemocniciach vrámci okresu:
+    </h4>
 </main>
-    <?php require "body.php" ?>
+    <?php require "body.php" ;
 
+    $nem = $storage->mesacneStat();
+    ?>
+<main class="container ">
+    <div class="col-lg-12">
+        <h4 class="pb-4 mb-4 fst-italic  ">
+            Mesačná situácia v nemocniciach na Slovensku:
+        </h4>
+    </div>
+    <p class='pb-4 mb-2 '></p>
+    <table id="tu">
+        <tr>
+            <th>Rok</th>
+            <th>Mesiac</th>
+            <th>obsadené lôžka</th>
+            <th>pľúcna ventilácia</th>
+            <th>hospitalizovaní</th>
+        </tr>
+
+        <?php
+        for ($i = 0; $i < sizeof($nem); $i++) { ?>
+            <tr>
+                <td><?= $nem[$i+4] ?></td>
+                <td><?= $storage->getMesiac( $nem[$i+3]) ?></td>
+                <td><?= $nem[$i] ?></td>
+                <td><?= $nem[$i+1] ?></td>
+                <td><?= $nem[$i+2] ?></td>
+
+            </tr>
+            <?php $i+=4;
+       } ?>
+
+
+    </table>
+    <p class='pb-4 mb-2 '></p>
+</main>
 </body>
 
 <?php

@@ -13,19 +13,7 @@ if (isset($_POST['Send1'])) {
         </script>
         <?php
     }
-   /* if (!empty($_POST['date']) && $storage->isThere($_POST['date'], "kazdodenne_stat") == '') {
-        $chyba1 = 1;
-        ?>
-        <script>
-            window.alert("Neplatný dátum");
-        </script>
-    <?php }
-   /* if (!empty($_POST['date2']) && $storage->isThere($_POST['date2'], "kazdodenne_stat") == '') {
-        ?>
-        <script>
-            window.alert("Neplatný dátum");
-        </script>
-    <?php }*/
+
     if ($_POST['date'] > $_POST['date2']) {
         $chyba1 = 1; ?>
         <script>
@@ -34,9 +22,7 @@ if (isset($_POST['Send1'])) {
     <?php }
 
     if ($chyba1 == 0) {
-       // if (isset($_POST['date2'])) {
-            $testy = $storage->getAllKazdodenneStat($_POST['date'], $_POST['date2']);
-       // }
+        $testy = $storage->getAllKazdodenneStat($_POST['date'], $_POST['date2']);
     }
 }
 ?>
@@ -54,45 +40,57 @@ if (isset($_POST['Send1'])) {
             }
         };
         var c = j.toString();
-        <?php if(isset($_POST['Send1'])) { ?>
-        var a = "<?=$_POST['date'] ?>";
-        var b = '<?=$_POST['date2'] ?>';
-        <?php } ?>
-        var m = "<?= isset($_POST['pcr_pot']) ?>";
+        var je = "<?= isset($_POST['Send1'])?>";
+        if (je !== "") {
+            <?php if(isset($_POST['Send1'])) { ?>
+            var a = "<?=$_POST['date'] ?>";
+            var b = '<?=$_POST['date2'] ?>';
+            <?php } ?>
+            var m = "<?= isset($_POST['pcr_pot']) ?>";
 
-        if (m !== "") {
+            if (m !== "") {
+                m = "Počet PCR potvrdených prípadov";
+            }
+
+            var n = "<?= isset($_POST['pcr_poc']) ?>";
+
+            if (n !== "") {
+                n = "Počet vykonaných PCR testov";
+            }
+
+            var o = "<?= isset($_POST['pcr_poz']) ?>";
+
+            if (o !== "") {
+                o = "Počet pozitívnych z PCR testov";
+            }
+
+            var p = "<?= isset($_POST['ag_poc']) ?>";
+
+            if (p !== "") {
+                p = "Počet vykonaných AG testov";
+            }
+            var r = "<?= isset($_POST['ag_poz']) ?>";
+
+            if (r !== "") {
+                r = "Počet pozitívnych z AG testov";
+            }
+            var s = "<?= isset($_POST['v']) ?>";
+
+            if (s !== "") {
+                s = "všetko";
+            }
+            var ktore = "kazdodenne";
+        } else {
+            a = "";
+            b = "";
             m = "Počet PCR potvrdených prípadov";
-        }
-
-        var n = "<?= isset($_POST['pcr_poc']) ?>";
-
-        if (n !== "") {
             n = "Počet vykonaných PCR testov";
-        }
-
-        var o = "<?= isset($_POST['pcr_poz']) ?>";
-
-        if (o !== "") {
             o = "Počet pozitívnych z PCR testov";
-        }
-
-        var p = "<?= isset($_POST['ag_poc']) ?>";
-
-        if (p !== "") {
             p = "Počet vykonaných AG testov";
-        }
-        var r = "<?= isset($_POST['ag_poz']) ?>";
-
-        if (r !== "") {
             r = "Počet pozitívnych z AG testov";
-        }
-        var s = "<?= isset($_POST['v']) ?>";
-
-        if (s !== "") {
             s = "všetko";
+            var ktore = "denne1";
         }
-        var ktore = "kazdodenne";
-
 
         xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore, true);
         xhttp.send();
@@ -100,12 +98,51 @@ if (isset($_POST['Send1'])) {
 </script>
 <body>
 <main class="container">
-    <h3 class="pb-4 mb-4 fst-italic border-bottom ">
+    <h3 class="pb-4 mb-4 fst-italic border-bottom text-center ">
         Štatistika každodenného testovania:
     </h3>
+    <h4 class="pb-4 mb-4 fst-italic ">
+        Počty z testovania po dňoch:
+    </h4>
 </main>
-<?php require "body.php" ?>
+<?php require "body.php";
+$perc = $storage->mesacnepozitivne();
 
+?>
+<main class="container ">
+    <div class="col-lg-12">
+        <h4 class="pb-4 mb-4 fst-italic  ">
+            Percentá pozitívnych z testovaných po mesiacoch:
+        </h4>
+    </div>
+    <p class='pb-4 mb-2 '></p>
+    <table id="tu">
+        <tr>
+            <th>Rok</th>
+            <th>Mesiac</th>
+            <th>percentá pozitívnych PCR z testovania</th>
+            <th>percentá pozitívnych AG z testovania</th>
+        </tr>
+
+        <?php
+        for ($i = 0; $i < sizeof($perc); $i++) { ?>
+            <tr>
+
+                <td><?= $perc[$i + 3] ?></td>
+                <td><?=$storage->getMesiac( $perc[$i + 2]) ?></td>
+
+                <td> <?= $perc[$i] ?> %</td>
+
+                <td><?= $perc[$i + 1] ?> %</td>
+            </tr>
+            <?php $i += 3;
+        } ?>
+
+
+    </table>
+    <p class='pb-4 mb-2 '></p>
+
+</main>
 </body>
 <?php
 require "parts/footer.php";
