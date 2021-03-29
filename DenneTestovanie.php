@@ -18,12 +18,14 @@ if (isset($_POST['Send1'])) {
         $chyba1 = 1; ?>
         <script>
             window.alert("Nesprávne zadaný dátum!");
-        </script
+        </script>
     <?php }
 
     if ($chyba1 == 0) {
         $testy = $storage->getAllKazdodenneStat($_POST['date'], $_POST['date2']);
     }
+} else {
+    $testy = $storage->getAllDenne();
 }
 ?>
 <script>

@@ -58,7 +58,8 @@ if (isset($_POST['import'])) {
         }
     }
 }
-if(isset($_POST['Send1'])){
+$ulozene = "";
+if(isset($_POST['krajelist'])){
     $ulozene = $_POST['krajelist'];
 }
 

@@ -277,7 +277,7 @@ class DB_storage
     public function getAllKraje()
     {
         $stmt = $this->conn->query("SELECT * from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum
-                                            join kraje on kraje_stat.id_kraj = kraje.id_kraj where kraj = 'Žilinský kraj'");
+                                            join kraje on kraje_stat.id_kraj = kraje.id_kraj where kraj = 'Bratislavský kraj'");
         $stat = [];
         while ($row = $stmt->fetch()) {
             $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
