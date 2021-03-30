@@ -125,7 +125,7 @@ if ($stat != '') {
 
 
         echo "<td> $pam </td>";
-        if($_GET['ktore']=="kraje" || $_GET['ktore'] == "nemocnice" || $_GET['ktore']=="nemocnice1")  {
+        if($_GET['ktore']=="kraje" || $_GET['ktore'] == "nemocnice" || $_GET['ktore']=="nemocnice1" || $_GET['ktore']=="kraje1" )  {
             echo "<td> $pam0</td>";
         }
         if ($m != "" || $s != "") {

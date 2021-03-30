@@ -47,6 +47,7 @@ if (isset($_POST['Send1'])) {
 
 </script>
 <script>
+
     var j = 1;
     var size = parseInt('<?= sizeof($hosp) ?>');
     displayResults(j);
@@ -117,41 +118,102 @@ if (isset($_POST['Send1'])) {
 </main>
     <?php require "body.php" ;
 
-    $nem = $storage->mesacneStat();
+    $nem = $storage->nemocky("2020-12-01", "2021-01-15");
     ?>
 <main class="container ">
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
-            Mesačná situácia v nemocniciach na Slovensku:
+            Situácia v nemocniciach na celom Slovensku:
         </h4>
     </div>
-    <p class='pb-4 mb-2 '></p>
-    <table id="tu">
-        <tr>
-            <th>Rok</th>
-            <th>Mesiac</th>
-            <th>obsadené lôžka</th>
-            <th>pľúcna ventilácia</th>
-            <th>hospitalizovaní</th>
-        </tr>
 
-        <?php
-        for ($i = 0; $i < sizeof($nem); $i++) { ?>
-            <tr>
-                <td><?= $nem[$i+4] ?></td>
-                <td><?= $storage->getMesiac( $nem[$i+3]) ?></td>
-                <td><?= $nem[$i] ?></td>
-                <td><?= $nem[$i+1] ?></td>
-                <td><?= $nem[$i+2] ?></td>
+    <div class="row">
+        <div class="column col-lg-3">
+        <?php if (isset($_POST['Send1'])) {
+            $od3 = $_POST['date'];
+        } else {
+            $od3 = $storage->getDate('min', 'hospitals_stat');
+        } ?>
+        <div >
+        <label> Od: </label>
+        <input type="date" name="date3" id="date3"
+               value="<?= $od3 ?>"
+               max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
+               min="<?= $storage->getDate('min', 'hospitals_stat') ?>"></div>
+        <div >
+            <label> Do:  </label>
+            <?php if (isset($_POST['Send1'])) {
+                $do3 = $_POST['date2'];
+            } else {
+                $do3 = $storage->getDate('max', 'hospitals_stat');
+            } ?>
+            <input type="date" name="date4" id="date4"
+                   value="<?= $do3 ?>"
+                   max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
+                   min="<?= $storage->getDate('min', 'hospitals_stat') ?>">
+        </div></div>
 
-            </tr>
-            <?php $i+=4;
-       } ?>
+       <div class="column pb-4 mb-2">
+            <div class="col-sm-1" >
+                <button  name="Send" onclick="ukaz1('1')">Filtruj </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var k = 1;
+        const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+        const firstDate = new Date( document.getElementById("date4").value);
+        const secondDate =new Date( document.getElementById("date3").value);
 
+        const diffDays = Math.round((firstDate.getTime() - secondDate.getTime())/oneDay);
+
+        ukaz1(k);
+        function ukaz1(k){
+            var xhttp2 = new XMLHttpRequest();
+
+            xhttp2.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("tu2").innerHTML = this.responseText;
+                }
+            };
+            var c = k.toString();
+            var a =document.getElementById("date3");
+            a = a.value;
+            var b =document.getElementById("date4");
+            b = b.value;
+
+            xhttp2.open("GET", "stats/nemoc_tab.php?a=" + a + "&b=" + b + "&c=" + c, true);
+            xhttp2.send();
+        }
+
+        function next1() {
+            if (k < ((diffDays*4)-27)) {
+                k += 40;
+                ukaz1(k);
+            }
+        }
+
+        function previous1() {
+            if (k > 1) {
+                k-= 40;
+                ukaz1(k);
+            }
+        }
+    </script>
+        <p class='pb-4 mb-2 '></p>
+    <table id="tu2">
 
     </table>
+
     <p class='pb-4 mb-2 '></p>
+    <div class="col-lg-12 text-center pb-4 mb-4 fst-italic ">
+
+        <input id="prev1" onclick="previous1()" type="button" value="< späť"/>
+        <input id="next1" onclick="next1()" type="button" value="ďalej >"/>
+
+    </div>
 </main>
+
 </body>
 
 <?php

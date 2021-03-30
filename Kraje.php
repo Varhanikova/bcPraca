@@ -47,11 +47,12 @@ if (isset($_POST['Send1'])) {
         if (je !== "") {
             var a="";
             var b="";
-            var date = "<?= isset($_POST['date']) ?>";
-            if(date!=="") {
+            <?php if(isset($_POST['Send1'])) { ?>
                 a = "<?=$_POST['date'] ?>";
                 b = '<?=$_POST['date2'] ?>';
-            }
+            var t = "<?= ($_POST['krajelist']) ?>";
+            <?php } ?>
+
             var m = "<?= isset($_POST['ag_vyk']) ?>";
 
             if (m !== "") {
@@ -85,7 +86,7 @@ if (isset($_POST['Send1'])) {
                 s = "všetko";
             }
             var ktore = "kraje";
-            var t = "<?= ($_POST['krajelist']) ?>";
+
         } else {
             t = "";
             m = "Počet vykonaných AG testov";

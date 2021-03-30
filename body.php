@@ -358,8 +358,6 @@ if(isset($_POST['krajelist'])){
                         <?php } ?>
                         <label for="v"> všetky </label><br>
                     </div>
-
-
                 </div>
                 <?php } ?>
             </div>
@@ -370,8 +368,6 @@ if(isset($_POST['krajelist'])){
                 <input type="submit" name="Send1" value="Filtruj">
             </div>
         </div>
-
-
     </form>
     <?php if (isset($_SESSION["name"])) {
     if ($_SESSION["name"] == 'admin') {

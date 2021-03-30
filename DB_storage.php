@@ -410,12 +410,14 @@ class DB_storage
     }
     public function nemocky($dat,$dat2){
         $stat =[];
-        $stmt = $this->conn->query("select sum(obsadene_lozka) as obs, sum(pluc_ventilacia) as pluc,sum(hospitalizovani) as hosp from hospitals_stat where id_datum between '$dat' and '$dat2'");
+        $stmt = $this->conn->query("select den,mesiac,rok,sum(obsadene_lozka) as obs, sum(pluc_ventilacia) as pluc,sum(hospitalizovani) as hosp from hospitals_stat join dat on hospitals_stat.id_datum = dat.id_datum where hospitals_stat.id_datum between '$dat' and '$dat2' group by rok,mesiac,den");
         while ($row = $stmt->fetch()) {
+            $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
+            $stat[] = $dat;
             $stat[] = $row['obs'];
             $stat[] = $row['pluc'];
             $stat[] = $row['hosp'];
-            //ešte dátum!
+
         }
         return $stat;
     }
