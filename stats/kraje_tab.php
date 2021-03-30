@@ -22,10 +22,10 @@ if($_GET['a']){
              echo  " <td>$krajemes[$i]</td>";
 $i--;
              echo  " <td>" .$storage->getMesiac( $krajemes[$i]) . "</td>";
-$i--;
+$i-=2;
              echo  " <td> $krajemes[$i]</td>";
-$i--;
+$i++;
            echo   "  <td> $krajemes[$i]</td>".
             "</tr> ";
-            $i+=3;
+            $i+=2;
         }

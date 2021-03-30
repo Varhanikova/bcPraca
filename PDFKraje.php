@@ -52,8 +52,8 @@ for ($i = 0; $i < sizeof($stat); $i++) {
         $x = 15;
         $xx = 15;
     } else {
-        $x = 9;
-        $xx = 9;
+        $x = 7;
+        $xx = 7;
     }
     $kraj = 50;
     if ($i % 16 == 0) {
@@ -64,8 +64,8 @@ for ($i = 0; $i < sizeof($stat); $i++) {
         $pdf->SetY(26);
         $pdf->SetX($x);
 
-        $pdf->MultiCell(21, 19.5, 'Datum', 1, 'L', 1);
-        $x += 21;
+        $pdf->MultiCell(23, 19.5, 'Datum', 1, 'L', 1);
+        $x += 23;
         $pdf->SetY(26);
         $pdf->SetX($x);
         $pdf->MultiCell($kraj, 19.5, 'Kraj', 1, 'L', 1);
@@ -108,7 +108,7 @@ for ($i = 0; $i < sizeof($stat); $i++) {
     $pdf->Ln();
     $pdf->SetY($y);
     $pdf->SetX($xx);
-    $pdf->Cell(21, 14, $stat[$i]->getDatum(), 1);
+    $pdf->Cell(23, 14, $stat[$i]->getDatum(), 1);
 
     $pdf->cell($kraj, 14, $stat[$i]->getIdKraj(), 1);
 

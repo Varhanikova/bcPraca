@@ -30,28 +30,9 @@ if (isset($_POST['Send1'])) {
 }
 ?>
 <script>
-
     var j = 1;
     var size = parseInt("<?= sizeof($array) ?>");
-
-
-
-</script>
-
-<body>
-<main class="container">
-    <h3 class="pb-4 mb-4 fst-italic border-bottom text-center ">
-        Štatistika testovania po krajoch:
-    </h3>
-    <h4 class="pb-4 mb-4 fst-italic">
-        Počty pri testovaniach:
-    </h4>
-</main>
-<?php require "body.php";
-$kraje = $storage->getKraje();
-
-?>
-<script>
+    displayResults(j);
     function displayResults(j) {
 
         var xhttp = new XMLHttpRequest();
@@ -123,7 +104,23 @@ $kraje = $storage->getKraje();
         xhttp.send();
 
     }
+
+
 </script>
+
+<body>
+<main class="container">
+    <h3 class="pb-4 mb-4 fst-italic border-bottom text-center ">
+        Štatistika testovania po krajoch:
+    </h3>
+    <h4 class="pb-4 mb-4 fst-italic">
+        Počty pri testovaniach:
+    </h4>
+</main>
+<?php require "body.php";
+$kraje = $storage->getKraje();
+
+?>
 <main class="container cislo2">
     <h4 class="pb-4 mb-4 fst-italic  ">
         Mesačný priemer kraja:
@@ -176,10 +173,12 @@ $kraje = $storage->getKraje();
         xhttp2.send();
     }
 
-    displayResults(j);
-    alert("!");
+
+
 </script>
 </body>
+
+
 <?php
 require "parts/footer.php";
 ?>

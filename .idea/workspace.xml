@@ -19,13 +19,18 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="druhé tabuľky">
-      <change afterPath="$PROJECT_DIR$/stats/kraje_tab.php" afterDir="false" />
+    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="posledná štat">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DB_storage.php" beforeDir="false" afterPath="$PROJECT_DIR$/DB_storage.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DenneTestovanie.php" beforeDir="false" afterPath="$PROJECT_DIR$/DenneTestovanie.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Info.php" beforeDir="false" afterPath="$PROJECT_DIR$/Info.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Kraje.php" beforeDir="false" afterPath="$PROJECT_DIR$/Kraje.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/body.php" beforeDir="false" afterPath="$PROJECT_DIR$/body.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PDFKraje.php" beforeDir="false" afterPath="$PROJECT_DIR$/PDFKraje.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/export/deaths_stat.csv" beforeDir="false" afterPath="$PROJECT_DIR$/export/deaths_stat.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/export/hospitals_stat.csv" beforeDir="false" afterPath="$PROJECT_DIR$/export/hospitals_stat.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/export/kazdodenne_stat.csv" beforeDir="false" afterPath="$PROJECT_DIR$/export/kazdodenne_stat.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/export/kraje_stat.csv" beforeDir="false" afterPath="$PROJECT_DIR$/export/kraje_stat.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stats/kraje_tab.php" beforeDir="false" afterPath="$PROJECT_DIR$/stats/kraje_tab.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +65,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DatabaseDriversLRU" value="java.sql.Driver&#10;redshift&#10;azure&#10;mysql&#10;sqlserver" />
+    <property name="DatabaseDriversLRU" value="java.sql.Driver&#10;redshift&#10;azure&#10;sqlserver&#10;mysql" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -120,7 +125,8 @@
       <workItem from="1616530662542" duration="2783000" />
       <workItem from="1616582407746" duration="28033000" />
       <workItem from="1616676351840" duration="1449000" />
-      <workItem from="1617039071166" duration="8807000" />
+      <workItem from="1617039071166" duration="8857000" />
+      <workItem from="1617098443407" duration="9839000" />
     </task>
     <task id="LOCAL-00001" summary="uprava css">
       <created>1615110530990</created>
@@ -220,7 +226,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616616116689</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="posledná štat">
+      <created>1617052290424</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1617052290424</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,7 +257,6 @@
     <MESSAGE value="tabulka pre deaths" />
     <MESSAGE value="tabulka pre kraje_stat" />
     <MESSAGE value="stat nemocnice,kraje,umrtia" />
-    <MESSAGE value="posledná štat" />
     <MESSAGE value="kalendáre úprava" />
     <MESSAGE value="stat cez ajax volané po 15 riadkov" />
     <MESSAGE value="export a začiatok importu" />
@@ -253,7 +265,8 @@
     <MESSAGE value="pdf všetko + ostávajú hodnoty po odoslaní" />
     <MESSAGE value="začiatok agreg fcii" />
     <MESSAGE value="druhé tabuľky" />
-    <option name="LAST_COMMIT_MESSAGE" value="druhé tabuľky" />
+    <MESSAGE value="posledná štat" />
+    <option name="LAST_COMMIT_MESSAGE" value="posledná štat" />
   </component>
   <component name="WindowStateProjectService">
     <state x="348" y="67" key="#CLI_Interpreters" timestamp="1616352948524">
@@ -264,10 +277,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="520" y="236" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1615463234863" />
-    <state x="320" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1615467634328">
+    <state x="320" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617106581730">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="320" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1615467634328" />
+    <state x="320" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1617106581730" />
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1616328300674">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -312,26 +325,30 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="822" y="390" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1617040809651" />
-    <state x="277" y="57" key="SettingsEditor" timestamp="1616352989650">
+    <state x="277" y="57" key="SettingsEditor" timestamp="1617099598327">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1616352989650" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1616616127365">
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1617099598327" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1617052300946">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1616616127365" />
-    <state x="641" y="254" key="com.intellij.database.actions.DdlActions$CreateObject$1" timestamp="1615313882737">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1617052300946" />
+    <state x="641" y="254" key="com.intellij.database.actions.DdlActions$CreateObject$1" timestamp="1617106320155">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="641" y="254" key="com.intellij.database.actions.DdlActions$CreateObject$1/0.0.1536.824@0.0.1536.824" timestamp="1615313882737" />
+    <state x="641" y="254" key="com.intellij.database.actions.DdlActions$CreateObject$1/0.0.1536.824@0.0.1536.824" timestamp="1617106320155" />
     <state x="349" y="67" key="com.intellij.database.dbimport.ImportDialog" timestamp="1615668953614">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="349" y="67" key="com.intellij.database.dbimport.ImportDialog/0.0.1536.824@0.0.1536.824" timestamp="1615668953614" />
-    <state x="634" y="115" width="468" height="594" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1616587946628">
+    <state x="566" y="232" width="403" height="343" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog" timestamp="1617109551686">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="634" y="115" width="468" height="594" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1616587946628" />
+    <state x="566" y="232" width="403" height="343" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog/0.0.1536.824@0.0.1536.824" timestamp="1617109551686" />
+    <state x="634" y="115" width="468" height="594" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1617107893951">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="634" y="115" width="468" height="594" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1536.824@0.0.1536.824" timestamp="1617107893951" />
     <state x="41" y="0" key="com.jetbrains.php.config.phpInfo.PhpInfo.PhpInfoDialog" timestamp="1615222292460">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

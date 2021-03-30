@@ -1,6 +1,7 @@
 <?php
 require "header.php";
 //require "import.php";
+
 ?>
 <script>
     document.getElementById("info").className += " active";

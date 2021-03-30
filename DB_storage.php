@@ -16,14 +16,17 @@ class DB_storage
 
     public function __construct()
     {
-        try {
+        /*try {
             $this->conn = new PDO("sqlsrv:server = tcp:bcpraca.database.windows.net,1433; Database = statistics", "bcpraca", "Bfmv1458");
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             print("Error connecting to SQL Server.");
             printf("%s", $e->getMessage());
             //die(print_r($e));
-        }
+        }*/
+        $dsn = 'mysql:host=localhost;dbname=statistics';
+        $this->conn = new PDO($dsn,"root","");
+        $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC);
     }
 
     public function controlPass($name, $pass)
@@ -34,6 +37,7 @@ class DB_storage
             $heslo = $row['password'];
         }
         $hash = md5($pass);
+
         if ($heslo == $hash) {
             return true;
         } else {
@@ -303,8 +307,7 @@ class DB_storage
         $stmt = $this->conn->query("SELECT * from kraje_stat");
         $fp = fopen('export/kraje_stat.csv', 'w');
         while ($row = $stmt->fetch()) {
-
-            fputcsv($fp, $row);
+          fputcsv($fp, $row);
         }
         fclose($fp);
 
@@ -402,6 +405,17 @@ class DB_storage
                     $po = $maxmes;
                 }
             }
+        }
+        return $stat;
+    }
+    public function nemocky($dat,$dat2){
+        $stat =[];
+        $stmt = $this->conn->query("select sum(obsadene_lozka) as obs, sum(pluc_ventilacia) as pluc,sum(hospitalizovani) as hosp from hospitals_stat where id_datum between '$dat' and '$dat2'");
+        while ($row = $stmt->fetch()) {
+            $stat[] = $row['obs'];
+            $stat[] = $row['pluc'];
+            $stat[] = $row['hosp'];
+            //ešte dátum!
         }
         return $stat;
     }

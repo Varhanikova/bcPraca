@@ -7,5 +7,11 @@
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
       <jdbc-url>jdbc:sqlserver://bcpraca.database.windows.net:1433;database=statistics;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="statistics@localhost" uuid="aaff3a02-85c4-426f-a5fa-585e32452a65">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/statistics</jdbc-url>
+    </data-source>
   </component>
 </project>
