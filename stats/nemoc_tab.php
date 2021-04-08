@@ -5,9 +5,6 @@ $nem = $storage->nemocky($_GET['a'],$_GET['b']);
 
 $vypis = intval($_GET['c']);
 $pridane = $vypis + 39;
-//if($vypis >1) {
-  //  $vypis = $vypis + 36;
-//}
 $pocet = sizeof($nem);
 
 $limit = 0;

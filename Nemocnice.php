@@ -113,7 +113,7 @@ if (isset($_POST['Send1'])) {
         Štatistika nemocníc:
     </h3>
     <h4 class="pb-4 mb-4 fst-italic  ">
-        Počty pacientov v nemocniciach vrámci okresu:
+        Počty pacientov v nemocniciach v danom okrese:
     </h4>
 </main>
     <?php require "body.php" ;

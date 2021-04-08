@@ -3,6 +3,7 @@ require "header.php";
 require_once "DB_storage.php";
 $storage = new DB_storage();
 $testy = [];
+$perc = $storage->mesacnepozitivne();
 if (isset($_POST['Send1'])) {
     $chyba1 = 0;
 
@@ -28,7 +29,36 @@ if (isset($_POST['Send1'])) {
     $testy = $storage->getAllDenne();
 }
 ?>
+
 <script>
+    var m=1;
+    var size1 = parseInt('<?= sizeof($perc) ?>');
+    ukaz1(m);
+    function ukaz1(m){
+        var xhttp2 = new XMLHttpRequest();
+
+        xhttp2.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("tu2").innerHTML = this.responseText;
+            }
+        };
+        var c = m.toString();
+
+        xhttp2.open("GET", "stats/denne_tab.php?c=" + c, true);
+        xhttp2.send();
+    }
+    function next2() {
+        if (m < size1) {
+            m += 40;
+            ukaz1(m);
+        }
+    }
+    function previous2() {
+        if (m-40 > 0) {
+            m-= 40;
+            ukaz1(m);
+        }
+    }
     var j = 1;
     var size = parseInt('<?= sizeof($testy) ?>');
     displayResults(j);
@@ -108,9 +138,10 @@ if (isset($_POST['Send1'])) {
     </h4>
 </main>
 <?php require "body.php";
-$perc = $storage->mesacnepozitivne();
+
 
 ?>
+
 <main class="container ">
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
@@ -118,34 +149,24 @@ $perc = $storage->mesacnepozitivne();
         </h4>
     </div>
     <p class='pb-4 mb-2 '></p>
-    <table id="tu">
-        <tr>
-            <th>Rok</th>
-            <th>Mesiac</th>
-            <th>percentá pozitívnych PCR z testovania</th>
-            <th>percentá pozitívnych AG z testovania</th>
-        </tr>
 
-        <?php
-        for ($i = 0; $i < sizeof($perc); $i++) { ?>
-            <tr>
 
-                <td><?= $perc[$i + 3] ?></td>
-                <td><?=$storage->getMesiac( $perc[$i + 2]) ?></td>
+    <table id="tu2">
 
-                <td> <?= $perc[$i] ?> %</td>
-
-                <td><?= $perc[$i + 1] ?> %</td>
-            </tr>
-            <?php $i += 3;
-        } ?>
 
 
     </table>
     <p class='pb-4 mb-2 '></p>
+    <div class="col-lg-12 text-center pb-4 mb-4 fst-italic ">
 
+        <input id="prev1" onclick="previous2()" type="button" value="< späť"/>
+        <input id="next1" onclick="next2()" type="button" value="ďalej >"/>
+
+    </div>
 </main>
 </body>
+
+
 <?php
 require "parts/footer.php";
 ?>

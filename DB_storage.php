@@ -16,14 +16,6 @@ class DB_storage
 
     public function __construct()
     {
-        /*try {
-            $this->conn = new PDO("sqlsrv:server = tcp:bcpraca.database.windows.net,1433; Database = statistics", "bcpraca", "Bfmv1458");
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            print("Error connecting to SQL Server.");
-            printf("%s", $e->getMessage());
-            //die(print_r($e));
-        }*/
         $dsn = 'mysql:host=localhost;dbname=statistics';
         $this->conn = new PDO($dsn,"root","");
         $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC);

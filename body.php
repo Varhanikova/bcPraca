@@ -28,7 +28,7 @@ if (isset($_POST['import'])) {
                     $par[$i] = $column[$i];
                 }
             }
-            if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) {
+            if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { //************* && sizeof($par)==$pocet
                 //$idkraj,$id_dat,$rok,$mes,$den,$agvyk,$agpoz,$pcrpoz,$new,$celk
                 $vyslo += $storage->importKraje($par[0], $par[1], $par[2], $par[3], $par[4], $par[5], $par[6], $par[7], $par[8], $par[9]);
             } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) {

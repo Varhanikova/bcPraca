@@ -157,7 +157,6 @@ $kraje = $storage->getKraje();
 </main>
 <script>
     ukaz();
-
     function ukaz()
     { var xhttp2 = new XMLHttpRequest();
 
