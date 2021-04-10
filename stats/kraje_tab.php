@@ -7,6 +7,19 @@ if($_GET['a']){
 } else {
     $krajemes = $storage->mesacneKraje("Bratislavský kraj");
 }
+
+
+$vypis = intval($_GET['c']);
+$pridane = $vypis + 39;
+
+$pocet = sizeof($krajemes);
+
+$limit = 0;
+if ($pocet - $pridane > 0) {
+    $limit = $vypis + 39;
+} else {
+    $limit = $pocet;
+}
  echo "<tr>" .
            " <th>Kraj</th>" .
          "   <th>Rok</th> ".
@@ -15,7 +28,7 @@ if($_GET['a']){
            " <th>Priemer z AG pozitívnych</th> ".
        " </tr>";
 
-          for ($i = 0; $i < sizeof($krajemes); $i++) {
+          for ($i = $vypis - 1; $i < $limit; $i++) {
           echo " <tr>".
                 "<td>$krajemes[$i]</td>";
                     $i+=4;

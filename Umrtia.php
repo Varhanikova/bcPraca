@@ -2,7 +2,7 @@
 require "header.php";
 $storage = new DB_storage();
 $umrtia = [];
-
+$perc = $storage->mesacneUmrtiaNaKov();
 if (isset($_POST['Send1'])) {
     $chyba1 = 0;
 
@@ -29,7 +29,34 @@ if (isset($_POST['Send1'])) {
 
 ?>
 <script>
+    var m=1;
+    var size1 = parseInt('<?= sizeof($perc) ?>');
+    ukaz1(m);
+    function ukaz1(m){
+        var xhttp2 = new XMLHttpRequest();
 
+        xhttp2.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("tu2").innerHTML = this.responseText;
+            }
+        };
+        var c = m.toString();
+
+        xhttp2.open("GET", "stats/umrtia_tab.php?c=" + c, true);
+        xhttp2.send();
+    }
+    function next2() {
+        if (m+40 < size1) {
+            m += 40;
+            ukaz1(m);
+        }
+    }
+    function previous2() {
+        if (m-40 > 0) {
+            m-= 40;
+            ukaz1(m);
+        }
+    }
     var j = 1;
     var size = parseInt('<?= sizeof($umrtia) ?>');
     displayResults(j);
@@ -101,7 +128,7 @@ if (isset($_POST['Send1'])) {
 </main>
 
 <?php require "body.php";
-$na = $storage->mesacneUmrtiaNaKov();
+
 
 ?>
 <main class="container ">
@@ -111,33 +138,20 @@ $na = $storage->mesacneUmrtiaNaKov();
         </h4>
     </div>
     <p class='pb-4 mb-2 '></p>
-    <table id="tu">
-        <tr>
-            <th>Rok</th>
-            <th>Mesiac</th>
-            <th>percentá úmrtí na kovid</th>
-            <th>percentá úmrtí s kovid</th>
-        </tr>
-
-        <?php
-        for ($i = 0; $i < sizeof($na); $i++) { ?>
-            <tr>
-                <td> <?= $na[$i + 3] ?> </td>
-                <td><?= $storage->getMesiac($na[$i + 2]) ?> </td>
-
-                <td> <?= $na[$i] ?> %</td>
-
-                <td> <?= $na[$i + 1] ?> %</td>
-            </tr>
-            <?php $i += 3;
-        } ?>
-
+    <table id="tu2">
 
     </table>
     <p class='pb-4 mb-2 '></p>
+    <div class="row ">
+        <div class="col-lg-5"></div>
+    <div class="col-lg-2 text-center pb-4 mb-4  fst-italic ">
 
+        <input id="prev1" onclick="previous2()" type="button" value="< späť"/>
+        <input id="next1" onclick="next2()" type="button" value="ďalej >"/>
+
+    </div>
+    </div>
 </main>
-
 </body>
 <?php
 require "parts/footer.php";

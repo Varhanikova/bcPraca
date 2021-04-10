@@ -48,7 +48,7 @@ if (isset($_POST['Send1'])) {
         xhttp2.send();
     }
     function next2() {
-        if (m < size1) {
+        if (m+40 < size1) {
             m += 40;
             ukaz1(m);
         }

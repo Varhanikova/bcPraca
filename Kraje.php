@@ -120,6 +120,7 @@ if (isset($_POST['Send1'])) {
 </main>
 <?php require "body.php";
 $kraje = $storage->getKraje();
+$krajemes = $storage->mesacneKraje("Bratislavský kraj");
 
 ?>
 <main class="container cislo2">
@@ -135,10 +136,10 @@ $kraje = $storage->getKraje();
             <div class="column col-lg-2">
                 <select id="krajelist2" name="krajelist2" >
                     <?php for ($i = 0; $i < sizeof($kraje); $i++) {
-                        //if($kraje[$i]->getKraj()==$uloz) {?>
-                        <?php// } else { ?>
+                        ?>
+
                             <option value="<?= $kraje[$i]->getKraj() ?>" ><?= $kraje[$i]->getKraj() ?> </option>
-                        <?php  } //}?>
+                        <?php  } ?>
 
                 </select>
             </div>
@@ -154,10 +155,18 @@ $kraje = $storage->getKraje();
 
     </table>
     <p class='pb-4 mb-2 '></p>
+    <div class="col-lg-12 text-center pb-4 mb-4 fst-italic ">
+
+        <input id="prev1" onclick="previous2()" type="button" value="< späť"/>
+        <input id="next1" onclick="next2()" type="button" value="ďalej >"/>
+
+    </div>
 </main>
 <script>
-    ukaz();
-    function ukaz()
+    var m=1;
+    var size1 = parseInt('<?= sizeof($krajemes) ?>');
+    ukaz(m);
+    function ukaz(m)
     { var xhttp2 = new XMLHttpRequest();
 
         xhttp2.onreadystatechange = function () {
@@ -165,14 +174,26 @@ $kraje = $storage->getKraje();
                 document.getElementById("tu2").innerHTML = this.responseText;
             }
         };
-
+            var c = m.toString();
             var a =document.getElementById("krajelist2");
             a = a.value;
 
-        xhttp2.open("GET", "stats/kraje_tab.php?a=" + a, true);
+        xhttp2.open("GET", "stats/kraje_tab.php?a=" + a + "&c=" + c, true);
         xhttp2.send();
     }
 
+    function next2() {
+        if (m+50 < size1) {
+            m += 50;
+            ukaz(m);
+        }
+    }
+    function previous2() {
+        if (m-50 > 0) {
+            m-= 50;
+            ukaz(m);
+        }
+    }
 
 
 </script>
