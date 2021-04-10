@@ -41,19 +41,22 @@ $o = $_GET['o'];
 $s = $_GET['s'];
 $vypis = intval($_GET['c']);
 $pridane = $vypis + 9;
-
+if($_GET['ktore']=="nemocnice" || $_GET['ktore']=="nemocnice1" ){
+    $pridane +=5*8;
+}
 $pocet = sizeof($stat);
 
 $limit = 0;
 if ($pocet - $pridane > 0) {
     $limit = $vypis + 9;
+    if($_GET['ktore']=="nemocnice" || $_GET['ktore']=="nemocnice1" ){
+        $limit +=5*8;
+    }
 } else {
-    $kolko = $pocet - $vypis + 1;
+  //  $kolko = $pocet - $vypis + 1;
     $limit = $pocet;
 }
-if($_GET['ktore']=="nemocnice" || $_GET['ktore']=="nemocnice1" ){
-    $limit +=5*8;
-}
+
 echo
 
 " <tr>";
@@ -63,7 +66,7 @@ if ($stat != '') {
 }
 if($_GET['ktore']=="kraje" || $_GET['ktore']=="kraje1") {
     if ($stat != '') {
-        echo "<th>Kraj</th>";
+        echo "<th class='kraj'>Kraj</th>";
     }
 }
 if($_GET['ktore']=="nemocnice" || $_GET['ktore']=="nemocnice1") {
@@ -90,9 +93,9 @@ if ($_GET['ktore'] == "kazdodenne" || $_GET['ktore'] == "kraje" || $_GET['ktore'
     }
 }
 echo "</tr>";
-if ($stat != '') {
+if ($stat != '' && $pocet >0) {
     for ($i = $vypis - 1; $i < $limit; $i++) {
-        echo "<tr >";
+        echo "<tr>";
 
         if ($_GET['ktore'] == "umrtia" || $_GET['ktore'] == "umrtia1") {
             $pam = $stat[$i]->getDatum();

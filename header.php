@@ -68,17 +68,35 @@ if (isset($_POST['logout'])) {
         }
 
         function next() {
-            if (j < size - 9) {
-                j += 10;
+            <?php if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
+            if (j < size - 50) {
+                j += 50;
+
                 displayResults(j);
             }
+            <?php } else  {?>
+
+            if (j < size - 9) {
+                j += 10;
+
+                displayResults(j);
+            }
+            <?php }  ?>
         }
 
         function previous() {
+            <?php if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
+            if (j > 1) {
+                j -= 50;
+                displayResults(j);
+            }
+            <?php } else  {?>
+
             if (j > 1) {
                 j -= 10;
                 displayResults(j);
             }
+            <?php }  ?>
         }
 
         function odznac(source) {

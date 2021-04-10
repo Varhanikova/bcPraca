@@ -5,7 +5,9 @@ body {
 .admin_part{
     color: black;
 }
-
+th.kraj {
+    width: 20%;
+}
 #nabielo {
     color: white;
 }

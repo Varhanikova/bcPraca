@@ -19,13 +19,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="denne dolná tab výpis po 10">
-      <change afterPath="$PROJECT_DIR$/stats/umrtia_tab.php" afterDir="false" />
+    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="všetky spodné tab majú  posúvanie do budúcna">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DenneTestovanie.php" beforeDir="false" afterPath="$PROJECT_DIR$/DenneTestovanie.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Kraje.php" beforeDir="false" afterPath="$PROJECT_DIR$/Kraje.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Umrtia.php" beforeDir="false" afterPath="$PROJECT_DIR$/Umrtia.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stats/kraje_tab.php" beforeDir="false" afterPath="$PROJECT_DIR$/stats/kraje_tab.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stats/tabulky.php" beforeDir="false" afterPath="$PROJECT_DIR$/stats/tabulky.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/style/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +129,7 @@
       <workItem from="1617820006819" duration="6514000" />
       <workItem from="1617898093101" duration="2126000" />
       <workItem from="1617900306187" duration="3631000" />
-      <workItem from="1618069777634" duration="2484000" />
+      <workItem from="1618069777634" duration="5473000" />
     </task>
     <task id="LOCAL-00001" summary="uprava css">
       <created>1615110530990</created>
@@ -259,7 +257,14 @@
       <option name="project" value="LOCAL" />
       <updated>1617901345064</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="všetky spodné tab majú  posúvanie do budúcna">
+      <created>1618072503804</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1618072503804</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,7 +300,8 @@
     <MESSAGE value="oprava db" />
     <MESSAGE value="všetky štatistiky hotové" />
     <MESSAGE value="denne dolná tab výpis po 10" />
-    <option name="LAST_COMMIT_MESSAGE" value="denne dolná tab výpis po 10" />
+    <MESSAGE value="všetky spodné tab majú  posúvanie do budúcna" />
+    <option name="LAST_COMMIT_MESSAGE" value="všetky spodné tab majú  posúvanie do budúcna" />
   </component>
   <component name="WindowStateProjectService">
     <state x="348" y="67" key="#CLI_Interpreters" timestamp="1616352948524">
@@ -358,10 +364,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1617099598327" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1617901371392">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1618072509307">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1617901371392" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1618072509307" />
     <state x="641" y="254" key="com.intellij.database.actions.DdlActions$CreateObject$1" timestamp="1617106320155">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
