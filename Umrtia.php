@@ -5,17 +5,6 @@ $umrtia = [];
 $perc = $storage->mesacneUmrtiaNaKov();
  $umrtia = $storage->getDeathsAll();?>
 
-        <script>
-            if(!document.getElementById("umrtia_na_kov").checked && !document.getElementById("umrtia_s_kov").checked && !document.getElementById("celk").checked)
-            window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
-        </script>
-
-        <script>
-            if(document.getElementById("date").value > document.getElementById("date2").value) {
-                window.alert("Nesprávne zadaný dátum!");
-            }
-        </script>
-
 <body>
 <main class="container">
     <div class="col-lg-12">
@@ -101,6 +90,11 @@ $perc = $storage->mesacneUmrtiaNaKov();
         var size = parseInt('<?= sizeof($umrtia) ?>');
         displayResults(j);
         function displayResults(j) {
+            if(document.getElementById("date").value > document.getElementById("date2").value ) {
+                window.alert("Nesprávne zadaný dátum!");
+            } else if(document.getElementById("umrtia_na_kov").checked===false && document.getElementById("umrtia_s_kov").checked===false && document.getElementById("celk").checked===false){
+                window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
+            }  else {
             var xhttp = new XMLHttpRequest();
 
             xhttp.onreadystatechange = function () {
@@ -127,7 +121,7 @@ $perc = $storage->mesacneUmrtiaNaKov();
             xhttp.open("GET", "stats/umrtia_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore, true);
             xhttp.send();
             setLinkValueUmrtia();
-        }
+        }}
 
     </script>
 </main>

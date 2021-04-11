@@ -4,33 +4,10 @@ $storage = new DB_storage();
 $array = [];
 $chcem = "";
 
-if (isset($_POST['Send1'])) {
-
-    $chyba1 = 0;
-    if (!isset($_POST['poz_celk']) && !isset($_POST['pcr_poz']) && !isset($_POST['ag_poz']) && !isset($_POST['ag_vyk']) && !isset($_POST['newcases']) && !isset($_POST['v'])) {
-        $chyba1 = 1; ?>
-        <script>
-            window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
-        </script>
-        <?php
-    }
-    if (!empty($_POST['krajelist'])) {
-        $chcem = "and kraj = '" . $_POST['krajelist'] . "' ";
-    }
-    if ($_POST['date'] > $_POST['date2']) {
-        $chyba1 = 1; ?>
-        <script>
-            window.alert("Nesprávne zadaný dátum!");
-        </script>
-    <?php }
-    if ($chyba1 == 0) {
-        $array = $storage->getKrajeStat($_POST['date'], $_POST['date2'], $chcem);
-    }
-} else {
 
     $array = $storage->getAllKraje();
 
-}
+
 $kraje = $storage->getKraje();
 $krajemes = $storage->mesacneKraje("Bratislavský kraj");
 
@@ -45,38 +22,56 @@ if(isset($_POST['krajelist'])){
     var size = parseInt("<?= sizeof($array) ?>");
     displayResults(j);
     function displayResults(j) {
+        if(document.getElementById("date").value > document.getElementById("date2").value ) {
+            window.alert("Nesprávne zadaný dátum!");
+        } else if(document.getElementById("ag_vyk").checked===false && document.getElementById("ag_poz").checked===false && document.getElementById("pcr_poz").checked===false
+            && document.getElementById("newcases").checked===false && document.getElementById("poz_celk").checked===false){
+            window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
+        }  else {
+            var xhttp = new XMLHttpRequest();
 
-        var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("tu").innerHTML = this.responseText;
+                }
+            };
+            var c = j.toString();
 
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("tu").innerHTML = this.responseText;
+            var ktore = "prva";
+            var a = document.getElementById("date");
+            a = a.value;
+            var b = document.getElementById("date2");
+            b = b.value;
+            var m = "";
+            var n = "";
+            var o = "";
+            var p = "";
+            var r = "";
+            var s = "";
+            var t = "";
+            if (document.getElementById("ag_vyk").checked) {
+                m = "Počet vykonaných AG testov";
             }
-        };
-        var c = j.toString();
-
-        var ktore = "prva";
-        var a =document.getElementById("date");
-        a = a.value;
-        var b =document.getElementById("date2");
-        b = b.value;
-        var m = "";
-        var n = "";
-        var o = "";
-        var p = "";
-        var r = "";
-        var s="";
-        var t="";
-        if(document.getElementById("ag_vyk").checked){  m = "Počet vykonaných AG testov";}
-        if(document.getElementById("ag_poz").checked){  n = "Počet pozitívnych z AG testov";}
-        if(document.getElementById("pcr_poz").checked){  o = "Počet pozitívnych z PCR testov";}
-        if(document.getElementById("newcases").checked){  p = "Počet nových prípadov";}
-        if(document.getElementById("poz_celk").checked){  r = "Počet celkovo pozitívnych prípadov";}
-        if(document.getElementById("v").checked){  s = "všetko";}
-        t=document.getElementById("krajelist").value;
-        xhttp.open("GET", "stats/kraje_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
-        xhttp.send();
-        setLinkValueKraje()
+            if (document.getElementById("ag_poz").checked) {
+                n = "Počet pozitívnych z AG testov";
+            }
+            if (document.getElementById("pcr_poz").checked) {
+                o = "Počet pozitívnych z PCR testov";
+            }
+            if (document.getElementById("newcases").checked) {
+                p = "Počet nových prípadov";
+            }
+            if (document.getElementById("poz_celk").checked) {
+                r = "Počet celkovo pozitívnych prípadov";
+            }
+            if (document.getElementById("v").checked) {
+                s = "všetko";
+            }
+            t = document.getElementById("krajelist").value;
+            xhttp.open("GET", "stats/kraje_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
+            xhttp.send();
+            setLinkValueKraje();
+        }
     }
 
 

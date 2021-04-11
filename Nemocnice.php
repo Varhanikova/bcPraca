@@ -5,33 +5,7 @@ $hosp = [];
 $nemocnice = $storage->getAllHospitals();
 $okresy = $storage->getOkresy();
 $chcem = "";
-
-if (isset($_POST['Send1'])) {
-    $chyba1 = 0;
-
-    if (!isset($_POST['obs']) && !isset($_POST['pluc']) && !isset($_POST['hosp']) && !isset($_POST['v'])) {
-        $chyba1 = 1; ?>
-        <script>
-            window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
-        </script>
-        <?php
-    }
-    if (!empty($_POST['tags'])) {
-        $chcem = $_POST['tags'] ;
-    }
-    if ($_POST['date'] > $_POST['date2']) {
-        $chyba1 = 1; ?>
-        <script>
-            window.alert("Nesprávne zadaný dátum!");
-        </script>
-    <?php }
-
-    if ($chyba1 == 0) {
-            $hosp = $storage->getAllHospital_stat1($_POST['date'], $_POST['date2'], $chcem);
-    }
-} else {
-    $hosp = $storage->getAllHospital_stat();
-}
+$hosp = $storage->getAllHospital_stat();
 ?>
 <script>
     $(function () {
@@ -50,8 +24,14 @@ if (isset($_POST['Send1'])) {
     var j = 1;
     var size = parseInt('<?= sizeof($hosp) ?>');
     displayResults(j);
-
     function displayResults(j) {
+        if(document.getElementById("date").value > document.getElementById("date2").value ) {
+            window.alert("Nesprávne zadaný dátum!");
+        } else if(document.getElementById("obs").checked===false && document.getElementById("pluc").checked===false && document.getElementById("hosp").checked===false){
+            window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
+        } else if(document.getElementById("tags").value === ""){
+            window.alert("Nie je zvolený žiaden okres!");
+        } else {
         var xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function () {
@@ -77,6 +57,7 @@ if (isset($_POST['Send1'])) {
         t = document.getElementById("tags").value;
         xhttp.open("GET", "stats/nemoc_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
         xhttp.send();
+        }
     }
 </script>
 <body>

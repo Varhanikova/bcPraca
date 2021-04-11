@@ -4,30 +4,7 @@ require_once "DB_storage.php";
 $storage = new DB_storage();
 $testy = [];
 $perc = $storage->mesacnepozitivne();
-if (isset($_POST['Send1'])) {
-    $chyba1 = 0;
-
-    if (!isset($_POST['pcr_pot']) && !isset($_POST['pcr_poc']) && !isset($_POST['pcr_poz']) && !isset($_POST['ag_poz']) && !isset($_POST['ag_poc']) && !isset($_POST['v'])) {
-        $chyba1 = 1; ?>
-        <script>
-            window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
-        </script>
-        <?php
-    }
-
-    if ($_POST['date'] > $_POST['date2']) {
-        $chyba1 = 1; ?>
-        <script>
-            window.alert("Nesprávne zadaný dátum!");
-        </script>
-    <?php }
-
-    if ($chyba1 == 0) {
-        $testy = $storage->getAllKazdodenneStat($_POST['date'], $_POST['date2']);
-    }
-} else {
     $testy = $storage->getAllDenne();
-}
 ?>
 
 <script>
@@ -36,6 +13,12 @@ if (isset($_POST['Send1'])) {
     displayResults(j);
 
     function displayResults(j) {
+        if(document.getElementById("date").value > document.getElementById("date2").value ) {
+            window.alert("Nesprávne zadaný dátum!");
+        } else if(document.getElementById("pcr_pot").checked===false && document.getElementById("pcr_poc").checked===false && document.getElementById("pcr_poz").checked===false
+            && document.getElementById("ag_poc").checked===false && document.getElementById("ag_poz").checked===false){
+            window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
+        }  else {
         var xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function () {
@@ -64,7 +47,7 @@ if (isset($_POST['Send1'])) {
         if(document.getElementById("v").checked){  s = "všetko";}
         xhttp.open("GET", "stats/denne_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore, true);
         xhttp.send();
-        setLinkValueDenne();
+        setLinkValueDenne();}
     }
 </script>
 <body>
