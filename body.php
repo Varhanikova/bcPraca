@@ -11,18 +11,23 @@ if (isset($_POST['import'])) {
     if ($_FILES['myFile']['size'] > 0) {
         $file = fopen($fileName, "r");
         $vyslo = 0;
+        $pocet = 0;
+             if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) {
+                 $pocet = 10; //$idkraj,$id_dat,$rok,$mes,$den,$agvyk,$agpoz,$pcrpoz,$new,$celk
+             } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) {
+                 $pocet = 8;//$id_dat,$rok,$mes,$den,$idnem,$obs,$pluc,$hosp
+             } else if (strpos($_SERVER['REQUEST_URI'], "Denne") !== false) {
+                 $pocet = 9;//$id_dat,$rok,$mes,$den,$pcrpot,$pcrpoc,$pcrpoz,$agpoc,$agpoz
+             } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) {
+                 $pocet = 7;//$id_dat,$rok,$mesiac,$den,$pockov,$pocskov,$celk
+             }
+
         while (($column = fgetcsv($file, 10000, ";")) !== FALSE) {
+
+            if(count($column)==$pocet) {
+
             $par = [];
-            $pocet = 0;
-            if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) {
-                $pocet = 10; //$idkraj,$id_dat,$rok,$mes,$den,$agvyk,$agpoz,$pcrpoz,$new,$celk
-            } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) {
-                $pocet = 8;//$id_dat,$rok,$mes,$den,$idnem,$obs,$pluc,$hosp
-            } else if (strpos($_SERVER['REQUEST_URI'], "Denne") !== false) {
-                $pocet = 9;//$id_dat,$rok,$mes,$den,$pcrpot,$pcrpoc,$pcrpoz,$agpoc,$agpoz
-            } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) {
-                $pocet = 7;//$id_dat,$rok,$mesiac,$den,$pockov,$pocskov,$celk
-            }
+
             for ($i = 0; $i < $pocet; $i++) {
                 if (isset($column[$i])) {
                     $par[$i] = $column[$i];
@@ -41,21 +46,24 @@ if (isset($_POST['import'])) {
                 //$id_dat,$rok,$mesiac,$den,$pockov,$pocskov,$celk
                 $vyslo += $storage->importDeaths($par[0], $par[1], $par[2], $par[3], $par[4], $par[5], $par[6]);
             }
-
-
+        } else {
+                $vyslo=-1;
+            }
         }
-        if ($vyslo != 0) {
+        if ($vyslo > 0) {
             ?>
             <script>
-                window.alert("Nepodarilo sa vložiť! PK už existuje");
+                window.alert("Nepodarilo sa vložiť!");
             </script>
-        <?php } else { ?>
+        <?php } else if($vyslo==0){ ?>
             <script>
                 window.alert("Vložili sa údaje");
             </script>
             <?php
 
-        }
+        } else { ?>
+            <script> window.alert("Súbor neobsahuje správny počet záznamov! " );</script>
+      <?php  }
     }
 }
 $ulozene = "";
@@ -66,7 +74,7 @@ if(isset($_POST['krajelist'])){
 ?>
 
 <script>
-
+displayResults(1);
     function imp() {
         if (document.getElementById("rozbal").style.display == "none") {
             document.getElementById("rozbal").style.display = "block";
@@ -104,7 +112,7 @@ if(isset($_POST['krajelist'])){
 </script>
 
 <main class="container ">
-    <form method="post">
+     <form method="post">
         <div class="row pb-4 mb-4">
             <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false || strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
                 <div class="column col-lg-4">
@@ -365,10 +373,10 @@ if(isset($_POST['krajelist'])){
         </div>
         <div class="row pb-4 mb-4">
             <div class="col-sm-1">
-                <input type="submit" name="Send1" value="Filtruj">
+                <button onclick="displayResults(1)" name="Send1">Filtruj</button>
             </div>
         </div>
-    </form>
+  </form>
     <?php if (isset($_SESSION["name"])) {
     if ($_SESSION["name"] == 'admin') {
     ?>
@@ -424,7 +432,7 @@ if(isset($_POST['krajelist'])){
                     <form class="form-horizontal" method="post" name="frmCSVImport"
                           id="frmCSVImport" enctype="multipart/form-data">
                         <input type="file" name="myFile" id="myFile" accept=".csv">
-                        <button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+                        <button  type="submit" id="import" name="import" class="btn-submit">Import</button>
                         <br/>
                     </form>
                     <h4> ! Formát dát: </h4>
@@ -448,11 +456,10 @@ if(isset($_POST['krajelist'])){
 
             </div>
         </div>
-
+    </div>
         <?php }
         }
         ?>
-    </div>
 </main>
 <main class="container ">
     <p class='pb-4 mb-2 '></p>

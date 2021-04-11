@@ -29,38 +29,11 @@ if (isset($_POST['Send1'])) {
 
 ?>
 <script>
-    var m=1;
-    var size1 = parseInt('<?= sizeof($perc) ?>');
-    ukaz1(m);
-    function ukaz1(m){
-        var xhttp2 = new XMLHttpRequest();
 
-        xhttp2.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("tu2").innerHTML = this.responseText;
-            }
-        };
-        var c = m.toString();
 
-        xhttp2.open("GET", "stats/umrtia_tab.php?c=" + c, true);
-        xhttp2.send();
-    }
-    function next2() {
-        if (m+40 < size1) {
-            m += 40;
-            ukaz1(m);
-        }
-    }
-    function previous2() {
-        if (m-40 > 0) {
-            m-= 40;
-            ukaz1(m);
-        }
-    }
     var j = 1;
     var size = parseInt('<?= sizeof($umrtia) ?>');
     displayResults(j);
-
     function displayResults(j) {
         var xhttp = new XMLHttpRequest();
 
@@ -109,7 +82,6 @@ if (isset($_POST['Send1'])) {
             s = "všetko";
             var ktore = "umrtia1";
         }
-
         xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore, true);
         xhttp.send();
     }
@@ -151,6 +123,35 @@ if (isset($_POST['Send1'])) {
 
     </div>
     </div>
+    <script> var m=1;
+        var size1 = parseInt('<?= sizeof($perc) ?>');
+        ukaz1(m);
+        function ukaz1(m){
+            var xhttp2 = new XMLHttpRequest();
+
+            xhttp2.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("tu2").innerHTML = this.responseText;
+                }
+            };
+            var c = m.toString();
+
+            xhttp2.open("GET", "stats/umrtia_tab.php?c=" + c, true);
+            xhttp2.send();
+        }
+        function next2() {
+            if (m+40 < size1) {
+                m += 40;
+                ukaz1(m);
+            }
+        }
+        function previous2() {
+            if (m-40 > 0) {
+                m-= 40;
+                ukaz1(m);
+            }
+        }
+    </script>
 </main>
 </body>
 <?php

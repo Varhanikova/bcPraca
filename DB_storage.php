@@ -212,7 +212,7 @@ class DB_storage
         $death = new Umrtia_stat($id_dat, $pockov, $pocskov, $celk);
         $this->checkDat($id_dat, $rok, $mesiac, $den);
         if ($row = ($this->conn->query("Select id_datum from deaths_stat where id_datum = '$id_dat'"))->fetch()) {
-            return -1;
+            return 1;
         } else {
             $stmt = $this->conn->prepare("INSERT INTO deaths_stat(id_datum, poc_umrti_kov, poc_s_kov, celk_poc_umrti) VALUES(?,?,?,?)");
             $stmt->execute([$death->getDatum(), $death->getPocNaKov(), $death->getPocSKov(), $death->getCelk()]);
@@ -236,11 +236,11 @@ class DB_storage
         return $stat;
     }
     public function mesacneKraje($kraj){
-        $stmtrok = $this->conn->query("select min(rok) as rok from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum");
+        $stmtrok = $this->conn->query("select min(rok) as rok from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum join kraje on kraje_stat.id_kraj = kraje.id_kraj where kraj = '$kraj'");
         $minrok = $stmtrok->fetch()['rok'];
-        $stmtmaxrok = $this->conn->query("select max(rok) as rok from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum");
+        $stmtmaxrok = $this->conn->query("select max(rok) as rok from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum join kraje on kraje_stat.id_kraj = kraje.id_kraj where kraj = '$kraj'");
         $maxrok = $stmtmaxrok->fetch()['rok'];
-        $stmtmaxmeeiac = $this->conn->query("select max(mesiac) as mesiac from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum where rok = '$maxrok'");
+        $stmtmaxmeeiac = $this->conn->query("select max(mesiac) as mesiac from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum join kraje on kraje_stat.id_kraj = kraje.id_kraj where kraj = '$kraj' and rok = '$maxrok'");
         $maxmes = $stmtmaxmeeiac->fetch()['mesiac'];
         $stat = [];
         $rok = $minrok;
@@ -317,7 +317,7 @@ class DB_storage
         $kraje = new kraje_stat($idkraj, $id_dat, $agvyk, $agpoz, $pcrpoz, $new, $celk);
         $this->checkDat($id_dat, $rok, $mes, $den);
         if ($row = ($this->conn->query("Select id_datum from kraje_stat where id_datum = '$id_dat'"))->fetch()) {
-            return -1;
+            return 1;
         } else {
             $stmt = $this->conn->prepare("INSERT INTO kraje_stat(id_kraj,id_datum,ag_vykonanych,ag_poz,pcr_poz,newcases,poz_celk) VALUES(?,?,?,?,?,?,?)");
             $stmt->execute([$kraje->getIdKraj(), $kraje->getDatum(), $kraje->getAgVyk(), $kraje->getAgPoz(), $kraje->getPcrPoz(), $kraje->getNewcases(), $kraje->getPozCelk()]);
@@ -453,7 +453,7 @@ class DB_storage
         $hospitals = new hospitals_stat($id_dat, $idnem, $obs, $pluc, $hosp);
         $this->checkDat($id_dat, $rok, $mes, $den);
         if ($row = ($this->conn->query("Select id_datum from hospitals_stat where id_datum = '$id_dat'"))->fetch()) {
-            return -1;
+            return 1;
         } else {
             $stmt = $this->conn->prepare("INSERT INTO hospitals_stat(id_datum, id_nemocnica, obsadene_lozka, pluc_ventilacia, hospitalizovani) VALUES(?,?,?,?,?)");
             $stmt->execute([$hospitals->getDatum(), $hospitals->getNemocnica(), $hospitals->getObsadeneLozka(), $hospitals->getPlucVent(), $hospitals->getHospitalizovani()]);
@@ -510,7 +510,7 @@ class DB_storage
         $denne = new kazdodenne_stat($id_dat, $pcrpot, $pcrpoc, $pcrpoz, $agpoc, $agpoz);
         $this->checkDat($id_dat, $rok, $mes, $den);
         if ($row = ($this->conn->query("Select id_datum from kazdodenne_stat where id_datum = '$id_dat'"))->fetch()) {
-            return -1;
+            return 1;
         } else {
             $stmt = $this->conn->prepare("INSERT INTO kazdodenne_stat(id_datum, pcr_potvrdene, pcr_poc, pcr_poz, ag_poc, ag_poz) VALUES(?,?,?,?,?,?)");
             $stmt->execute([$denne->getDatum(), $denne->getPcrPotv(), $denne->getPcrPoc(), $denne->getPcrPoz(), $denne->getAgPoc(), $denne->getAgPoz()]);

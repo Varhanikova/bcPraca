@@ -47,7 +47,6 @@ if (isset($_POST['Send1'])) {
 
 </script>
 <script>
-
     var j = 1;
     var size = parseInt('<?= sizeof($hosp) ?>');
     displayResults(j);

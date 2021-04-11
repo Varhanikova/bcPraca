@@ -1,6 +1,7 @@
 <?php
 require "../DB_storage.php";
 $storagee = new DB_storage();
+
 if ($_GET['ktore'] == "kazdodenne") {
     $p = $_GET['p'];
     $r = $_GET['r'];
@@ -17,6 +18,7 @@ if ($_GET['ktore'] == "kazdodenne") {
     $r = $_GET['r'];
 
 } else if($_GET['ktore']=="kraje1") {
+
     $stat = $storagee->getAllKraje();
     $t = $_GET['t'];
     $p = $_GET['p'];
@@ -53,7 +55,6 @@ if ($pocet - $pridane > 0) {
         $limit +=5*8;
     }
 } else {
-  //  $kolko = $pocet - $vypis + 1;
     $limit = $pocet;
 }
 
@@ -123,7 +124,7 @@ if ($stat != '' && $pocet >0) {
             $pam2 = $stat[$i+3];
             $pam3 = $stat[$i+4];
             $pam0=$stat[$i+1];
-            $i+=4;
+            $i+=4   ;
         }
 
 

@@ -31,34 +31,7 @@ if (isset($_POST['Send1'])) {
 ?>
 
 <script>
-    var m=1;
-    var size1 = parseInt('<?= sizeof($perc) ?>');
-    ukaz1(m);
-    function ukaz1(m){
-        var xhttp2 = new XMLHttpRequest();
 
-        xhttp2.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("tu2").innerHTML = this.responseText;
-            }
-        };
-        var c = m.toString();
-
-        xhttp2.open("GET", "stats/denne_tab.php?c=" + c, true);
-        xhttp2.send();
-    }
-    function next2() {
-        if (m+40 < size1) {
-            m += 40;
-            ukaz1(m);
-        }
-    }
-    function previous2() {
-        if (m-40 > 0) {
-            m-= 40;
-            ukaz1(m);
-        }
-    }
     var j = 1;
     var size = parseInt('<?= sizeof($testy) ?>');
     displayResults(j);
@@ -163,6 +136,34 @@ if (isset($_POST['Send1'])) {
         <input id="next1" onclick="next2()" type="button" value="ďalej >"/>
 
     </div>
+    <script>  var m=1;
+        var size1 = parseInt('<?= sizeof($perc) ?>');
+        ukaz1(m);
+        function ukaz1(m){
+            var xhttp2 = new XMLHttpRequest();
+
+            xhttp2.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("tu2").innerHTML = this.responseText;
+                }
+            };
+            var c = m.toString();
+
+            xhttp2.open("GET", "stats/denne_tab.php?c=" + c, true);
+            xhttp2.send();
+        }
+        function next2() {
+            if (m+40 < size1) {
+                m += 40;
+                ukaz1(m);
+            }
+        }
+        function previous2() {
+            if (m-40 > 0) {
+                m-= 40;
+                ukaz1(m);
+            }
+        } </script>
 </main>
 </body>
 

@@ -5,6 +5,7 @@ $array = [];
 $chcem = "";
 
 if (isset($_POST['Send1'])) {
+
     $chyba1 = 0;
     if (!isset($_POST['poz_celk']) && !isset($_POST['pcr_poz']) && !isset($_POST['ag_poz']) && !isset($_POST['ag_vyk']) && !isset($_POST['newcases']) && !isset($_POST['v'])) {
         $chyba1 = 1; ?>
@@ -26,10 +27,13 @@ if (isset($_POST['Send1'])) {
         $array = $storage->getKrajeStat($_POST['date'], $_POST['date2'], $chcem);
     }
 } else {
+
     $array = $storage->getAllKraje();
+
 }
 ?>
 <script>
+
     var j = 1;
     var size = parseInt("<?= sizeof($array) ?>");
     displayResults(j);
@@ -98,9 +102,8 @@ if (isset($_POST['Send1'])) {
             a = '';
             b = '';
             ktore = "kraje1";
-
-
         }
+
         xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
         xhttp.send();
 
@@ -145,7 +148,7 @@ $krajemes = $storage->mesacneKraje("Bratislavský kraj");
             </div>
             <div class="row pb-4 mb-2">
                 <div class="col-sm-1" >
-                    <button  name="Send2" onclick="ukaz()">Filtruj </button>
+                    <button  name="Send2" onclick="ukaz(1)">Filtruj </button>
                 </div>
             </div>
         </div>
