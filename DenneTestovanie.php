@@ -31,7 +31,6 @@ if (isset($_POST['Send1'])) {
 ?>
 
 <script>
-
     var j = 1;
     var size = parseInt('<?= sizeof($testy) ?>');
     displayResults(j);
@@ -45,60 +44,27 @@ if (isset($_POST['Send1'])) {
             }
         };
         var c = j.toString();
-        var je = "<?= isset($_POST['Send1'])?>";
-        if (je !== "") {
-            <?php if(isset($_POST['Send1'])) { ?>
-            var a = "<?=$_POST['date'] ?>";
-            var b = '<?=$_POST['date2'] ?>';
-            <?php } ?>
-            var m = "<?= isset($_POST['pcr_pot']) ?>";
 
-            if (m !== "") {
-                m = "Počet PCR potvrdených prípadov";
-            }
-
-            var n = "<?= isset($_POST['pcr_poc']) ?>";
-
-            if (n !== "") {
-                n = "Počet vykonaných PCR testov";
-            }
-
-            var o = "<?= isset($_POST['pcr_poz']) ?>";
-
-            if (o !== "") {
-                o = "Počet pozitívnych z PCR testov";
-            }
-
-            var p = "<?= isset($_POST['ag_poc']) ?>";
-
-            if (p !== "") {
-                p = "Počet vykonaných AG testov";
-            }
-            var r = "<?= isset($_POST['ag_poz']) ?>";
-
-            if (r !== "") {
-                r = "Počet pozitívnych z AG testov";
-            }
-            var s = "<?= isset($_POST['v']) ?>";
-
-            if (s !== "") {
-                s = "všetko";
-            }
-            var ktore = "kazdodenne";
-        } else {
-            a = "";
-            b = "";
-            m = "Počet PCR potvrdených prípadov";
-            n = "Počet vykonaných PCR testov";
-            o = "Počet pozitívnych z PCR testov";
-            p = "Počet vykonaných AG testov";
-            r = "Počet pozitívnych z AG testov";
-            s = "všetko";
-            var ktore = "denne1";
-        }
-
-        xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore, true);
+        var ktore = "prva";
+        var a =document.getElementById("date");
+        a = a.value;
+        var b =document.getElementById("date2");
+        b = b.value;
+        var m = "";
+        var n = "";
+        var o = "";
+        var p = "";
+        var r = "";
+        var s="";
+        if(document.getElementById("pcr_pot").checked){  m = "Počet PCR potvrdených prípadov";}
+        if(document.getElementById("pcr_poc").checked){  n = "Počet vykonaných PCR testov";}
+        if(document.getElementById("pcr_poz").checked){  o = "Počet pozitívnych z PCR testov";}
+        if(document.getElementById("ag_poc").checked){  p = "Počet vykonaných AG testov";}
+        if(document.getElementById("ag_poz").checked){  r = "Počet pozitívnych z AG testov";}
+        if(document.getElementById("v").checked){  s = "všetko";}
+        xhttp.open("GET", "stats/denne_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore, true);
         xhttp.send();
+        setLinkValueDenne();
     }
 </script>
 <body>
@@ -110,11 +76,85 @@ if (isset($_POST['Send1'])) {
         Počty z testovania po dňoch:
     </h4>
 </main>
+
+<main class="container ">
+    <!-- <form method="post"> -->
+    <div class="row pb-4 mb-4">
+                   <div class="column col-lg-6">
+                <div>
+                    <label> Zvoľte si dátumy: </label> <br>
+                </div>
+
+                    <div>
+                        <div>
+                            <?php
+                                $od = $storage->getDate('min', 'kazdodenne_stat');
+                             ?>
+                            &emsp;<label for="date"> Od: </label>
+                            <input type="date" name="date" id="date"
+                                   value="<?= $od ?>"
+                                   max="<?= $storage->getDate('max', 'kazdodenne_stat') ?>"
+                                   min="<?= $storage->getDate('min', 'kazdodenne_stat') ?>">
+                        </div>
+                        <div>
+                            <?php
+                                $do = $storage->getDate('max', 'kazdodenne_stat');
+                             ?>
+
+                            &emsp;<label for="date2"> Do: </label>
+                            <input type="date" name="date2" id="date2"
+                                   value="<?= $do ?>"
+                                   max="<?= $storage->getDate('max', 'kazdodenne_stat') ?>"
+                                   min="<?= $storage->getDate('min', 'kazdodenne_stat') ?>"<br>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="column col-lg-6">
+                <div>
+                    <label for="umrtia_na_kov"> Začiarknite položky, ktoré sa majú zobraziť: </label>
+                </div>
+
+                <div>
+                    &emsp; <input onclick="odznac(this)" type="checkbox" id="pcr_pot" name="pcr_pot"
+                                  value="Počet PCR potvrdených prípadov" checked="checked">
+                    <label for="pcr_pot"> Počet PCR potvrdených prípadov</label><br>
+                    &emsp; <input onclick="odznac(this)" type="checkbox" id="pcr_poc" name="pcr_poc"
+                                  value="Počet vykonaných PCR testov" checked="checked">
+                    <label for="pcr_poc"> Počet vykonaných PCR testov</label><br>
+                    &emsp; <input onclick="odznac(this)" type="checkbox" id="pcr_poz" name="pcr_poz"
+                                  value="Počet pozitívnych z PCR testov" checked="checked">
+                    <label for="pcr_poz"> Počet pozitívnych z PCR testov</label><br>
+                    &emsp; <input onclick="odznac(this)" type="checkbox" id="ag_poc" name="ag_poc"
+                                  value="Počet vykonaných AG testov" checked="checked">
+                    <label for="ag_poc"> Počet vykonaných AG testov</label><br>
+                    &emsp; <input onclick="odznac(this)" type="checkbox" id="ag_poz" name="ag_poz"
+                                  value="Počet pozitívnych z AG testov" checked="checked">
+                    <label for="ag_poz"> Počet pozitívnych z AG testov</label><br>
+                    <input onclick="oznac_vsetky(this,5,'pcr_pot','pcr_poc','pcr_poz','ag_poc','ag_poz')"
+                           type="checkbox"
+                           id="v" name="v" value="všetky" checked="checked">
+
+                    <label for="v"> všetky </label><br>
+                </div>
+            </div>
+
+    </div>
+
+    </div>
+    <div class="row pb-4 mb-4">
+        <div class="col-sm-1">
+            <button onclick="displayResults(1)" name="Send1">Filtruj</button>
+        </div>
+    </div>
+    <!-- </form> -->
 <?php require "body.php";
 
 
 ?>
-
+</main>
 <main class="container ">
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
@@ -149,7 +189,7 @@ if (isset($_POST['Send1'])) {
             };
             var c = m.toString();
 
-            xhttp2.open("GET", "stats/denne_tab.php?c=" + c, true);
+            xhttp2.open("GET", "stats/denne_tab.php?c=" + c + "&ktore=druha", true);
             xhttp2.send();
         }
         function next2() {

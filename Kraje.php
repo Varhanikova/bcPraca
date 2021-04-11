@@ -31,6 +31,13 @@ if (isset($_POST['Send1'])) {
     $array = $storage->getAllKraje();
 
 }
+$kraje = $storage->getKraje();
+$krajemes = $storage->mesacneKraje("Bratislavský kraj");
+
+$ulozene = "";
+if(isset($_POST['krajelist'])){
+    $ulozene = $_POST['krajelist'];
+}
 ?>
 <script>
 
@@ -47,66 +54,29 @@ if (isset($_POST['Send1'])) {
             }
         };
         var c = j.toString();
-        var je = "<?= isset($_POST['Send1'])?>";
-        if (je !== "") {
-            var a="";
-            var b="";
-            <?php if(isset($_POST['Send1'])) { ?>
-                a = "<?=$_POST['date'] ?>";
-                b = '<?=$_POST['date2'] ?>';
-            var t = "<?= ($_POST['krajelist']) ?>";
-            <?php } ?>
 
-            var m = "<?= isset($_POST['ag_vyk']) ?>";
-
-            if (m !== "") {
-                m = "Počet vykonaných AG testov";
-            }
-            var n = "<?= isset($_POST['ag_poz']) ?>";
-
-            if (n !== "") {
-                n = "Počet pozitívnych z AG testov";
-            }
-
-            var o = "<?= isset($_POST['pcr_poz']) ?>";
-
-            if (o !== "") {
-                o = "Počet pozitívnych z PCR testov";
-            }
-
-            var p = "<?= isset($_POST['newcases']) ?>";
-
-            if (p !== "") {
-                p = "Počet nových prípadov";
-            }
-            var r = "<?= isset($_POST['poz_celk']) ?>";
-
-            if (r !== "") {
-                r = "Počet celkovo pozitívnych prípadov ";
-            }
-            var s = "<?= isset($_POST['v']) ?>";
-
-            if (s !== "") {
-                s = "všetko";
-            }
-            var ktore = "kraje";
-
-        } else {
-            t = "";
-            m = "Počet vykonaných AG testov";
-            n = "Počet pozitívnych z AG testov";
-            o = "Počet pozitívnych z PCR testov";
-            p = "Počet nových prípadov";
-            r = "Počet celkovo pozitívnych prípadov ";
-            s = "všetko";
-            a = '';
-            b = '';
-            ktore = "kraje1";
-        }
-
-        xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
+        var ktore = "prva";
+        var a =document.getElementById("date");
+        a = a.value;
+        var b =document.getElementById("date2");
+        b = b.value;
+        var m = "";
+        var n = "";
+        var o = "";
+        var p = "";
+        var r = "";
+        var s="";
+        var t="";
+        if(document.getElementById("ag_vyk").checked){  m = "Počet vykonaných AG testov";}
+        if(document.getElementById("ag_poz").checked){  n = "Počet pozitívnych z AG testov";}
+        if(document.getElementById("pcr_poz").checked){  o = "Počet pozitívnych z PCR testov";}
+        if(document.getElementById("newcases").checked){  p = "Počet nových prípadov";}
+        if(document.getElementById("poz_celk").checked){  r = "Počet celkovo pozitívnych prípadov";}
+        if(document.getElementById("v").checked){  s = "všetko";}
+        t=document.getElementById("krajelist").value;
+        xhttp.open("GET", "stats/kraje_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&p=" + p + "&r=" + r + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
         xhttp.send();
-
+        setLinkValueKraje()
     }
 
 
@@ -121,11 +91,111 @@ if (isset($_POST['Send1'])) {
         Počty pri testovaniach:
     </h4>
 </main>
+
+
+<main class="container ">
+    <!-- <form method="post"> -->
+    <div class="row pb-4 mb-4">
+
+            <div class="column col-lg-4">
+                <div>
+                    <label> Zvoľte si dátumy: </label>
+                </div>
+
+                    <div>
+                        <?php
+                            $od2 = $storage->getDate('min', 'kraje_stat');
+                         ?>
+
+                        <label> Od: </label>
+                        <input type="date" name="date" id="date"
+                               value="<?= $od2 ?>"
+                               min="<?= $storage->getDate('min', 'kraje_stat') ?>"
+                               max="<?= $storage->getDate('max', 'kraje_stat') ?>">
+                        <br>
+                        <label> Do: </label>
+                        <?php
+                            $do2 = $storage->getDate('max', 'kraje_stat');
+                         ?>
+
+                        <input type="date" name="date2" id="date2"
+                               value="<?= $do2 ?>"
+                               min="<?= $storage->getDate('min', 'kraje_stat') ?>"
+                               max="<?= $storage->getDate('max', 'kraje_stat') ?>">
+                        <br><br>
+                    </div>
+
+            </div>
+            <div class="column col-lg-4">
+                <div>
+                    <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
+                        <label for="krajelist">Zvoľte kraj:</label>
+                    <?php } else { ?>
+                        <label for="krajelist">Zvoľte okres:</label>
+                    <?php } ?>
+                </div>
+
+                    <div>
+                        <select id="krajelist" name="krajelist">
+                            <?php for ($i = 0; $i < sizeof($kraje); $i++) {
+                                if($kraje[$i]->getKraj()==$ulozene){ ?>
+                                    <option selected="selected"><?= $kraje[$i]->getKraj() ?> </option>
+                                <?php } else { ?>
+                                    <option ><?= $kraje[$i]->getKraj() ?> </option>
+                                <?php    }
+                            }?>
+                            <option value="všetky">všetky</option>
+                        </select>
+                    </div>
+            </div>
+
+            <div class="column col-lg-4">
+                <div>
+                    <label> Začiarknite položky, ktoré sa majú zobraziť: </label>
+                </div>
+
+                    <div>
+                        &emsp; <input onclick="odznac(this)" type="checkbox" id="ag_vyk" name="ag_vyk" value="av"
+                                      checked="checked">
+                        <label> Počet vykonaných Ag testov</label><br>
+                        &emsp; <input onclick="odznac(this)" type="checkbox" id="ag_poz" name="ag_poz" value="ap"
+                                      checked="checked">
+                        <label> Počet pozitívnych Ag testov</label><br>
+                        &emsp; <input onclick="odznac(this)" type="checkbox" id="pcr_poz" name="pcr_poz" value="pp"
+                                      checked="checked">
+                        <label> Počet pozitívnych PCR testov </label><br>
+                        &emsp; <input onclick="odznac(this)" type="checkbox" id="newcases" name="newcases"
+                                      value="nc"
+                                      checked="checked">
+                        <label> Počet nových prípadov</label><br>
+                        &emsp; <input onclick="odznac(this)" type="checkbox" id="poz_celk" name="poz_celk"
+                                      value="pc"
+                                      checked="checked">
+                        <label> Počet pozitívnych celkom</label><br>
+                        <input onclick="oznac_vsetky(this,5,'ag_vyk','ag_poz','newcases','poz_celk','pcr_poz')"
+                               type="checkbox" id="v" name="v" checked="checked">
+                        <label> všetky </label><br>
+                    </div>
+
+
+            </div>
+
+
+    </div>
+
+    </div>
+    <div class="row pb-4 mb-4">
+        <div class="col-sm-1">
+            <button onclick="displayResults(1)" name="Send1">Filtruj</button>
+        </div>
+    </div>
+    <!-- </form> -->
+
 <?php require "body.php";
-$kraje = $storage->getKraje();
-$krajemes = $storage->mesacneKraje("Bratislavský kraj");
+
 
 ?>
+</main>
 <main class="container cislo2">
     <h4 class="pb-4 mb-4 fst-italic  ">
         Mesačný priemer kraja:
@@ -181,7 +251,7 @@ $krajemes = $storage->mesacneKraje("Bratislavský kraj");
             var a =document.getElementById("krajelist2");
             a = a.value;
 
-        xhttp2.open("GET", "stats/kraje_tab.php?a=" + a + "&c=" + c, true);
+        xhttp2.open("GET", "stats/kraje_tab.php?a=" + a + "&c=" + c + "&ktore=druha", true);
         xhttp2.send();
     }
 

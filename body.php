@@ -66,10 +66,6 @@ if (isset($_POST['import'])) {
       <?php  }
     }
 }
-$ulozene = "";
-if(isset($_POST['krajelist'])){
-    $ulozene = $_POST['krajelist'];
-}
 
 ?>
 
@@ -110,273 +106,6 @@ displayResults(1);
         }
     }
 </script>
-
-<main class="container ">
-     <form method="post">
-        <div class="row pb-4 mb-4">
-            <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false || strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
-                <div class="column col-lg-4">
-                    <div>
-                        <label> Zvoľte si dátumy: </label>
-                    </div>
-                    <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
-                        <div>
-                            <?php if (isset($_POST['Send1'])) {
-                                $od2 = $_POST['date'];
-                            } else {
-                                $od2 = $storage->getDate('min', 'kraje_stat');
-                            } ?>
-
-                            <label> Od: </label>
-                            <input type="date" name="date" id="date"
-                                   value="<?= $od2 ?>"
-                                   min="<?= $storage->getDate('min', 'kraje_stat') ?>"
-                                   max="<?= $storage->getDate('max', 'kraje_stat') ?>">
-                            <br>
-                            <label> Do: </label>
-                            <?php if (isset($_POST['Send1'])) {
-                                $do2 = $_POST['date2'];
-                            } else {
-                                $do2 = $storage->getDate('max', 'kraje_stat');
-                            } ?>
-
-                            <input type="date" name="date2" id="date2"
-                                   value="<?= $do2 ?>"
-                                   min="<?= $storage->getDate('min', 'kraje_stat') ?>"
-                                   max="<?= $storage->getDate('max', 'kraje_stat') ?>">
-                            <br><br>
-                        </div>
-                    <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
-                        <div>
-                            <?php if (isset($_POST['Send1'])) {
-                                $od3 = $_POST['date'];
-                            } else {
-                                $od3 = $storage->getDate('min', 'hospitals_stat');
-                            } ?>
-
-                            <label> Od: </label>
-                            <input type="date" name="date" id="date"
-                                   value="<?= $od3 ?>"
-                                   max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
-                                   min="<?= $storage->getDate('min', 'hospitals_stat') ?>"><br>
-                            <label> Do: </label>
-                            <?php if (isset($_POST['Send1'])) {
-                                $do3 = $_POST['date2'];
-                            } else {
-                                $do3 = $storage->getDate('max', 'hospitals_stat');
-                            } ?>
-
-                            <input type="date" name="date2" id="date2"
-                                   value="<?= $do3 ?>"
-                                   max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
-                                   min="<?= $storage->getDate('min', 'hospitals_stat') ?>"><br>
-                        </div> <?php } ?>
-
-                </div>
-                <div class="column col-lg-4">
-                    <div>
-                        <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
-                            <label for="krajelist">Zvoľte kraj:</label>
-                        <?php } else { ?>
-                            <label for="krajelist">Zvoľte okres:</label>
-                        <?php } ?>
-                    </div>
-                    <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
-                        <div>
-                            <select id="krajelist" name="krajelist">
-                                <?php for ($i = 0; $i < sizeof($kraje); $i++) {
-                                    if($kraje[$i]->getKraj()==$ulozene){ ?>
-                                    <option selected="selected"><?= $kraje[$i]->getKraj() ?> </option>
-                                <?php } else { ?>
-                                        <option ><?= $kraje[$i]->getKraj() ?> </option>
-                                <?php    }
-                                }?>
-                                <option value="všetky">všetky</option>
-                            </select>
-                        </div>
-                    <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
-                        <?php if (isset($_POST['Send1'])) {
-                            $okres = $_POST['tags'];
-                        } else {
-                            $okres = "Okres Bratislava I";
-                        } ?>
-                        <div>
-                            <div class="ui-widget">
-                                <label for="tags"> </label>
-                                <input id="tags" name="tags" value="<?= $okres ?>">
-                            </div>
-                        </div> <?php } ?>
-
-                </div>
-
-                <div class="column col-lg-4">
-                    <div>
-                        <label> Začiarknite položky, ktoré sa majú zobraziť: </label>
-                    </div>
-                    <?php if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
-                        <div>
-                            &emsp; <input onclick="odznac(this)" type="checkbox" id="ag_vyk" name="ag_vyk" value="av"
-                                          checked="checked">
-                            <label> Počet vykonaných Ag testov</label><br>
-                            &emsp; <input onclick="odznac(this)" type="checkbox" id="ag_poz" name="ag_poz" value="ap"
-                                          checked="checked">
-                            <label> Počet pozitívnych Ag testov</label><br>
-                            &emsp; <input onclick="odznac(this)" type="checkbox" id="pcr_poz" name="pcr_poz" value="pp"
-                                          checked="checked">
-                            <label> Počet pozitívnych PCR testov </label><br>
-                            &emsp; <input onclick="odznac(this)" type="checkbox" id="newcases" name="newcases"
-                                          value="nc"
-                                          checked="checked">
-                            <label> Počet nových prípadov</label><br>
-                            &emsp; <input onclick="odznac(this)" type="checkbox" id="poz_celk" name="poz_celk"
-                                          value="pc"
-                                          checked="checked">
-                            <label> Počet pozitívnych celkom</label><br>
-                            <input onclick="oznac_vsetky(this,5,'ag_vyk','ag_poz','newcases','poz_celk','pcr_poz')"
-                                   type="checkbox" id="v" name="v" checked="checked">
-                            <label> všetky </label><br>
-                        </div>
-                    <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
-
-                        <div>
-                            &emsp; <input onclick="odznac(this)" type="checkbox" id="obs" name="obs" value="obs"
-                                          checked="checked">
-                            <label> Počet obsadených lôžok</label><br>
-                            &emsp; <input onclick="odznac(this)" type="checkbox" id="pluc" name="pluc" value="pluc"
-                                          checked="checked">
-                            <label> Počet osôb na pľúcnej ventilácii</label><br>
-                            &emsp; <input onclick="odznac(this)" type="checkbox" id="hosp" name="hosp" value="hos"
-                                          checked="checked">
-                            <label> Celkový počet hospitalizovaných </label><br>
-                            <input onclick="oznac_vsetky(this,3,'obs','pluc','hosp','','')" type="checkbox" id="v"
-                                   name="v"
-                                   value="v" checked="checked">
-                            <label> všetky </label><br>
-                        </div> <?php } ?>
-
-                </div>
-
-
-            <?php } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false || strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false) { ?>
-
-            <div class="column col-lg-6">
-                <div>
-                    <label> Zvoľte si dátumy: </label> <br>
-                </div>
-                <?php if (strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false) { ?>
-                    <div>
-                        <div>
-                            <?php if (isset($_POST['Send1'])) {
-                                $od = $_POST['date'];
-                            } else {
-                                $od = $storage->getDate('min', 'kazdodenne_stat');
-                            } ?>
-                            &emsp;<label for="date"> Od: </label>
-                            <input type="date" name="date" id="date"
-                                   value="<?= $od ?>"
-                                   max="<?= $storage->getDate('max', 'kazdodenne_stat') ?>"
-                                   min="<?= $storage->getDate('min', 'kazdodenne_stat') ?>">
-                        </div>
-                        <div>
-                            <?php if (isset($_POST['Send1'])) {
-                                $do = $_POST['date2'];
-                            } else {
-                                $do = $storage->getDate('max', 'kazdodenne_stat');
-                            } ?>
-
-                            &emsp;<label for="date2"> Do: </label>
-                            <input type="date" name="date2" id="date2"
-                                   value="<?= $do ?>"
-                                   max="<?= $storage->getDate('max', 'kazdodenne_stat') ?>"
-                                   min="<?= $storage->getDate('min', 'kazdodenne_stat') ?>"<br>
-                        </div>
-                    </div>
-
-                <?php } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
-                    <div>
-                        <div>
-                            <?php if (isset($_POST['Send1'])) {
-                                $od1 = $_POST['date'];
-                            } else {
-                                $od1 = $storage->getDate('min', 'deaths_stat');
-                            } ?>
-
-                            &emsp;<label for="date"> Od: </label>
-                            <input type="date" name="date" id="date"
-                                   value="<?= $od1 ?>"
-                                   max="<?= $storage->getDate('max', 'deaths_stat') ?>"
-                                   min="<?= $storage->getDate('min', 'deaths_stat') ?>">
-                        </div>
-                        <div>
-                            <?php if (isset($_POST['Send1'])) {
-                                $do1 = $_POST['date2'];
-                            } else {
-                                $do1 = $storage->getDate('max', 'deaths_stat');
-                            } ?>
-
-                            &emsp;<label for="date2"> Do: </label>
-                            <input type="date" name="date2" id="date2"
-                                   value="<?= $do1 ?>"
-                                   max="<?= $storage->getDate('max', 'deaths_stat') ?>"
-                                   min="<?= $storage->getDate('min', 'deaths_stat') ?>"><br>
-                        </div>
-                    </div>
-                <?php } ?>
-
-            </div>
-            <div class="column col-lg-6">
-                <div>
-                    <label for="umrtia_na_kov"> Začiarknite položky, ktoré sa majú zobraziť: </label>
-                </div>
-                <?php if (strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false){ ?>
-                <div>
-                    &emsp; <input onclick="odznac(this)" type="checkbox" id="pcr_pot" name="pcr_pot"
-                                  value="Počet PCR potvrdených prípadov" checked="checked">
-                    <label for="pcr_pot"> Počet PCR potvrdených prípadov</label><br>
-                    &emsp; <input onclick="odznac(this)" type="checkbox" id="pcr_poc" name="pcr_poc"
-                                  value="Počet vykonaných PCR testov" checked="checked">
-                    <label for="pcr_poc"> Počet vykonaných PCR testov</label><br>
-                    &emsp; <input onclick="odznac(this)" type="checkbox" id="pcr_poz" name="pcr_poz"
-                                  value="Počet pozitívnych z PCR testov" checked="checked">
-                    <label for="pcr_poz"> Počet pozitívnych z PCR testov</label><br>
-                    &emsp; <input onclick="odznac(this)" type="checkbox" id="ag_poc" name="ag_poc"
-                                  value="Počet vykonaných AG testov" checked="checked">
-                    <label for="ag_poc"> Počet vykonaných AG testov</label><br>
-                    &emsp; <input onclick="odznac(this)" type="checkbox" id="ag_poz" name="ag_poz"
-                                  value="Počet pozitívnych z AG testov" checked="checked">
-                    <label for="ag_poz"> Počet pozitívnych z AG testov</label><br>
-                    <input onclick="oznac_vsetky(this,5,'pcr_pot','pcr_poc','pcr_poz','ag_poc','ag_poz')"
-                           type="checkbox"
-                           id="v" name="v" value="všetky" checked="checked">
-                    <?php } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
-
-                    <div>
-                        &emsp; <input onclick="odznac(this)" type="checkbox" id="umrtia_na_kov" name="umrtia_na_kov"
-                                      value="počet úmrtí na kovid" checked="checked">
-                        <label> počet úmrtí na kovid</label><br>
-                        &emsp; <input onclick="odznac(this)" type="checkbox" id="umrtia_s_kov" name="umrtia_s_kov"
-                                      value="počet úmrtí s kovid" checked="checked">
-                        <label> počet úmrtí s kovid</label><br>
-                        &emsp; <input onclick="odznac(this)" type="checkbox" id="celk" name="celk"
-                                      value="celkový počet úmrtí " checked="checked">
-                        <label> celkový počet úmrtí </label><br>
-                        <input onclick="oznac_vsetky(this,3,'umrtia_na_kov','umrtia_s_kov','celk','','')"
-                               type="checkbox"
-                               id="v" name="v" value="všetky" checked="checked">
-                        <?php } ?>
-                        <label for="v"> všetky </label><br>
-                    </div>
-                </div>
-                <?php } ?>
-            </div>
-
-        </div>
-        <div class="row pb-4 mb-4">
-            <div class="col-sm-1">
-                <button onclick="displayResults(1)" name="Send1">Filtruj</button>
-            </div>
-        </div>
-  </form>
     <?php if (isset($_SESSION["name"])) {
     if ($_SESSION["name"] == 'admin') {
     ?>
@@ -400,30 +129,14 @@ displayResults(1);
                     </div>
                     <div class="col-lg-4">
 
-                        <?php if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
-                            <p><a class="btn btn-secondary "
-                                  href="pdf.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&d=<?= isset($_POST['umrtia_s_kov']) ?>&c=<?= isset($_POST['umrtia_na_kov']) ?>&e=<?= isset($_POST['celk']) ?>">
-                                    PDF export &raquo;</a></p>
-                        <?php } else if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
-                            <p><a class="btn btn-secondary " href="pdf.php?a=a&b=a"> PDF export &raquo;</a></p>
-                        <?php } else if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false) { ?>
-                            <p><a class="btn btn-secondary "
-                                  href="PDFDenne.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['pcr_pot']) ?>&d=<?= isset($_POST['pcr_poc']) ?>&e=<?= isset($_POST['pcr_poz']) ?>&f=<?= isset($_POST['ag_poc']) ?>&g=<?= isset($_POST['ag_poz']) ?>">
-                                    PDF export &raquo;</a></p>
+                        <?php  if (strpos($_SERVER['REQUEST_URI'], "Umrtia") !== false) { ?>
+                            <p><a onclick="setLinkValueUmrtia()" oncontextmenu="setLinkValueUmrtia()" id="umrtia" class="btn btn-secondary " href=""> PDF export &raquo;</a></p>
                         <?php } else if (strpos($_SERVER['REQUEST_URI'], "DenneTestovanie") !== false) { ?>
-                            <p><a class="btn btn-secondary " href="PDFDenne.php?a=a&b=a"> PDF export &raquo;</a></p>
-                        <?php } else if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
-                            <p><a class="btn btn-secondary "
-                                  href="PDFHospitals.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['obs']) ?>&d=<?= isset($_POST['pluc']) ?>&e=<?= isset($_POST['hosp']) ?>&f=<?= ($_POST['tags']) ?>&g=">
-                                    PDF export &raquo;</a></p>
+                            <p><a onclick="setLinkValueDenne()" oncontextmenu="setLinkValueDenne()" id="denne" class="btn btn-secondary " href=""> PDF export &raquo;</a></p>
                         <?php } else if (strpos($_SERVER['REQUEST_URI'], "Nemocnice") !== false) { ?>
-                            <p><a class="btn btn-secondary " href="PDFHospitals.php?a=a&b=a"> PDF export &raquo;</a></p>
-                        <?php } else if (isset($_POST['Send1']) && strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
-                            <p><a class="btn btn-secondary "
-                                  href="PDFKraje.php?a=<?= $_POST['date'] ?>&b=<?= $_POST['date2'] ?>&c=<?= isset($_POST['ag_vyk']) ?>&d=<?= isset($_POST['ag_poz']) ?>&e=<?= isset($_POST['pcr_poz']) ?>&f=<?= isset($_POST['newcases']) ?>&g=<?= isset($_POST['poz_celk']) ?>&h=<?= $_POST['krajelist'] ?>">
-                                    PDF export &raquo;</a></p>
+                            <p><a oncontextmenu="setLinkValueNemocnice()" onclick="setLinkValueNemocnice()" id="nemocnice" class="btn btn-secondary " href=""> PDF export &raquo;</a></p>
                         <?php } else if (strpos($_SERVER['REQUEST_URI'], "Kraje") !== false) { ?>
-                            <p><a class="btn btn-secondary " href="PDFKraje.php?a=a&b=a"> PDF export &raquo;</a></p>
+                            <p><a id="kraje" onclick="setLinkValueKraje()" oncontextmenu="setLinkValueKraje()" class="btn btn-secondary " href=""> PDF export &raquo;</a></p>
                         <?php } ?>
 
                     </div>
@@ -460,6 +173,79 @@ displayResults(1);
         <?php }
         }
         ?>
+
+<script>
+
+    function setLinkValueUmrtia() {
+        var a = document.getElementById("date");
+        var b = document.getElementById("date2");
+        var c = "";
+        var d = "";
+        var e = "";
+
+        if(document.getElementById("umrtia_na_kov").checked){  c = "počet úmrtí na kovid";}
+        if(document.getElementById("umrtia_s_kov").checked){  d = "počet úmrtí s kovid";}
+        if(document.getElementById("celk").checked){ e = "celkový počet úmrtí ";}
+
+        var vysl = "pdf.php?a=" + a.value + "&b=" + b.value + "&c="+ c + "&d=" + d + "&e=" +e;
+        document.getElementById('umrtia').setAttribute("href",vysl);
+    }
+    function setLinkValueNemocnice() {
+        var a = document.getElementById("date");
+        var b = document.getElementById("date2");
+        var c = "";
+        var d = "";
+        var e = "";
+        var f = "";
+
+        if(document.getElementById("obs").checked){  c = "počet úmrtí na kovid";}
+        if(document.getElementById("pluc").checked){  d = "počet úmrtí s kovid";}
+        if(document.getElementById("hosp").checked){ e = "celkový počet úmrtí ";}
+        f = document.getElementById("tags").value;
+        var vysl = "PDFHospitals.php?a=" + a.value + "&b=" + b.value + "&c="+ c + "&d=" + d + "&e=" +e + "&f=" + f;
+        document.getElementById('nemocnice').setAttribute("href",vysl);
+    }
+
+    function setLinkValueDenne(){
+        var a =document.getElementById("date");
+        var b =document.getElementById("date2");
+        var c = "";
+        var d = "";
+        var e = "";
+        var f = "";
+        var g = "";
+
+        if(document.getElementById("pcr_pot").checked){  c = "Počet PCR potvrdených prípadov";}
+        if(document.getElementById("pcr_poc").checked){  d = "Počet vykonaných PCR testov";}
+        if(document.getElementById("pcr_poz").checked){  e = "Počet pozitívnych z PCR testov";}
+        if(document.getElementById("ag_poc").checked){  f = "Počet vykonaných AG testov";}
+        if(document.getElementById("ag_poz").checked){  g = "Počet pozitívnych z AG testov";}
+
+        var vysl = "PDFDenne.php?a=" + a.value + "&b=" + b.value + "&c="+ c + "&d=" + d + "&e=" +e + "&f=" + f + "&g=" + g;
+        document.getElementById('denne').setAttribute("href",vysl);
+
+    }
+    function setLinkValueKraje(){
+        var a =document.getElementById("date");
+        var b =document.getElementById("date2");
+        var c = "";
+        var d = "";
+        var e = "";
+        var f = "";
+        var g = "";
+        var h="";
+
+        if(document.getElementById("ag_vyk").checked){  c = "Počet vykonaných AG testov";}
+        if(document.getElementById("ag_poz").checked){  d = "Počet pozitívnych z AG testov";}
+        if(document.getElementById("pcr_poz").checked){  e = "Počet pozitívnych z PCR testov";}
+        if(document.getElementById("newcases").checked){  f = "Počet nových prípadov";}
+        if(document.getElementById("poz_celk").checked){  g = "Počet celkovo pozitívnych prípadov";}
+        h = document.getElementById("krajelist").value;
+        var vysl = "PDFKraje.php?a=" + a.value + "&b=" + b.value + "&c="+ c + "&d=" + d + "&e=" +e + "&f=" + f + "&g=" + g + "&h="+h;
+        document.getElementById('kraje').setAttribute("href",vysl);
+
+    }
+</script>
 </main>
 <main class="container ">
     <p class='pb-4 mb-2 '></p>
@@ -467,10 +253,8 @@ displayResults(1);
     </table>
     <p class='pb-4 mb-2 '></p>
     <div class="col-lg-12 text-center pb-4 mb-4 fst-italic border-bottom">
-        <?php// if (isset($_POST['Send1'])) { ?>
         <input id="prev" onclick="previous()" type="button" value="< späť"/>
         <input id="next" onclick="next()" type="button" value="ďalej >"/>
-        <?php// } ?>
     </div>
 </main>
 

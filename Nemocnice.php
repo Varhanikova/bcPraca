@@ -60,48 +60,22 @@ if (isset($_POST['Send1'])) {
             }
         };
         var c = j.toString();
-        var je = "<?= isset($_POST['Send1'])?>";
-        if (je !== "") {
-        var m = "<?= isset($_POST['obs']) ?>";
-
-        if (m !== "") {
-            m = "Počet obsadených lôžok";
-        }
-
-        var n = "<?= isset($_POST['pluc']) ?>";
-
-        if (n !== "") {
-            n = "Počet osôb na pľúcnej ventilácii";
-        }
-
-        var o = "<?= isset($_POST['hosp']) ?>";
-
-        if (o !== "") {
-            o = "Celkový počet hospitalizovaných";
-        }
-
-        var s = "<?= isset($_POST['v']) ?>";
-
-        if (s !== "") {
-            s = "všetko";
-        }
-        <?php if(isset($_POST['Send1'])) { ?>
-        var a = "<?=$_POST['date'] ?>";
-        var b = '<?=$_POST['date2'] ?>';
-        var t = "<?= ($_POST['tags']) ?>";
-        <?php } ?>
-        var ktore = "nemocnice";
-        } else {
-            n = "Počet osôb na pľúcnej ventilácii";
-            m = "Počet obsadených lôžok";
-            o = "Celkový počet hospitalizovaných";
-            s = "všetko";
-            a="";
-            b="";
-            t="Okres Bratislava I";
-            var ktore = "nemocnice1";
-        }
-        xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
+        var ktore = "prva";
+        var a =document.getElementById("date");
+        a = a.value;
+        var b =document.getElementById("date2");
+        b = b.value;
+        var m = "";
+        var n = "";
+        var o = "";
+        var t = "";
+        var s="";
+        if(document.getElementById("obs").checked){  m = "Počet osôb na pľúcnej ventilácii";}
+        if(document.getElementById("pluc").checked){  n = "Počet obsadených lôžok";}
+        if(document.getElementById("hosp").checked){  o = "Celkový počet hospitalizovaných";}
+        if(document.getElementById("v").checked){  s = "všetko";}
+        t = document.getElementById("tags").value;
+        xhttp.open("GET", "stats/nemoc_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
         xhttp.send();
     }
 </script>
@@ -115,10 +89,84 @@ if (isset($_POST['Send1'])) {
         Počty pacientov v nemocniciach v danom okrese:
     </h4>
 </main>
+
+<main class="container ">
+    <!-- <form method="post"> -->
+    <div class="row pb-4 mb-4">
+       <div class="column col-lg-4">
+                <div>
+                    <label> Zvoľte si dátumy: </label>
+                </div>
+
+                    <div>
+                        <?php
+                            $od3 = $storage->getDate('min', 'hospitals_stat');
+                         ?>
+
+                        <label> Od: </label>
+                        <input type="date" name="date" id="date"
+                               value="<?= $od3 ?>"
+                               max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
+                               min="<?= $storage->getDate('min', 'hospitals_stat') ?>"><br>
+                        <label> Do: </label>
+                        <?php
+                            $do3 = $storage->getDate('max', 'hospitals_stat');
+                         ?>
+
+                        <input type="date" name="date2" id="date2"
+                               value="<?= $do3 ?>"
+                               max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
+                               min="<?= $storage->getDate('min', 'hospitals_stat') ?>"><br>
+                    </div>
+            </div>
+            <div class="column col-lg-4">
+                <div>
+                        <label for="krajelist">Zvoľte okres:</label>
+                </div>
+                    <div>
+                        <div class="ui-widget">
+                            <label for="tags"> </label>
+                            <input id="tags" name="tags" value="Okres Bratislava I">
+                        </div>
+                    </div>
+            </div>
+
+            <div class="column col-lg-4">
+                <div>
+                    <label> Začiarknite položky, ktoré sa majú zobraziť: </label>
+                </div>
+                    <div>
+                        &emsp; <input onclick="odznac(this)" type="checkbox" id="obs" name="obs" value="obs"
+                                      checked="checked">
+                        <label> Počet obsadených lôžok</label><br>
+                        &emsp; <input onclick="odznac(this)" type="checkbox" id="pluc" name="pluc" value="pluc"
+                                      checked="checked">
+                        <label> Počet osôb na pľúcnej ventilácii</label><br>
+                        &emsp; <input onclick="odznac(this)" type="checkbox" id="hosp" name="hosp" value="hos"
+                                      checked="checked">
+                        <label> Celkový počet hospitalizovaných </label><br>
+                        <input onclick="oznac_vsetky(this,3,'obs','pluc','hosp','','')" type="checkbox" id="v"
+                               name="v"
+                               value="v" checked="checked">
+                        <label> všetky </label><br>
+                    </div>
+            </div>
+
+    </div>
+
+    </div>
+    <div class="row pb-4 mb-4">
+        <div class="col-sm-1">
+            <button onclick="displayResults(1)" name="Send1">Filtruj</button>
+        </div>
+    </div>
+    <!-- </form> -->
+
     <?php require "body.php" ;
 
     $nem = $storage->nemocky("2020-12-01", "2021-01-15");
     ?>
+</main>
 <main class="container ">
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
@@ -181,7 +229,7 @@ if (isset($_POST['Send1'])) {
             var b =document.getElementById("date4");
             b = b.value;
 
-            xhttp2.open("GET", "stats/nemoc_tab.php?a=" + a + "&b=" + b + "&c=" + c, true);
+            xhttp2.open("GET", "stats/nemoc_tab.php?a=" + a + "&b=" + b + "&c=" + c + "&ktore=druha", true);
             xhttp2.send();
         }
 
@@ -214,6 +262,8 @@ if (isset($_POST['Send1'])) {
 </main>
 
 </body>
+
+
 
 <?php
 require "parts/footer.php";

@@ -3,90 +3,19 @@ require "header.php";
 $storage = new DB_storage();
 $umrtia = [];
 $perc = $storage->mesacneUmrtiaNaKov();
-if (isset($_POST['Send1'])) {
-    $chyba1 = 0;
+ $umrtia = $storage->getDeathsAll();?>
 
-    if (!isset($_POST['umrtia_na_kov']) && !isset($_POST['umrtia_s_kov']) && !isset($_POST['celk'])) {
-        $chyba1 = 1; ?>
         <script>
+            if(!document.getElementById("umrtia_na_kov").checked && !document.getElementById("umrtia_s_kov").checked && !document.getElementById("celk").checked)
             window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
         </script>
-        <?php
-    }
-    if ($_POST['date'] > $_POST['date2']) {
-        $chyba1 = 1; ?>
+
         <script>
-            window.alert("Nesprávne zadaný dátum!");
-        </script
-    <?php }
-
-    if ($chyba1 == 0) {
-        $umrtia = $storage->getDeathsAtDate($_POST['date'], $_POST['date2']);
-    }
-} else {
-    $umrtia = $storage->getDeathsAll();
-}
-
-?>
-<script>
-
-
-    var j = 1;
-    var size = parseInt('<?= sizeof($umrtia) ?>');
-    displayResults(j);
-    function displayResults(j) {
-        var xhttp = new XMLHttpRequest();
-
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("tu").innerHTML = this.responseText;
+            if(document.getElementById("date").value > document.getElementById("date2").value) {
+                window.alert("Nesprávne zadaný dátum!");
             }
-        };
-        var c = j.toString();
-        var je = "<?= isset($_POST['Send1'])?>";
-        if (je !== "") {
-            var m = "<?= isset($_POST['umrtia_na_kov']) ?>";
+        </script>
 
-            if (m !== "") {
-                m = "počet úmrtí na kovid";
-            }
-
-            var n = "<?= isset($_POST['umrtia_s_kov']) ?>";
-
-            if (n !== "") {
-                n = "počet úmrtí s kovid";
-            }
-
-            var o = "<?= isset($_POST['celk']) ?>";
-
-            if (o !== "") {
-                o = "celkový počet úmrtí ";
-            }
-
-            var s = "<?= isset($_POST['v']) ?>";
-
-            if (s !== "") {
-                s = "všetko";
-            }
-            <?php if(isset($_POST['Send1'])) { ?>
-            var a = "<?=$_POST['date'] ?>";
-            var b = '<?=$_POST['date2'] ?>';
-            <?php } ?>
-            var ktore = "umrtia";
-        } else {
-            a = "";
-            b = "";
-            m = "počet úmrtí na kovid";
-            n = "počet úmrtí s kovid";
-            o = "celkový počet úmrtí ";
-            s = "všetko";
-            var ktore = "umrtia1";
-        }
-        xhttp.open("GET", "stats/tabulky.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore, true);
-        xhttp.send();
-    }
-
-</script>
 <body>
 <main class="container">
     <div class="col-lg-12">
@@ -98,11 +27,110 @@ if (isset($_POST['Send1'])) {
         </h4>
     </div>
 </main>
+<main class="container ">
+
+    <div class="row pb-4 mb-4">
+
+        <div class="column col-lg-6">
+            <div>
+                <label> Zvoľte si dátumy: </label> <br>
+            </div>
+              <div>
+                    <div>
+                        <?php
+                            $od1 = $storage->getDate('min', 'deaths_stat');
+                         ?>
+
+                        &emsp;<label for="date"> Od: </label>
+                        <input type="date" name="date" id="date"
+                               value="<?= $od1 ?>"
+                               max="<?= $storage->getDate('max', 'deaths_stat') ?>"
+                               min="<?= $storage->getDate('min', 'deaths_stat') ?>">
+                    </div>
+                    <div>
+                        <?php
+                            $do1 = $storage->getDate('max', 'deaths_stat');
+                         ?>
+
+                        &emsp;<label for="date2"> Do: </label>
+                        <input type="date" name="date2" id="date2"
+                               value="<?= $do1 ?>"
+                               max="<?= $storage->getDate('max', 'deaths_stat') ?>"
+                               min="<?= $storage->getDate('min', 'deaths_stat') ?>"><br>
+                    </div>
+                </div>
+        </div>
+        <div class="column col-lg-6">
+            <div>
+                <label for="umrtia_na_kov"> Začiarknite položky, ktoré sa majú zobraziť: </label>
+            </div>
+                <div>
+                    &emsp; <input onclick="odznac(this)" type="checkbox" id="umrtia_na_kov" name="umrtia_na_kov"
+                                  value="počet úmrtí na kovid" checked="checked">
+                    <label> počet úmrtí na kovid</label><br>
+                    &emsp; <input onclick="odznac(this)" type="checkbox" id="umrtia_s_kov" name="umrtia_s_kov"
+                                  value="počet úmrtí s kovid" checked="checked">
+                    <label> počet úmrtí s kovid</label><br>
+                    &emsp; <input onclick="odznac(this)" type="checkbox" id="celk" name="celk"
+                                  value="celkový počet úmrtí " checked="checked">
+                    <label> celkový počet úmrtí </label><br>
+                    <input onclick="oznac_vsetky(this,3,'umrtia_na_kov','umrtia_s_kov','celk','','')"
+                           type="checkbox"
+                           id="v" name="v" value="všetky" checked="checked">
+
+                    <label for="v"> všetky </label><br>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row pb-4 mb-4">
+        <div class="col-sm-1">
+            <button onclick="displayResults(1)" name="Send1">Filtruj</button>
+        </div>
+    </div>
 
 <?php require "body.php";
 
-
 ?>
+    <script>
+        setLinkValueUmrtia();
+
+        var j = 1;
+        var size = parseInt('<?= sizeof($umrtia) ?>');
+        displayResults(j);
+        function displayResults(j) {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("tu").innerHTML = this.responseText;
+                }
+            };
+            var c = j.toString();
+
+            var ktore = "prva";
+            var a =document.getElementById("date");
+            a = a.value;
+            var b =document.getElementById("date2");
+            b = b.value;
+            var m = "";
+            var n = "";
+            var o = "";
+            var s="";
+            if(document.getElementById("umrtia_na_kov").checked){  m = "počet úmrtí na kovid";}
+            if(document.getElementById("umrtia_s_kov").checked){  n = "počet úmrtí s kovid";}
+            if(document.getElementById("celk").checked){ o = "celkový počet úmrtí ";}
+            if(document.getElementById("v").checked){ s = "všetko ";}
+
+            xhttp.open("GET", "stats/umrtia_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore, true);
+            xhttp.send();
+            setLinkValueUmrtia();
+        }
+
+    </script>
+</main>
 <main class="container ">
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
@@ -136,7 +164,7 @@ if (isset($_POST['Send1'])) {
             };
             var c = m.toString();
 
-            xhttp2.open("GET", "stats/umrtia_tab.php?c=" + c, true);
+            xhttp2.open("GET", "stats/umrtia_tab.php?c=" + c + "&ktore=druha", true);
             xhttp2.send();
         }
         function next2() {
