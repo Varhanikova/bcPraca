@@ -1,6 +1,13 @@
 <?php
+/**
+ * súbor slúži na načítanie údajov z databázy do tabuliek pre štatistiku nemocníc
+ * na filtrovanie tabuliek sa používa premenná $_GET
+ */
 require_once "../DB_storage.php";
 $storage = new DB_storage();
+/**
+ * naplnenie spodnej tabuľky dátami
+ */
 if($_GET['ktore']=="druha"){
 $nem = $storage->nemocky($_GET['a'],$_GET['b']);
 
@@ -41,12 +48,14 @@ echo
            echo "</tr>";
 
        }
+    /**
+     * naplnenie vrchnej tabuľky dátami
+     */
 } else if($_GET['ktore']=="prva"){
     $t = $_GET['t'];
     $chcem =  $t;
     $stat = $storage->getAllHospital_stat1($_GET['a'], $_GET['b'], $chcem);
-}
-if($_GET['ktore']=="prva" ){
+
 
     $m = $_GET['m'];
     $n = $_GET['n'];

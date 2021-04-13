@@ -1,4 +1,7 @@
 <?php
+/**
+ * úvodná stránka
+ */
 require "header.php";
 
 ?>

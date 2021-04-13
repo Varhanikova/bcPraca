@@ -1,4 +1,7 @@
 <?php
+/**
+ * štatistika nemocníc
+ */
 require "header.php";
 $storage = new DB_storage();
 $hosp = [];
@@ -18,47 +21,6 @@ $hosp = $storage->getAllHospital_stat();
             source: availableTags
         });
     });
-
-</script>
-<script>
-    var j = 1;
-    var size = parseInt('<?= sizeof($hosp) ?>');
-    displayResults(j);
-    function displayResults(j) {
-        if(document.getElementById("date").value > document.getElementById("date2").value ) {
-            window.alert("Nesprávne zadaný dátum!");
-        } else if(document.getElementById("obs").checked===false && document.getElementById("pluc").checked===false && document.getElementById("hosp").checked===false){
-            window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
-        } else if(document.getElementById("tags").value === ""){
-            window.alert("Nie je zvolený žiaden okres!");
-        } else {
-        var xhttp = new XMLHttpRequest();
-
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("tu").innerHTML = this.responseText;
-            }
-        };
-        var c = j.toString();
-        var ktore = "prva";
-        var a =document.getElementById("date");
-        a = a.value;
-        var b =document.getElementById("date2");
-        b = b.value;
-        var m = "";
-        var n = "";
-        var o = "";
-        var t = "";
-        var s="";
-        if(document.getElementById("obs").checked){  m = "Počet osôb na pľúcnej ventilácii";}
-        if(document.getElementById("pluc").checked){  n = "Počet obsadených lôžok";}
-        if(document.getElementById("hosp").checked){  o = "Celkový počet hospitalizovaných";}
-        if(document.getElementById("v").checked){  s = "všetko";}
-        t = document.getElementById("tags").value;
-        xhttp.open("GET", "stats/nemoc_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
-        xhttp.send();
-        }
-    }
 </script>
 <body>
 <main class="container">
@@ -70,11 +32,14 @@ $hosp = $storage->getAllHospital_stat();
         Počty pacientov v nemocniciach v danom okrese:
     </h4>
 </main>
+<?php require "body.php" ;
 
+$nem = $storage->nemocky("2020-12-01", "2021-01-15");
+?>
 <main class="container ">
-    <!-- <form method="post"> -->
     <div class="row pb-4 mb-4">
-       <div class="column col-lg-4">
+        <div class="column col-lg-1"></div>
+        <div class="column col-lg-3">
                 <div>
                     <label> Zvoľte si dátumy: </label>
                 </div>
@@ -99,19 +64,19 @@ $hosp = $storage->getAllHospital_stat();
                                max="<?= $storage->getDate('max', 'hospitals_stat') ?>"
                                min="<?= $storage->getDate('min', 'hospitals_stat') ?>"><br>
                     </div>
+            <p class='pb-4 mb-2 '></p>
+            <div>
+                <label for="krajelist">Zvoľte okres:</label>
             </div>
-            <div class="column col-lg-4">
-                <div>
-                        <label for="krajelist">Zvoľte okres:</label>
+            <div>
+                <div class="ui-widget">
+                    <label for="tags"> </label>
+                    <input id="tags" name="tags" value="Okres Bratislava I">
                 </div>
-                    <div>
-                        <div class="ui-widget">
-                            <label for="tags"> </label>
-                            <input id="tags" name="tags" value="Okres Bratislava I">
-                        </div>
-                    </div>
+            </div>
             </div>
 
+        <div class="column col-lg-2"></div>
             <div class="column col-lg-4">
                 <div>
                     <label> Začiarknite položky, ktoré sa majú zobraziť: </label>
@@ -133,20 +98,107 @@ $hosp = $storage->getAllHospital_stat();
                     </div>
             </div>
 
-    </div>
+        <?php if (isset($_SESSION["name"])) {
+            if ($_SESSION["name"] == 'admin') {
+                ?>
+
+                <div class="admin_part column col-lg-2">
+
+                    <div class="row col-lg-12 pb-2 mb-2">
+                        <div class="col-lg-12">
+                            <h4 class="fst-italic text-center" style="color: white">Zvoľ:</h4>
+                        </div>
+                    </div>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="row ">
+                                <a class="btn"  style="font-size: medium" onclick="imp()">Import &raquo;</a>
+                            </div></li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <a class="btn" style="font-size: medium" onclick="exp()">Export &raquo;</a>
+                            </div></li>
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div class="row ">
+                                <a onclick="setLinkValueNemocnice()" style="font-size: medium" oncontextmenu="setLinkValueNemocnice()" id="nemocnice" class="btn " href=""> PDF export &raquo;</a>
+                            </div></li>
+                    </ul>
+                </div>
+
+            <?php }
+        }
+        ?>
 
     </div>
     <div class="row pb-4 mb-4">
-        <div class="col-sm-1">
+        <div class="col-sm-5">
             <button onclick="displayResults(1)" name="Send1">Filtruj</button>
         </div>
+        <p class='pb-4 mb-2 '></p>
+        <div class=" col-sm-6 p-4 mb-3 bg-light rounded " id="rozbal" style="display: none; color: black">
+            <form class="form-horizontal" method="post" name="frmCSVImport"
+                  id="frmCSVImport" enctype="multipart/form-data">
+                <input type="file" name="myFile" id="myFile" accept=".csv">
+                <button  type="submit" id="import" name="import" class="btn-submit">Import</button>
+                <br/>
+            </form>
+            <h4> ! Formát dát: </h4>
+            <a> id_datum ; rok ; mesiac ; den ; id_nemocnice ; obsadene_lozka ; pluc_ventilacia ;
+                hospitalizovani</a>
+            <a></a>
+        </div>
     </div>
-    <!-- </form> -->
 
-    <?php require "body.php" ;
+    <script>
+        var j = 1;
+        var size = parseInt('<?= sizeof($hosp) ?>');
+        displayResults(j);
+        function displayResults(j) {
+            if(document.getElementById("date").value > document.getElementById("date2").value ) {
+                window.alert("Nesprávne zadaný dátum!");
+            } else if(document.getElementById("obs").checked===false && document.getElementById("pluc").checked===false && document.getElementById("hosp").checked===false){
+                window.alert("Nezačiarkli ste žiadnu položku na zobrazenie!");
+            } else if(document.getElementById("tags").value === ""){
+                window.alert("Nie je zvolený žiaden okres!");
+            } else {
+                var xhttp = new XMLHttpRequest();
 
-    $nem = $storage->nemocky("2020-12-01", "2021-01-15");
-    ?>
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("tu").innerHTML = this.responseText;
+                    }
+                };
+                var c = j.toString();
+                var ktore = "prva";
+                var a =document.getElementById("date");
+                a = a.value;
+                var b =document.getElementById("date2");
+                b = b.value;
+                var m = "";
+                var n = "";
+                var o = "";
+                var t = "";
+                var s="";
+                if(document.getElementById("obs").checked){  m = "Počet osôb na pľúcnej ventilácii";}
+                if(document.getElementById("pluc").checked){  n = "Počet obsadených lôžok";}
+                if(document.getElementById("hosp").checked){  o = "Celkový počet hospitalizovaných";}
+                if(document.getElementById("v").checked){  s = "všetko";}
+                t = document.getElementById("tags").value;
+                xhttp.open("GET", "stats/nemoc_tab.php?c=" + c + " &a=" + a + "&b=" + b + "&m=" + m + "&n=" + n + "&o=" + o + "&s=" + s + "&ktore=" + ktore + "&t=" + t, true);
+                xhttp.send();
+            }
+        }
+    </script>
+</main>
+<main class="container ">
+    <p class='pb-4 mb-2 '></p>
+    <table id="tu">
+    </table>
+    <p class='pb-4 mb-2 '></p>
+    <div class="col-lg-12 text-center pb-4 mb-4 fst-italic border-bottom">
+        <input id="prev" onclick="previous()" type="button" value="< späť"/>
+        <input id="next" onclick="next()" type="button" value="ďalej >"/>
+    </div>
 </main>
 <main class="container ">
     <div class="col-lg-12">

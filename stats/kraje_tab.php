@@ -1,6 +1,14 @@
 <?php
+/**
+ * súbor slúži na načítanie údajov z databázy do tabuliek pre štatistiku testovania krajov
+ * na filtrovanie tabuliek sa používa premenná $_GET
+ */
 require_once "../DB_storage.php";
 $storage = new DB_storage();
+/**
+ * naplnenie spodnej tabuľky dátami
+ */
+
 if($_GET['ktore']=="druha") {
     if ($_GET['a']) {
         $krajemes = $storage->mesacneKraje($_GET['a']);
@@ -42,14 +50,17 @@ if($_GET['ktore']=="druha") {
             "</tr> ";
         $i += 2;
     }
+    /**
+     * naplnenie vrchnej tabuľky dátami
+     */
+
 }   else if($_GET['ktore']=="prva") {
     $t = $_GET['t'];
     $p = $_GET['p'];
     $r = $_GET['r'];
     $chcem = "and kraj = '" . $t . "' ";
     $stat = $storage->getKrajeStat($_GET['a'], $_GET['b'], $chcem);
-}
-if($_GET['ktore']=="prva") {
+
     $m = $_GET['m'];
     $n = $_GET['n'];
     $o = $_GET['o'];

@@ -3,8 +3,14 @@ require('../fpdf/fpdf.php');
 require "DB_storage.php";
 
 $storage = new DB_storage();
+/**
+ * trieda pre export do PDF tabuľky denného testovania
+ */
 class PDFDenne extends FPDF
 {
+    /**
+     * hlavička súboru
+     */
     function Header()
     {
         $this->SetFont('Helvetica','B',15);
@@ -17,7 +23,9 @@ class PDFDenne extends FPDF
         $this->SetX(15);
         $this->MultiCell(25,15,'Datum',1,'L',1);
     }
-
+    /**
+     * päta súboru
+     */
     function Footer()
     {
         $this->SetY(-15);
@@ -26,7 +34,9 @@ class PDFDenne extends FPDF
     }
 }
 
-
+/**
+ * získanie premenných z $_GET
+ */
 $pdf = new PDFDenne();
 $c=" ";
 $d=" ";
@@ -43,14 +53,18 @@ if( $_GET['a']=="a") {
     $f = $_GET['f'];
     $g = $_GET['g'];
 }
-
+/**
+ * vytvorenie prvej strany PDF súboru
+ */
 $pdf->AddPage();
 
 $pdf->SetTitle('Denne Testovanie');
 $pdf->SetFillColor(232,232,232);
 $pdf->SetFont('Arial','B',12);
-//$pdf->SetFillColor(232,232,232);
 $x=40;
+/**
+ * výpis každého zvoleného stĺpca tabuľky
+ */
 if($c!="") {
     $pdf->SetY(26);
     $pdf->SetX($x);
@@ -83,7 +97,9 @@ if($g!="") {
     $x+=30;
 }
 $y=42;
-
+/**
+ * výpis každého zvoleného záznamu
+ */
 for($i=0;$i<sizeof($stat);$i++) {
     if($i %35==0 && $i>0) {
         $pdf->AddPage();
@@ -144,7 +160,8 @@ for($i=0;$i<sizeof($stat);$i++) {
     }
     $y += 6;
 }
-
-
+/**
+ * volanie metódy na zobrazenie výstupu
+ */
 $pdf->Output('example2.pdf','I');
 ?>

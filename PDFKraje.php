@@ -1,20 +1,25 @@
 <?php
-
-
 require('../fpdf/fpdf.php');
 require "DB_storage.php";
 
 $storage = new DB_storage();
-
+/**
+ * trieda pre export do PDF tabuľky krajov
+ */
 class PDFKraje extends FPDF
 {
+    /**
+     * hlavička súboru
+     */
     function Header()
     {
         $this->SetFont('Helvetica', 'B', 15);
         $this->SetXY(12, 10);
         $this->Cell(0, 10, 'Kraje', 1, 0, 'C');
     }
-
+    /**
+     * päta súboru
+     */
     function Footer()
     {
         $this->SetY(-15);
@@ -22,8 +27,9 @@ class PDFKraje extends FPDF
         $this->Cell(0, 10, $this->PageNo(), 0, 0, 'C');
     }
 }
-
-
+/**
+ * získanie premenných z $_GET
+ */
 $c = " ";
 $d = " ";
 $e = " ";
@@ -42,9 +48,7 @@ if ($_GET['a'] == "a") {
 }
 
 $pdf = new PDFKraje();
-
 $pdf->SetTitle('Kraje');
-
 
 $y = 46;
 for ($i = 0; $i < sizeof($stat); $i++) {
@@ -57,13 +61,18 @@ for ($i = 0; $i < sizeof($stat); $i++) {
     }
     $kraj = 50;
     if ($i % 16 == 0) {
+        /**
+         * vytvorenie novej strany PDF súboru
+         */
         $pdf->AddPage();
 
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetFillColor(232, 232, 232);
         $pdf->SetY(26);
         $pdf->SetX($x);
-
+        /**
+         * výpis každého zvoleného stĺpca tabuľky
+         */
         $pdf->MultiCell(23, 19.5, 'Datum', 1, 'L', 1);
         $x += 23;
         $pdf->SetY(26);
@@ -104,14 +113,14 @@ for ($i = 0; $i < sizeof($stat); $i++) {
         }
         $y = 46;
     }
-
+    /**
+     * výpis každého zvoleného záznamu
+     */
     $pdf->Ln();
     $pdf->SetY($y);
     $pdf->SetX($xx);
     $pdf->Cell(23, 14, $stat[$i]->getDatum(), 1);
-
     $pdf->cell($kraj, 14, $stat[$i]->getIdKraj(), 1);
-
     if ($c != "") {
         $pdf->Cell(25, 14, $stat[$i]->getAgVyk(), 1);
     }
@@ -129,6 +138,8 @@ for ($i = 0; $i < sizeof($stat); $i++) {
     }
     $y += 14;
 }
-
+/**
+ * volanie metódy na zobrazenie výstupu
+ */
 $pdf->Output('kraje_stat.pdf', 'I');
 ?>

@@ -1,6 +1,9 @@
 <?php
+/**
+ * stránka s informáciami o ochorení
+ */
 require "header.php";
-//require "import.php";
+
 
 ?>
 <script>

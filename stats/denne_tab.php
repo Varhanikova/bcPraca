@@ -1,6 +1,14 @@
 <?php
+
+/**
+ * súbor slúži na načítanie údajov z databázy do tabuliek pre štatistiku denného testovania
+ * na filtrovanie tabuliek sa používa premenná $_GET
+ */
 require_once "../DB_storage.php";
 $storage = new DB_storage();
+/**
+ * naplnenie spodnej tabuľky dátami
+ */
 if($_GET['ktore']=="druha"){
 $perc = $storage->mesacnepozitivne();
 
@@ -36,12 +44,16 @@ $i++;
    " </tr>";
   $i += 2;
 }
+    /**
+     * naplnenie vrchnej tabuľky dátami
+     */
+
 } else if ($_GET['ktore'] == "prva") {
     $p = $_GET['p'];
     $r = $_GET['r'];
     $stat = $storage->getAllKazdodenneStat($_GET['a'], $_GET['b']);
-}
-if($_GET['ktore'] == "prva" ){
+
+
 
     $m = $_GET['m'];
     $n = $_GET['n'];
@@ -113,5 +125,5 @@ if($_GET['ktore'] == "prva" ){
         echo " </tr>";
     }
     }
-} ?>
 
+}

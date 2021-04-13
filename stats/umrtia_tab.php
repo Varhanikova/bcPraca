@@ -1,6 +1,13 @@
 <?php
+/**
+ * súbor slúži na načítanie údajov z databázy do tabuliek pre štatistiku úmrtí
+ * na filtrovanie tabuliek sa používa premenná $_GET
+ */
 require_once "../DB_storage.php";
 $storage = new DB_storage();
+/**
+ * naplnenie spodnej tabuľky dátami
+ */
 if($_GET['ktore']=="druha") {
 
 $perc = $storage->mesacneUmrtiaNaKov();
@@ -38,10 +45,12 @@ $i++;
    " </tr>";
     $i += 2;
 }
+    /**
+     * naplnenie vrchnej tabuľky dátami
+     */
 }  else if($_GET['ktore'] == "prva" ) {
     $stat = $storage->getDeathsAtDate($_GET['a'], $_GET['b']);
-}
-if($_GET['ktore'] == "prva"  ) {
+
 $m = $_GET['m'];
 $n = $_GET['n'];
 $o = $_GET['o'];

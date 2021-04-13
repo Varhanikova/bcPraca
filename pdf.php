@@ -1,9 +1,16 @@
 <?php
+
 require('../fpdf/fpdf.php');
 require_once "DB_storage.php";
 $storage = new DB_storage();
+/**
+ * trieda pre export do PDF tabuľky úmrtí
+ */
 class PDF extends FPDF
 {
+    /**
+     * hlavička súboru
+     */
     function Header()
     {
         $this->SetFont('Helvetica','B',15);
@@ -16,7 +23,9 @@ class PDF extends FPDF
         $this->SetX(15);
         $this->Cell(30,6,'Datum',1,0,'L',1);
     }
-
+    /**
+     * päta súboru
+     */
     function Footer()
     {
         $this->SetY(-15);
@@ -24,6 +33,9 @@ class PDF extends FPDF
         $this->Cell(0,10,$this->PageNo(),0,0,'C');
     }
 }
+/**
+ * získanie premenných z $_GET
+ */
 $c=" ";
 $d=" ";
 $e=" ";
@@ -35,34 +47,34 @@ if( $_GET['a']=="a") {
     $d=$_GET['d'];
     $e=$_GET['e'];
 }
-
+/**
+ * vytvorenie prvej strany PDF súboru
+ */
 $pdf=new PDF();
 $pdf->AddPage();
 
 $pdf->SetTitle('Umrtia');
 $pdf->SetFillColor(232,232,232);
-//$pdf->SetX(45);
 $pdf->SetFont('Arial','B',12);
 $pdf->SetFillColor(232,232,232);
 $pdf->SetY(26);
 $pdf->SetX(45);
+/**
+ * výpis každého zvoleného stĺpca tabuľky
+ */
 if($c!="") {
-    //$pdf->SetFillColor(232,232,232);
-
     $pdf->Cell(45, 6, 'pocet umrti na kovid', 1,0,'L',1);
-    //$pdf->SetX(90);
 }
 if($d!="") {
     $pdf->Cell(45, 6, 'pocet umrti s kovid', 1, 0, 'L', 1);
 }
-//$pdf->SetX(135);
 if($e!="") {
     $pdf->Cell(45, 6, 'celkovy pocet umrti', 1, 0, 'L', 1);
 }
-
-
-//Bold Font for Field Name
 $y=32;
+/**
+ * výpis každého zvoleného záznamu
+ */
 for($i=0;$i<sizeof($stat);$i++) {
     if($i %40==0 && $i>0) {
         $pdf->AddPage();
@@ -93,7 +105,8 @@ for($i=0;$i<sizeof($stat);$i++) {
     }
     $y += 6;
 }
-
-
+/**
+ * volanie metódy na zobrazenie výstupu
+ */
 $pdf->Output('umrtia.pdf','I');
 ?>

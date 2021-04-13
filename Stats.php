@@ -1,4 +1,7 @@
 <?php
+/**
+ * stránka s popisom každej štatistiky
+ */
 require "header.php";
 ?>
 <!doctype html>

@@ -13,14 +13,20 @@ class DB_storage
 {
 
     private $conn;
-
+    /**
+     * pripojenie k databáze
+     */
     public function __construct()
     {
         $dsn = 'mysql:host=localhost;dbname=statistics';
         $this->conn = new PDO($dsn,"root","");
         $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC);
     }
-
+    /**
+     * @param $name
+     * @param $pass
+     * @return bool
+     */
     public function controlPass($name, $pass)
     {
         $heslo = '';
@@ -36,7 +42,11 @@ class DB_storage
             return false;
         }
     }
-
+    /**
+     * @param $name
+     * @param $pass
+     * @return int
+     */
     public function control($name, $pass)
     {
         $meno = '';
@@ -54,7 +64,11 @@ class DB_storage
             return 1;
         }
     }
-
+    /**
+     * @param $name
+     * @param $heslo
+     * @return bool
+     */
     public function saveLogin($name, $heslo)
     {
         $log = new Login($name, $heslo);
@@ -68,20 +82,11 @@ class DB_storage
 
     }
 
-    // ---------------------Deaths---------
-    public function getDeaths($dat, $dat2)
-    {
-        $stmt = $this->conn->query("select * from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum where deaths_stat.id_datum between '$dat' and '$dat2'");
-        $stat = [];
-        while ($row = $stmt->fetch()) {
-            $dat = $row['den'] . "." . $row['mesiac'] . "." . $row['rok'];
-            $umrtie = new Umrtia_stat($dat, $row['poc_umrti_kov'], $row['poc_s_kov'], $row['celk_poc_umrti']);
-
-            $stat[] = $umrtie;
-        }
-        return $stat;
-    }
-
+    /** --------------------------DEATHS-------------------------
+    /**
+     * údaje pre nefiltrovanú vrchnú tabuľku štastistiky úmrtí
+     * @return array
+     */
     public function getDeathsAll()
     {
         $stmt = $this->conn->query("select * from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum ");
@@ -94,7 +99,12 @@ class DB_storage
         }
         return $stat;
     }
-
+    /**
+     * údaje pre vrchnú filtrovanú tabuľku štatistiky úmrtí
+     * @param $datum
+     * @param $datum2
+     * @return array
+     */
     public function getDeathsAtDate($datum, $datum2)
     {
         $stmt = $this->conn->query("SELECT dat.id_datum,den,mesiac,rok,poc_umrti_kov,poc_s_kov,celk_poc_umrti FROM deaths_stat  
@@ -108,7 +118,11 @@ class DB_storage
         }
         return $stat;
     }
-
+    /**
+     * získanie názvu mesiaca
+     * @param $cislo
+     * @return string
+     */
     public function getMesiac($cislo)
     {
         $mes = "";
@@ -152,7 +166,10 @@ class DB_storage
         }
         return $mes;
     }
-
+    /**
+     * údaje pre nefiltrovanú spodnú tabuľku štatistiky úmrtí
+     * @return array
+     */
     public function mesacneUmrtiaNaKov()
     {
         $stmtrok = $this->conn->query("select min(rok) as rok from deaths_stat join dat on deaths_stat.id_datum = dat.id_datum");
@@ -194,7 +211,9 @@ class DB_storage
         return $stat;
     }
 
-
+    /**
+     * export tabuľky deaths_stat
+     */
     public function exportDeaths()
     {
         $stmt = $this->conn->query("SELECT * from deaths_stat");
@@ -206,7 +225,17 @@ class DB_storage
         fclose($fp);
 
     }
-
+    /**
+     * vkladanie údajov do tabuľky deaths_stat
+     * @param $id_dat
+     * @param $rok
+     * @param $mesiac
+     * @param $den
+     * @param $pockov
+     * @param $pocskov
+     * @param $celk
+     * @return int
+     */
     public function importDeaths($id_dat, $rok, $mesiac, $den, $pockov, $pocskov, $celk)
     {
         $death = new Umrtia_stat($id_dat, $pockov, $pocskov, $celk);
@@ -220,7 +249,14 @@ class DB_storage
         }
     }
 
-//----------------kraje--------------------
+/**-------------------------KRAJE---------------------------
+    /**
+    * údaje pre filtrovanú vrchú rabuľku štatistiky krajov
+     * @param $dat1
+     * @param $dat2
+     * @param $chcem
+     * @return array
+     */
     public function getKrajeStat($dat1, $dat2, $chcem)
     {
         $stmt = $this->conn->query("SELECT kraj,kraje_stat.id_datum,den,mesiac,rok,ag_vykonanych,ag_poz,pcr_poz,newcases,poz_celk from kraje
@@ -235,6 +271,11 @@ class DB_storage
         }
         return $stat;
     }
+    /**
+     * údaje pre filtrovanú spodnú tabuľku štatistiky krajov
+     * @param $kraj
+     * @return array
+     */
     public function mesacneKraje($kraj){
         $stmtrok = $this->conn->query("select min(rok) as rok from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum join kraje on kraje_stat.id_kraj = kraje.id_kraj where kraj = '$kraj'");
         $minrok = $stmtrok->fetch()['rok'];
@@ -269,7 +310,10 @@ class DB_storage
         }
         return $stat;
     }
-
+    /**
+     * údaje pre nefiltrovanú vrchnú tabuľku štatistiky krajov
+     * @return array
+     */
     public function getAllKraje()
     {
         $stmt = $this->conn->query("SELECT * from kraje_stat join dat on kraje_stat.id_datum = dat.id_datum
@@ -282,7 +326,10 @@ class DB_storage
         }
         return $stat;
     }
-
+    /**
+     * získanie názvov všetkých krajov
+     * @return array
+     */
     public function getKraje()
     {
         $stmt = $this->conn->query("Select id_kraj,kraj from kraje ");
@@ -293,7 +340,9 @@ class DB_storage
         }
         return $stat;
     }
-
+    /**
+     * export tabuľky kraje_stat
+     */
     public function exportKraje()
     {
         $stmt = $this->conn->query("SELECT * from kraje_stat");
@@ -304,14 +353,33 @@ class DB_storage
         fclose($fp);
 
     }
-
+    /**
+     * zistí či už daný dátum existuje v tabuľke dat a ak nie tak ho pridá
+     * @param $id_dat
+     * @param $rok
+     * @param $mes
+     * @param $den
+     */
     public function checkDat($id_dat, $rok, $mes, $den)
     {
         if (($this->conn->query("select id_datum from dat where id_datum = '$id_dat'"))->fetch() == false) {
             $this->conn->query("insert into dat values('$id_dat','$rok','$mes','$den')");
         }
     }
-
+    /**
+     * naplnenie tabuľky kraje_stat
+     * @param $idkraj
+     * @param $id_dat
+     * @param $rok
+     * @param $mes
+     * @param $den
+     * @param $agvyk
+     * @param $agpoz
+     * @param $pcrpoz
+     * @param $new
+     * @param $celk
+     * @return int
+     */
     public function importKraje($idkraj, $id_dat, $rok, $mes, $den, $agvyk, $agpoz, $pcrpoz, $new, $celk)
     {
         $kraje = new kraje_stat($idkraj, $id_dat, $agvyk, $agpoz, $pcrpoz, $new, $celk);
@@ -325,9 +393,12 @@ class DB_storage
         }
     }
 
-    //------------hospitals---------
+    /**--------------------HOSPITALS--------------------
 
-
+    /**
+     * údaje pre nefiltrovanú vrchnú tabuľku štatistiky nemocníc
+     * @return array
+     */
     public function getAllHospital_stat()
     {
 
@@ -348,6 +419,13 @@ class DB_storage
 
         return $stat;
     }
+    /**
+     * údaje pre filtrovanú vrchnú tabuľku štatistiky nemocníc
+     * @param $datum
+     * @param $dat2
+     * @param $chcem
+     * @return array
+     */
     public function getAllHospital_stat1($datum, $dat2, $chcem)
     {
         $stmt = $this->conn->query("SELECT den,mesiac,rok,sum(obsadene_lozka) as obs,
@@ -368,38 +446,13 @@ class DB_storage
 
         return $stat;
     }
-    public function mesacneStat(){
-        $stmtrok = $this->conn->query("select min(rok) as rok from hospitals_stat join dat on hospitals_stat.id_datum = dat.id_datum");
-        $minrok = $stmtrok->fetch()['rok'];
-        $stmtmaxrok = $this->conn->query("select max(rok) as rok from hospitals_stat join dat on hospitals_stat.id_datum = dat.id_datum");
-        $maxrok = $stmtmaxrok->fetch()['rok'];
-        $stmtmaxmeeiac = $this->conn->query("select max(mesiac) as mesiac from hospitals_stat join dat on hospitals_stat.id_datum = dat.id_datum where rok = '$maxrok'");
-        $maxmes = $stmtmaxmeeiac->fetch()['mesiac'];
-        $stat = [];
-        $rok = $minrok;
-        $po = 12;
-        for ($i = 10; $i < $po + 1; $i++) {
-            $stmt = $this->conn->query("select sum(obsadene_lozka) as obs, sum(pluc_ventilacia) as pluc,sum(hospitalizovani) as hosp from hospitals_stat
-                                join dat on hospitals_stat.id_datum = dat.id_datum 
-                                where dat.mesiac = '$i' and rok = '$rok'");
+    /**
+     * údaje pre spodnú filtrovanú tabuľku štatistiky nemocníc
+     * @param $dat
+     * @param $dat2
+     * @return array
+     */
 
-            while ($row = $stmt->fetch()) {
-                $stat[] = $row['obs'];
-                $stat[] = $row['pluc'];
-                $stat[] = $row['hosp'];
-                $stat[] = $i;
-                $stat[] = $rok;
-            }
-            if ($i == 12) {
-                $i = 0;
-                $rok++;
-                if ($rok == $maxrok) {
-                    $po = $maxmes;
-                }
-            }
-        }
-        return $stat;
-    }
     public function nemocky($dat,$dat2){
         $stat =[];
         $stmt = $this->conn->query("select den,mesiac,rok,sum(obsadene_lozka) as obs, sum(pluc_ventilacia) as pluc,sum(hospitalizovani) as hosp from hospitals_stat join dat on hospitals_stat.id_datum = dat.id_datum where hospitals_stat.id_datum between '$dat' and '$dat2' group by rok,mesiac,den");
@@ -413,6 +466,10 @@ class DB_storage
         }
         return $stat;
     }
+    /**
+     * údaje pre vrchnú nefiltrovanú tabuľku štatistiky nemocníc
+     * @return array
+     */
     public function getAllHospitals()
     {
         $stmt = $this->conn->query("SELECT *  FROM nemocnice");
@@ -423,7 +480,10 @@ class DB_storage
         }
         return $nemoc;
     }
-
+    /**
+     * získanie všetkých názvov pre okresy
+     * @return array
+     */
     public function getOkresy()
     {
         $stmt = $this->conn->query("SELECT * from okresy ");
@@ -434,7 +494,9 @@ class DB_storage
         }
         return $okresy;
     }
-
+    /**
+     * export tabuľky hospitals_stat
+     */
     public function exportHosp()
     {
         $stmt = $this->conn->query("SELECT * from hospitals_stat");
@@ -447,7 +509,18 @@ class DB_storage
         fclose($fp);
 
     }
-
+    /**
+     * vkladanie údajov do tabuľky hospitals_stat
+     * @param $id_dat
+     * @param $rok
+     * @param $mes
+     * @param $den
+     * @param $idnem
+     * @param $obs
+     * @param $pluc
+     * @param $hosp
+     * @return int
+     */
     public function importHosp($id_dat, $rok, $mes, $den, $idnem, $obs, $pluc, $hosp)
     {
         $hospitals = new hospitals_stat($id_dat, $idnem, $obs, $pluc, $hosp);
@@ -461,12 +534,13 @@ class DB_storage
         }
     }
 
-    public function exportPdfHosp()
-    {
-
-    }
-
-    //------------kazdodenne testovanie---------
+    /**-----------------KAZDODENNE TESTOVANIE-------------------
+    /**
+     * naplnenie vrchnej filtrovanej tabuľky pre štatistiku každodenného testovania
+     * @param $datum
+     * @param $dat2
+     * @return array
+     */
     public function getAllKazdodenneStat($datum, $dat2)
     {
         $stmt = $this->conn->query("SELECT * from kazdodenne_stat join dat d on kazdodenne_stat.id_datum = d.id_datum
@@ -480,7 +554,10 @@ class DB_storage
         return $stat;
 
     }
-
+    /**
+     * naplnenie vrchnej nefiltrovanej tabuľky pre štatistiku každodenného testovania
+     * @return array
+     */
     public function getAllDenne()
     {
         $stmt = $this->conn->query("select * from kazdodenne_stat join dat on kazdodenne_stat.id_datum = dat.id_datum");
@@ -492,7 +569,10 @@ class DB_storage
         }
         return $stat;
     }
-
+    /**
+     * export tabuľky kazdodenne_stat
+     * @return array
+     */
     public function exportDenne()
     {
         $stmt = $this->conn->query("SELECT * from kazdodenne_stat");
@@ -504,7 +584,19 @@ class DB_storage
         fclose($fp);
 
     }
-
+    /**
+     * vloženie nového záznamu do tabuľky kazdodenne_stat
+     * @param $id_dat
+     * @param $rok
+     * @param $mes
+     * @param $den
+     * @param $pcrpot
+     * @param $pcrpoc
+     * @param $pcrpoz
+     * @param $agpoc
+     * @param $agpoz
+     * @return int
+     */
     public function importDenne($id_dat, $rok, $mes, $den, $pcrpot, $pcrpoc, $pcrpoz, $agpoc, $agpoz)
     {
         $denne = new kazdodenne_stat($id_dat, $pcrpot, $pcrpoc, $pcrpoz, $agpoc, $agpoz);
@@ -517,7 +609,10 @@ class DB_storage
             return 0;
         }
     }
-
+    /**
+     * druhá tabuľka pre štatistiku každodenného testovania
+     * @return array
+     */
     public function mesacnepozitivne()
     {
         $stmtrok = $this->conn->query("select min(rok) as rok from kazdodenne_stat join dat on kazdodenne_stat.id_datum = dat.id_datum");
@@ -558,7 +653,12 @@ class DB_storage
         }
         return $stat;
     }
-
+    /**
+     * zistenie najnižšieho alebo najvyššieho dátumu pre danú štatistiku
+     * @param $ktory
+     * @param $db
+     * @return array
+     */
     public function getDate($ktory, $db)
     {
         if ($ktory == "min") {

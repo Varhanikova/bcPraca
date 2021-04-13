@@ -1,4 +1,7 @@
 <?php
+/**
+ * súbor, ktorý obsahuje každa stránka
+ */
 require_once "DB_storage.php";
 $storage = new DB_storage();
 session_start();
@@ -9,19 +12,19 @@ if (isset($_POST['Send'])) {
     if ($_POST['username'] == '' || $_POST['psw'] == '' || $username == '' || $psw == '') {
         $chyba = 1; ?>
         <script>
-            window.alert("Empty!");
+            window.alert("Prázdne pole!");
         </script>
     <?php }
     if ($storage->control($_POST['username'], $_POST['psw']) == 1) {
         $chyba = 1; ?>
         <script>
-            window.alert("Wrong username!");
+            window.alert("Nesprávne prihlasovacie  meno!");
         </script>
     <?php }
     if ($storage->control($_POST['username'], $_POST['psw']) == 2) {
         $chyba = 1; ?>
         <script>
-            window.alert("Wrong password!");
+            window.alert("Nesprávne heslo!");
         </script>
     <?php }
     if ($chyba == 0) {
@@ -127,7 +130,7 @@ if (isset($_POST['logout'])) {
         <div class="collapse navbar-collapse" id="navbarsExample06">
             <ul class="navbar-nav mr-auto" id="idecko" onload="active()">
                 <li class="nav-item">
-                    <a class="nav-link" id="index" href="index.php">Home</a>
+                    <a class="nav-link" id="index" href="index.php">Domov</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="info" href="Info.php">Info</a>
@@ -163,7 +166,7 @@ if (isset($_POST['logout'])) {
                     <div class="login-container">
                         <form method="post">
                             <input type="text" placeholder="Username" name="username">
-                            <input type="password" placeholder="Password" name="psw">
+                            <input type="password" placeholder="Heslo" name="psw">
                             <button type="submit" name="Send" class="fas fa-sign-in-alt" id="login"></button>
                         </form>
                     </div>
