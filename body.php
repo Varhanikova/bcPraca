@@ -9,10 +9,6 @@ $kraje = $storage->getKraje();
  * import súboru
  */
 if (isset($_POST['import'])) {
-    //if ($_FILES["myFile"]["error"] > 0) {
-    // echo "Return Code: " . $_FILES["myFile"]["error"] . "<br />";
-
-    //}
     $fileName = $_FILES['myFile']['tmp_name'];
     if ($_FILES['myFile']['size'] > 0) {
         $file = fopen($fileName, "r");

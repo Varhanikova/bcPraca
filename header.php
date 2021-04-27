@@ -1,6 +1,6 @@
 <?php
 /**
- * súbor, ktorý obsahuje každa stránka
+ * súbor, ktorý obsahuje každá stránka
  */
 require_once "DB_storage.php";
 $storage = new DB_storage();
