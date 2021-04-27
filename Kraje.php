@@ -11,7 +11,7 @@ $kraje = $storage->getKraje();
 $krajemes = $storage->mesacneKraje("Bratislavský kraj");
 
 ?>
-<body>
+
 <main class="container">
     <h3 class="pb-4 mb-4 fst-italic border-bottom text-center ">
         Štatistika testovania po krajoch:
@@ -19,11 +19,11 @@ $krajemes = $storage->mesacneKraje("Bratislavský kraj");
     <h4 class="pb-4 mb-4 fst-italic">
         Počty pri testovaniach:
     </h4>
-</main>
+
 <?php require "body.php";
 ?>
 <!-- Časť filtrovania tabuľky 1 a jej výpis -->
-<main class="container ">
+
     <div class="row pb-4 mb-4">
         <div class="column col-lg-1"></div>
             <div class="column col-lg-3">
@@ -202,8 +202,8 @@ $krajemes = $storage->mesacneKraje("Bratislavský kraj");
             }
         }
     </script>
-</main>
-<main class="container ">
+
+
     <p class='pb-4 mb-2 '></p>
     <table id="tu">
     </table>
@@ -212,9 +212,9 @@ $krajemes = $storage->mesacneKraje("Bratislavský kraj");
         <input id="prev" onclick="previous()" type="button" value="< späť"/>
         <input id="next" onclick="next()" type="button" value="ďalej >"/>
     </div>
-</main>
+
 <!-- Filtrovanie a výpis tabuľky 2  -->
-<main class="container cislo2">
+
     <h4 class="pb-4 mb-4 fst-italic  ">
         Mesačný priemer kraja:
     </h4>
@@ -283,7 +283,7 @@ $krajemes = $storage->mesacneKraje("Bratislavský kraj");
         }
     }
 </script>
-</body>
+
 <?php
 require "parts/footer.php";
 ?>

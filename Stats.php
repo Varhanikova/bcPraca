@@ -4,14 +4,12 @@
  */
 require "header.php";
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-    <script>
-        document.getElementById("stats").className += " active";
-    </script>
-</head>
-<body>
+
+
+<script>
+    document.getElementById("stats").className += " active";
+</script>
+
 <div class="container ">
     <hr class="featurette-divider ">
     <div class="row featurette">
@@ -37,7 +35,7 @@ require "header.php";
                 pozitívnych.<br>
             V druhej tabuľke nájdeme priemerný počet pozitívne testovaných PCR aj AG testami vo zvolenom kraji v jednotlivých mesiasoch.
             </p>
-            <p><a class="btn btn-secondary" href="Kraje.php"">Pozri štatistiku &raquo;</a></p>
+            <p><a class="btn btn-secondary" href="Kraje.php">Pozri štatistiku &raquo;</a></p>
         </div>
         <div class="col-md-3 order-md-1">
 
@@ -77,5 +75,5 @@ require "header.php";
 <?php
 require "parts/footer.php";
 ?>
-</body>
-</html>
+
+

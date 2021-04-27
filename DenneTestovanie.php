@@ -9,8 +9,6 @@ $testy = [];
 $perc = $storage->mesacnepozitivne();
     $testy = $storage->getAllDenne();
 ?>
-
-<body>
 <main class="container">
     <h3 class="pb-4 mb-4 fst-italic border-bottom text-center ">
         Štatistika každodenného testovania:
@@ -18,10 +16,9 @@ $perc = $storage->mesacnepozitivne();
     <h4 class="pb-4 mb-4 fst-italic ">
         Počty z testovania po dňoch:
     </h4>
-</main>
+
 <?php require "body.php";
 ?>
-<main class="container ">
     <div class="row pb-4 mb-4">
         <div class="column col-lg-1"></div>
         <div class="column col-lg-3">
@@ -48,7 +45,7 @@ $perc = $storage->mesacnepozitivne();
                             <input type="date" name="date2" id="date2"
                                    value="<?= $do ?>"
                                    max="<?= $storage->getDate('max', 'kazdodenne_stat') ?>"
-                                   min="<?= $storage->getDate('min', 'kazdodenne_stat') ?>"<br>
+                                   min="<?= $storage->getDate('min', 'kazdodenne_stat') ?>" > <br>
                         </div>
                     </div>
 
@@ -56,7 +53,7 @@ $perc = $storage->mesacnepozitivne();
         <div class="column col-lg-2"></div>
             <div class="column col-lg-4">
                 <div>
-                    <label for="umrtia_na_kov"> Začiarknite položky, ktoré sa majú zobraziť: </label>
+                    <label> Začiarknite položky, ktoré sa majú zobraziť: </label>
                 </div>
 
                 <div>
@@ -176,8 +173,7 @@ $perc = $storage->mesacnepozitivne();
                 setLinkValueDenne();}
         }
     </script>
-</main>
-<main class="container ">
+
     <p class='pb-4 mb-2 '></p>
     <table id="tu">
     </table>
@@ -186,8 +182,7 @@ $perc = $storage->mesacnepozitivne();
         <input id="prev" onclick="previous()" type="button" value="< späť"/>
         <input id="next" onclick="next()" type="button" value="ďalej >"/>
     </div>
-</main>
-<main class="container ">
+
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
             Percentá pozitívnych z testovaných po mesiacoch:
@@ -234,8 +229,6 @@ $perc = $storage->mesacnepozitivne();
             }
         } </script>
 </main>
-</body>
-
 
 <?php
 require "parts/footer.php";

@@ -39,8 +39,7 @@ if (isset($_POST['logout'])) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="sk">
     <title>Korona</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -118,8 +117,7 @@ if (isset($_POST['logout'])) {
         }
     </script>
     <link rel="stylesheet" href="style/style.css">
-</head>
-<body>
+
 <div id="top">
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
         <img class="logo" src="pics/COVID-19.jpeg" alt="logo">
@@ -175,6 +173,7 @@ if (isset($_POST['logout'])) {
         </div>
     </nav>
 </div>
+
 
 
 

@@ -22,7 +22,7 @@ $hosp = $storage->getAllHospital_stat();
         });
     });
 </script>
-<body>
+
 <main class="container">
 
     <h3 class="pb-4 mb-4 fst-italic border-bottom text-center ">
@@ -31,12 +31,12 @@ $hosp = $storage->getAllHospital_stat();
     <h4 class="pb-4 mb-4 fst-italic  ">
         Počty pacientov v nemocniciach v danom okrese:
     </h4>
-</main>
+
 <?php require "body.php" ;
 
 $nem = $storage->nemocky("2020-12-01", "2021-01-15");
 ?>
-<main class="container ">
+
     <div class="row pb-4 mb-4">
         <div class="column col-lg-1"></div>
         <div class="column col-lg-3">
@@ -66,7 +66,7 @@ $nem = $storage->nemocky("2020-12-01", "2021-01-15");
                     </div>
             <p class='pb-4 mb-2 '></p>
             <div>
-                <label for="krajelist">Zvoľte okres:</label>
+                <label >Zvoľte okres:</label>
             </div>
             <div>
                 <div class="ui-widget">
@@ -189,8 +189,7 @@ $nem = $storage->nemocky("2020-12-01", "2021-01-15");
             }
         }
     </script>
-</main>
-<main class="container ">
+
     <p class='pb-4 mb-2 '></p>
     <table id="tu">
     </table>
@@ -199,8 +198,7 @@ $nem = $storage->nemocky("2020-12-01", "2021-01-15");
         <input id="prev" onclick="previous()" type="button" value="< späť"/>
         <input id="next" onclick="next()" type="button" value="ďalej >"/>
     </div>
-</main>
-<main class="container ">
+
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
             Situácia v nemocniciach na celom Slovensku:
@@ -294,7 +292,6 @@ $nem = $storage->nemocky("2020-12-01", "2021-01-15");
     </div>
 </main>
 
-</body>
 
 
 

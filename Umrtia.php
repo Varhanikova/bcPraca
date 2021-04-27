@@ -8,7 +8,7 @@ $umrtia = [];
 $perc = $storage->mesacneUmrtiaNaKov();
  $umrtia = $storage->getDeathsAll();?>
 
-<body>
+
 <main class="container">
     <div class="col-lg-12">
         <h3 class="pb-4 mb-4 fst-italic border-bottom text-center">
@@ -18,11 +18,11 @@ $perc = $storage->mesacneUmrtiaNaKov();
             Počty úmrtí po dňoch:
         </h4>
     </div>
-</main>
+
 <?php require "body.php";
 
 ?>
-<main class="container ">
+
     <div class="row pb-4 mb-4">
         <div class="column col-lg-1"></div>
         <div class="column col-lg-3">
@@ -166,8 +166,7 @@ $perc = $storage->mesacneUmrtiaNaKov();
         }}
 
     </script>
-</main>
-<main class="container ">
+
     <p class='pb-4 mb-2 '></p>
     <table id="tu">
     </table>
@@ -176,8 +175,7 @@ $perc = $storage->mesacneUmrtiaNaKov();
         <input id="prev" onclick="previous()" type="button" value="< späť"/>
         <input id="next" onclick="next()" type="button" value="ďalej >"/>
     </div>
-</main>
-<main class="container ">
+
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
             Percentá úmrtí po mesiacoch:
@@ -227,7 +225,7 @@ $perc = $storage->mesacneUmrtiaNaKov();
         }
     </script>
 </main>
-</body>
+
 <?php
 require "parts/footer.php";
 ?>

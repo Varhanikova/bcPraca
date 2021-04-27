@@ -9,7 +9,7 @@ require "header.php";
 <script>
     document.getElementById("info").className += " active";
 </script>
-<body>
+
 
 <main class="container">
     <div class="row">
@@ -90,4 +90,3 @@ require "header.php";
         <p>&copy; 2021 </p>
     </footer>
 </main>
-</body>
