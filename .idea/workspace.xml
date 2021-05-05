@@ -19,16 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="komentáre">
+    <list default="true" id="c2fce3d3-3770-4bd1-b75d-04e3e54804c4" name="Default Changelist" comment="validita">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DenneTestovanie.php" beforeDir="false" afterPath="$PROJECT_DIR$/DenneTestovanie.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Info.php" beforeDir="false" afterPath="$PROJECT_DIR$/Info.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Kraje.php" beforeDir="false" afterPath="$PROJECT_DIR$/Kraje.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nemocnice.php" beforeDir="false" afterPath="$PROJECT_DIR$/Nemocnice.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Stats.php" beforeDir="false" afterPath="$PROJECT_DIR$/Stats.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Umrtia.php" beforeDir="false" afterPath="$PROJECT_DIR$/Umrtia.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/header.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stats/denne_tab.php" beforeDir="false" afterPath="$PROJECT_DIR$/stats/denne_tab.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stats/nemoc_tab.php" beforeDir="false" afterPath="$PROJECT_DIR$/stats/nemoc_tab.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +137,10 @@
       <workItem from="1618231564508" duration="12811000" />
       <workItem from="1618329718161" duration="4715000" />
       <workItem from="1619517177966" duration="2665000" />
-      <workItem from="1619538692766" duration="5384000" />
+      <workItem from="1619538692766" duration="6046000" />
+      <workItem from="1619555214305" duration="227000" />
+      <workItem from="1619950327596" duration="890000" />
+      <workItem from="1620198067257" duration="2143000" />
     </task>
     <task id="LOCAL-00001" summary="uprava css">
       <created>1615110530990</created>
@@ -317,7 +317,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619543249427</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="validita">
+      <created>1619554964947</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1619554964947</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,7 +367,8 @@
     <MESSAGE value="oprava kontroly inputov" />
     <MESSAGE value="komentáre" />
     <MESSAGE value="finálne úpravy" />
-    <option name="LAST_COMMIT_MESSAGE" value="finálne úpravy" />
+    <MESSAGE value="validita" />
+    <option name="LAST_COMMIT_MESSAGE" value="validita" />
   </component>
   <component name="WindowStateProjectService">
     <state x="348" y="67" key="#CLI_Interpreters" timestamp="1619539022987">
@@ -371,10 +379,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="520" y="236" key="#Notifications/0.0.1536.824@0.0.1536.824" timestamp="1615463234863" />
-    <state x="320" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617106581730">
+    <state x="320" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1619555268138">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="320" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1617106581730" />
+    <state x="320" y="59" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1619555268138" />
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1616328300674">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -419,14 +427,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="822" y="390" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1618071027423" />
-    <state x="277" y="57" key="SettingsEditor" timestamp="1619539023994">
+    <state x="277" y="57" key="SettingsEditor" timestamp="1619950563524">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1619539023994" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1619543260238">
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1619950563524" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1619554972346">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1619543260238" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1619554972346" />
     <state x="641" y="254" key="com.intellij.database.actions.DdlActions$CreateObject$1" timestamp="1617106320155">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

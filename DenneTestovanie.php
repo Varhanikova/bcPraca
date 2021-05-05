@@ -14,7 +14,7 @@ $perc = $storage->mesacnepozitivne();
         Štatistika každodenného testovania:
     </h3>
     <h4 class="pb-4 mb-4 fst-italic ">
-        Počty z testovania po dňoch:
+        Každodenné počty z testovania:
     </h4>
 
 <?php require "body.php";
@@ -185,7 +185,7 @@ $perc = $storage->mesacnepozitivne();
 
     <div class="col-lg-12">
         <h4 class="pb-4 mb-4 fst-italic  ">
-            Percentá pozitívnych z testovaných po mesiacoch:
+            Percentá pozitívnych osôb z testovania po mesiacoch:
         </h4>
     </div>
     <p class='pb-4 mb-2 '></p>

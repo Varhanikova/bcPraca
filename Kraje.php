@@ -240,9 +240,7 @@ $krajemes = $storage->mesacneKraje("Bratislavský kraj");
         </div>
 
     <p class='pb-4 mb-2 '></p>
-    <table id="tu2">
-
-    </table>
+    <table id="tu2"> </table>
     <p class='pb-4 mb-2 '></p>
     <div class="col-lg-12 text-center pb-4 mb-4 fst-italic ">
 

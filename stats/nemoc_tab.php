@@ -87,10 +87,10 @@ echo
             echo "<th>Názov okresu</th>";
         }
     if ($m != "" || $s != "") {
-        echo "<th>$m</th>";
+        echo "<th>$n</th>";
     }
     if ($n != "" || $s != "") {
-        echo "<th>$n</th>";
+        echo "<th>$m</th>";
     }
     if (($o != "" || $s != "")) {
         echo "<th>$o</th>";

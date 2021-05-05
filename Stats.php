@@ -15,7 +15,7 @@ require "header.php";
     <div class="row featurette">
         <div class="col-md-8">
             <h2 class="featurette-heading">1. štatistika: <span class="text-muted">Denné testovanie.</span></h2>
-            <p class="lead">Štatistika v prvej tabuľke ukazuje po dňoch deň informácie o počte urobených PCR testov, počte pozitívnych z
+            <p class="lead">Štatistika v prvej tabuľke ukazuje každodenné informácie o počte urobených PCR testov, počte pozitívnych z
                 PCR testov,
                 počte vykonaných AG testov, počte pozitívnych z AG testov a nakoniec o celkovom počte potvrdených z PCR
                 testov.<br>
@@ -48,7 +48,7 @@ require "header.php";
         <div class="col-md-8">
             <h2 class="featurette-heading">3. štatistika: <span class="text-muted">Štatistiky nemocníc.</span></h2>
             <p class="lead">Štatistika v prvej tabuľke ukazuje počty obsadenosti lôžok, použitých pľúcnych ventilácií a počty hospitalizovaných vo zvolenom okrese v jednotlivých dňoch.
-                <br> Druhá tabuľka obsahuje jednotlivé počty zo všetkých nemocníc na Slovensku zoradené po dňoch.</p>
+                <br> Druhá tabuľka obsahuje každodenné počty zo všetkých nemocníc na Slovensku.</p>
             <p><a class="btn btn-secondary" href="Nemocnice.php">Pozri štatistiku &raquo;</a></p>
         </div>
 

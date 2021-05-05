@@ -28,8 +28,8 @@ echo
 "<tr>" .
             "<th>Rok</th>".
            " <th>Mesiac</th>".
-          "  <th>percentá pozitívnych PCR z testovania</th>".
-            "<th>percentá pozitívnych AG z testovania</th>".
+          "  <th>percentá pozitívnych z PCR testovania</th>".
+            "<th>percentá pozitívnych z AG testovania</th>".
         "</tr>";
 for ($i = $vypis - 1; $i < $limit; $i++) {
   echo  "<tr>" ;
